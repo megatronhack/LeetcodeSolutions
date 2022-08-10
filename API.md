@@ -76,11 +76,13 @@ String s = new String("word");
 String s = "hello";   //double quote is string, single is chart
 char[] arraySet = s.toCharArray();  // string to char array
 s.equals();  // checking actual value
-s.indexOf('0'); //getting index of '0' in the string
+s.indexOf('0'); //return first occurrence index of '0' in the string. 
+int matchIndex = input.indexOf(s, fromIndex); ////returns the position of the first occurrence of a                                                           value starting "fromIndex" in a string, returns -1 if the                                                   value is not found.
 s.toCharArray();   
 s.length();
-s.substring(start,end)  // not include end index
+s.substring(start,end)  // not include end index  
 
+int matchIndex = input.indexOf(s, fromIndex); //Check if there exists a substring same as s in the substring of input starting at fromIndex.
 
 
 StringBuilder sb = new StringBuilder();
