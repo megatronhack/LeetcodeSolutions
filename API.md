@@ -77,7 +77,9 @@ String s = "hello";   //double quote is string, single is chart
 char[] arraySet = s.toCharArray();  // string to char array
 s.equals();  // checking actual value
 s.indexOf('0'); //return first occurrence index of '0' in the string. 
-int matchIndex = input.indexOf(s, fromIndex); ////returns the position of the first occurrence of a                                                           value starting "fromIndex" in a string, returns -1 if the                                                   value is not found.
+
+int matchIndex = s.indexOf("0", fromIndex); ////returns the position of the first occurrence of a         //value starting "fromIndex" in a string, returns -1 if the value is not found.
+
 s.toCharArray();   
 s.length();
 s.substring(start,end)  // not include end index  
