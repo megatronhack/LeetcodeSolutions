@@ -22,7 +22,7 @@ set.contains();
 set.remove();       
 ```
 
-
+xxxxxxxxxx public class Solution {  public int[] moveZero(int[] array) {    if (array.length <= 1) {      return array;    }    int slow = 0;    for (int i = 0; i < array.length; i++) {      if (array[i] != 0) {        array[slow++] = array[i];      }    }    while (slow < array.length) array[slow++] = 0;    return array;  }}java
 
 ## KnaryTreeNode
 
@@ -81,7 +81,10 @@ s.indexOf('0'); //return first occurrence index of '0' in the string.
 int matchIndex = s.indexOf("0", fromIndex); ////returns the position of the first occurrence of a 
 //value starting "fromIndex" in a string, returns -1 if the value is not found.
 
-s.toCharArray();   
+s.toCharArray(); 
+String str = String.valueOf(arr);//The method valueOf() will convert the entire char array into a string.
+//这里的String. 本身就是内置API
+
 s.length();
 s.substring(start,end)  // not include end index  
 
@@ -123,8 +126,9 @@ stack.pollLast()
 
 ```
 Queue<Integer> queue = new ArrayDeque<Integer>();
+queue.offer() // add element at the end; like offerLast. 1 2 3, offer 4, becoming 1 2 3 4
 queue.remove() //return and remove the first element when queue is empty, raise exception
-queue.poll() // return and remove the first element.  when queue is empty, returns null
+queue.poll() // return and remove the first element.  when queue is empty, returns null.   1 2 3, return 2 3, head is 1
 queue.peek() // return value but not remove
 ```
 
