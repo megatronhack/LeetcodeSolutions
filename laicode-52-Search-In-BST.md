@@ -11,15 +11,20 @@ Space complexity: O(H), where H is the height.
 ```java
 public class Solution {
   public TreeNode search(TreeNode root, int key) {
-    if (root == null) {
-      return null;
+    // Write your solution here
+    //base case
+    if (root == null || root.key == key){
+        return root;
     }
-    if (root.key == key) {
-      return root;
+    if(root.key > key){
+      return search(root.left,key);
     }
-    return root.key < key ? search(root.right, key) : search(root.left, key);
+    else{
+      return search(root.right,key);
+    }
   }
 }
+
 ```
 
 ## Iterative Approach

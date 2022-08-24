@@ -20,36 +20,55 @@ Time complexity: O(logN)
 Space complexity: O(H), where H is the height.
 
 ```java
-class Solution {
-  public TreeNode deleteNode(TreeNode root, int key) {
-    if (root == null) {
-      return root;
+ public TreeNode deleteTree(TreeNode root, int key) {
+    // because it is a bst, search the target by using recursive function
+    //find the target and replace it, how? A few situations should take into consideration
+    //1. what if the roo only have one child(left/right)
+    //2. I choose always use the right child to replace, how to choose the right candidate 
+    // and keep it still a bst? choose the smallest one of the smallest child and then connect with the former root.left and root.right
+    
+    //corner case
+   if (root == null){
+     return root;
+   }
+    //search the candidate by using recursive function
+    if (key < root.key){
+      root.left = deleteTree(root.left, key);
     }
-    if (root.val == key) {
-      if (root.left == null) {
-        root = root.right;
-      } else if (root.right == null) {
-        root = root.left;
-      } else {
-        root.val = getNextInOrder(root).val;
-        root.right = deleteNode(root.right, root.val);
-      }
-    } else if (root.val < key) {
-      root.right = deleteNode(root.right, key);
+
+    if (key > root.key){
+      root.right = deleteTree(root.right, key);
+    }
+
+  //what should be done if the key == root.key
+  if (key == root.key){
+    if (root.left == null){
+      return root.right;
+    }
+    if (root.right == null){
+      return root.left;
+    }
+    if (root.right.left == null){
+      root.right.left = root.left;
+      return root.right;
     } else {
-      root.left = deleteNode(root.left, key);
+      TreeNode smallTarget = findSmallest(root.right);
+      smallTarget.left = root.left;
+      smallTarget.right = root.right;
+      return smallTarget;
     }
-    return root;
+  }
+  return root;
   }
 
-  /** Given a non-null node of a binary tree, return its next inorder node. */
-  private TreeNode getNextInOrder(TreeNode curr) {
-    curr = curr.right;
-    while (curr.left != null) {
-      curr = curr.left;
-    }
-    return curr;
+private TreeNode findSmallest(TreeNode root){
+  TreeNode cur = root;
+  while (cur.left.left != null){
+    cur = cur.left;
   }
+  TreeNode small = cur.left;
+  cur.left = small.right;
+  return small;
 }
 ```
 

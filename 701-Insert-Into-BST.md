@@ -16,18 +16,24 @@ Time complexity: O(logN)
 Space complexity: O(H), where H is the height.
 
 ```java
-class Solution {
-  public TreeNode insertIntoBST(TreeNode root, int val) {
-    if (root == null) {
-      root = new TreeNode(val);
-    } else if (root.val < val) {
-      root.right = insertIntoBST(root.right, val);
-    } else {
-      root.left = insertIntoBST(root.left, val);
+public class Solution {
+  public TreeNode insert(TreeNode root, int key) {
+    // Write your solution here
+    //base case
+    if(root == null){
+      return new TreeNode(key);
+    }
+    
+    if(key < root.key){
+       root.left = insert(root.left,key);
+    }
+    else if(key > root.key){
+       root.right = insert(root.right,key);
     }
     return root;
   }
 }
+
 ```
 
 ## Iterative Approach
@@ -39,25 +45,28 @@ Time complexity: O(logN)
 Space complexity: O(1)
 
 ```java
-class Solution {
-  public TreeNode insertIntoBST(TreeNode root, int val) {
-    TreeNode newNode = new TreeNode(val);
-    if(root == null){
-      return newNode;
+public class Solution {
+  public TreeNode insert(TreeNode root, int key) {
+    // Write your solution here
+    if (root == null){
+      return new TreeNode(key);
     }
-    TreeNode prev = null, curr = root;
-    while (curr != null) {
-      prev = curr;
-      if (curr.val < val) {
-        curr = curr.right;
-      } else {
-        curr = curr.left;
+    TreeNode cur = root;
+    TreeNode newNode = new TreeNode(key);
+    while(cur.key != key){
+      if(cur.key > key){
+        if(cur.left == null){
+           cur.left = newNode;
+        }
+        cur = cur.left;
       }
-    }
-    if (prev.val > val) {
-      prev.left = newNode;
-    } else {
-      prev.right = newNode;
+      else{
+        if(cur.right == null){
+           cur.right = newNode;
+        }
+        cur = cur.right;
+      }
+      
     }
     return root;
   }

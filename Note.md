@@ -1,3 +1,11 @@
+## API
+
+int and Integer
+
+int min = Integer.MIN_VALUE;
+
+Integer min = Integer.MIN_VALUE;
+
 ## Math
 
 6%10 = 6  自己本身

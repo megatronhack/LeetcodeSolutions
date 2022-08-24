@@ -14,14 +14,17 @@ Time complexity: O(N), because we have to access every nodes in the tree.
 Space complexity: O(H), where H is the depth of the tree.
 
 ```java
-class Solution {
-    public int maxDepth(TreeNode root) {
-        if(root == null){
-            return 0;
-        }
-        int leftDepth = maxDepth(root.left);
-        int rightDepth = maxDepth(root.right);
-        return Math.max(leftDepth, rightDepth) + 1;
+public class Solution {
+  public int findHeight(TreeNode root) {
+    // Write your solution here
+    if (root == null){
+      return 0;
     }
+
+    int left = findHeight(root.left) ;
+    int right = findHeight(root.right) ;
+    return Math.max(left,right) + 1;
+  }
 }
+
 ```

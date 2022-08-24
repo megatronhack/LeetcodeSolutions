@@ -13,76 +13,39 @@ Space complexity: O(k)
 ```java
 public class Solution {
   public int[] kSmallest(int[] array, int k) {
-    if (array == null || array.length == 0 || k == 0) {
+    // Write your solution here
+    int[] result = new int[k];
+    if(array.length == 0 || k == 0){
       return new int[0];
     }
-    MaxHeap maxHeap = new MaxHeap(k + 1);
-    for (int num : array) {
-      maxHeap.offer(num);
-      if (maxHeap.size() > k) maxHeap.poll();
+  //use a maxheap to store the k smallest elements
+  PriorityQueue<Integer> maxHeap = new PriorityQueue<>(k, new Comparator<Integer>(){
+     @Override
+     public int compare(Integer a, Integer b){
+       if(a.equals(b)){
+         return 0;
+       }
+       return a > b ? -1 : 1;
+     }
+  });
+    
+    for(int i = 0; i < array.length; i++){
+        if(i < k){
+          maxHeap.offer(array[i]);
+        }
+        else{
+          if(array[i] < maxHeap.peek()){
+            maxHeap.poll();// pollFrist
+            maxHeap.offer(array[i]); 
+          }
+        }
     }
-    int[] res = new int[k];
-    for (int i = k - 1; i >= 0; i--) {
-      res[i] = maxHeap.poll();
+    //write elements back to the array
+    for (int i = k - 1; i >= 0; i--){
+      result[i] = maxHeap.poll();
     }
-    return res;
+    return result;
   }
 }
 
-class MaxHeap {
-
-  private int[] array;
-
-  int count = 0;
-
-  MaxHeap(int maxSize) {
-    // choose 1 as start, children are 2k and 2k + 1 respectively.
-    this.array = new int[maxSize + 1];
-  }
-
-  public int size() {
-    return count;
-  }
-
-  public void offer(int num) {
-    array[++count] = num;
-    swim(count);
-  }
-
-  public int poll() {
-    int res = array[1];
-    swap(array, 1, count--);
-    sink(1);
-    return res;
-  }
-
-  private void sink(int k) {
-    while (2 * k <= count) {
-      int c = 2 * k;
-      if (c < count && array[c] < array[c + 1]) {
-        // choose the bigger child
-        c++;
-      }
-      if (array[c] < array[k]) {
-        // bigger child is less than current node
-        break;
-      }
-      swap(array, k, c);
-      k = c;
-    }
-  }
-
-  private void swim(int k) {
-    while (k > 1 && array[k] > array[k / 2]) {
-      swap(array, k, k / 2);
-      k /= 2;
-    }
-  }
-
-  private void swap(int[] array, int i, int j) {
-    int temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-}
 ```

@@ -15,18 +15,23 @@ Time complexity: O(N^2)，时间复杂度这里我们好好分析一番。因为
 Space complexity: O(H), where H is the height.
 
 ```java
-class Solution {
-    public boolean flipEquiv(TreeNode root1, TreeNode root2) {
-        if(root1 == null && root2 == null){
-            return true;
-        }else if(root1 == null || root2 == null){
-            return false;
-        }else if(root1.val != root2.val){
-            return false;
-        }
-        boolean nonFlip = flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right);
-        boolean flip = flipEquiv(root1.left, root2.right) && flipEquiv(root1.right, root2.left);
-        return nonFlip || flip;
+  public boolean isTweakedIdentical(TreeNode one, TreeNode two) {
+    // Write your solution here
+    //base case
+    if (one == null && two == null){
+      return true;
     }
+    else if(one == null || two == null){
+      return false;
+    }
+    else if(one.key != two.key){
+      return false;
+    }
+
+    
+    return isTweakedIdentical(one.left,two.right) && isTweakedIdentical(one.right,two.left) || 
+    isTweakedIdentical(one.left, two.left) &&  isTweakedIdentical(one.right, two.right);  
+  }
 }
+
 ```

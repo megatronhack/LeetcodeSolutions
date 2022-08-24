@@ -114,10 +114,14 @@ Character.toLowerCase(ch)//change the char to lower case
 
 ```
 Deque<Character> stack = new LinkedList<Character>();
-stack.offerFrist();
-stack.pollFrist()
+Deque<Character> stack = new ArrayDeque<Character>();
+stack.push();   // to left side add, = offerFirst();
+stack.pop();    // the left side pop = pollFirst();
+stack.offerFirst();
+stack.pollFirst()
 stack.offerLast();
 stack.pollLast()
+stack.add; // addlast
 ```
 
 
@@ -142,7 +146,7 @@ private static final char[] PS = new char[]{'(',')','<','>','{','}'};
 
 
 
-## Comparator interface
+## HEAP Or Comparator interface
 
 ```
 2 methods:
@@ -162,5 +166,35 @@ private static final char[] PS = new char[]{'(',')','<','>','{','}'};
 
 Comparable interface
 1 method:(1)compareTo
+```
+
+```
+//use a maxheap to store the k smallest elements
+PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(k, new Comparator<Integer>(){
+  @Override
+  public int compare(Integer a, Integer b){
+    if (a.equals(b)){
+      return 0;
+    } 
+    return a > b ? -1 : 1;
+    }
+});
+```
+
+## Priority Queue
+
+```
+maxHeap.peek();  //peekFirst
+maxHeap.offer();  //depending on your comparator, maxheap is ..
+maxHeap.poll();  //pollF
+```
+
+
+
+## OTHERS
+
+```java
+Collections.reverse(mylist) ;// Reversing an ArrayList, Reversing a LinkedList, Reversing an array.  1 2 3 4 > 4 3 2 1
+
 ```
 

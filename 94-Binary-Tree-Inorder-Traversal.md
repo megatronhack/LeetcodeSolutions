@@ -9,22 +9,22 @@ Time complexity: O(N)
 Space complexity: O(H), where H is the height of binary tree.
 
 ```java
-class Solution {
-    private List<Integer> res;
-    public List<Integer> inorderTraversal(TreeNode root) {
-        res = new ArrayList<>();
-        inorder(root);
-        return res;
+public class Solution {
+  public List<Integer> inOrder(TreeNode root) {
+    // Write your solution here
+    List<Integer> result = new ArrayList<>();
+    inOrder(root,result);
+    return result;
+  }
+  public void inOrder(TreeNode root, List<Integer> result){
+    //base case
+    if (root == null){
+      return;
     }
-
-    private void inorder(TreeNode root){
-        if(root == null){
-            return;
-        }
-        inorder(root.left);
-        res.add(root.val);
-        inorder(root.right);
-    }
+     inOrder(root.left,result);
+     result.add(root.key);
+     inOrder(root.right,result);
+  }
 }
 ```
 
@@ -46,26 +46,24 @@ Time complexity: O(N)
 Space complexity: O(H), where H is the height.
 
 ```java
-class Solution {
-    public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> res = new ArrayList<>();
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        while(root != null){
+public class Solution {
+  public List<Integer> inOrder(TreeNode root) {
+    // Write your solution here
+     List<Integer> result = new ArrayList<>();
+     Deque<TreeNode> stack = new ArrayDeque<>();
+     while(root != null || !stack.isEmpty()){
+          if(root != null){
             stack.push(root);
             root = root.left;
-        }
-        while(!stack.isEmpty()){
-            TreeNode curr = stack.pop();
-            res.add(curr.val);
-            if(curr.right != null){
-                curr = curr.right;
-                while(curr != null){
-                    stack.push(curr);
-                    curr = curr.left;
-                }
-            }
-        }
-        return res;
-    }
+          }
+          else{
+            root = stack.pop();
+            result.add(root.key);
+            root = root.right;
+          }
+     }
+     return result;
+  }
 }
+
 ```

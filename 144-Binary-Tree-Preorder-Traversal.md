@@ -9,24 +9,29 @@ Time complexity: O(N)
 Space complexity: O(H), where H is the height of the binary tree.
 
 ```java
-class Solution {
 
-    private List<Integer> res = new ArrayList<>();
+public class Solution {
+  public List<Integer> preOrder(TreeNode root) {
+    // Write your solution here
+        //corner
+    List<Integer> result = new ArrayList<>();  
+    preOrder(root,result);
+    return result;
+  }
 
-    public List<Integer> preorderTraversal(TreeNode root) {
-        preorder(root);
-        return res;
+  private void preOrder(TreeNode root, List<Integer> result){
+    //base case
+    if(root == null){
+      return;
     }
 
-    private void preorder(TreeNode root){
-        if(root == null){
-            return;
-        }
-        res.add(root.val);
-        preorder(root.left);
-        preorder(root.right);
-    }
+    result.add(root.key); 
+    preOrder(root.left,result);
+    preOrder(root.right,result);
+  }
+  
 }
+
 ```
 
 ## Iterative Approach

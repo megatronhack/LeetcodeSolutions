@@ -1,6 +1,6 @@
-[API Note](API.md)
+## [API Note](API.md)
 
-[Personal Note](Note.md)
+## [Personal Note](Note.md)
 
 ## Binary Search
 

@@ -7,7 +7,7 @@
 + 我当前层想要干什么？计算以我为根的子树是否是BST。
 + 我想给上层返回什么？返回以我为根的子树是否是BST。
 
-由于该性质，对于左子树搜索时，所有节点的上限值就必定是当前节点值减一。同理，对于右子树搜索时，所有节点下限值必定是当前节点值加一。如果当前节点越过了上下界，说明当前节点破坏了BST的性质，这也导致整棵树不再是BST。
+由于该性质，对于左子树搜索时，所有节点的上限值就必定是当前节点值。同理，对于右子树搜索时，所有节点下限值必定是当前节点值。如果当前节点越过了上下界，说明当前节点破坏了BST的性质，这也导致整棵树不再是BST。
 
 对于整颗树来说，节点的上下限肯定是int范围。但是，为了防止overflow，我们用long来定义上下界。最后我们就可以计算出整个树是否是BST。
 
@@ -16,20 +16,29 @@ Time complexity: O(N)
 Space complexity: O(H), where H is the height.
 
 ```java
-class Solution {
-    public boolean isValidBST(TreeNode root) {
-        return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
+public class Solution {
+  public boolean isBST(TreeNode root) {
+    // Write your solution here
+    //corner case
+    if (root == null){
+      return true;
     }
-
-    private boolean isValidBST(TreeNode curr, long minValue, long maxValue){
-        if(curr == null){
-            return true;
-        }
-        long val = curr.val;
-        if(val < minValue || val > maxValue){
-            return false;
-        }
-        return isValidBST(curr.left, minValue, val - 1) && isValidBST(curr.right, val + 1, maxValue);
-    }
+    Integer min = Integer.MIN_VALUE;
+    Integer max = Integer.MAX_VALUE;
+    return isBST(root,min,max);
+  }
+  public boolean isBST(TreeNode root, Integer min, Integer max){
+     //base case
+     if (root == null){
+       return true;
+     }
+     
+     if(root.key <= min || root.key >= max){
+       return false;
+     }
+     
+     return isBST(root.left,min,root.key) && isBST(root.right,root.key,max);
+  }
 }
+
 ```
