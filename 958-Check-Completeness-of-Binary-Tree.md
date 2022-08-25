@@ -9,34 +9,41 @@ Time complexity: O(N)
 Space complexity: O(N)
 
 ```java
-class Solution {
-  public boolean isCompleteTree(TreeNode root) {
+public class Solution {
+  public boolean isCompleted(TreeNode root) {
+    // Write your solution 
     if (root == null) {
       return true;
-    }
-    Queue<TreeNode> queue = new LinkedList<>();
-    queue.offer(root);
-    boolean metNull = false;
-    while (!queue.isEmpty()) {
-      TreeNode curr = queue.poll();
-      if (curr.left == null) {
-        metNull = true;
-      } else {
-        if (metNull) {
-          return false;
-        }
-        queue.offer(curr.left);
-      }
-      if (curr.right == null) {
-        metNull = true;
-      } else {
-        if (metNull) {
-          return false;
-        }
-        queue.offer(curr.right);
-      }
-    }
-    return true;
   }
+  Queue<TreeNode> queue = new LinkedList<TreeNode>();
+  //if the flag us set true, there should not be any child nodes afterwards
+  boolean flag = false;
+  queue.offer(root);
+  while (!queue.isEmpty()){
+    TreeNode cur = queue.poll();
+    //if any of the child is not present, set the flag to true
+    if (cur.left == null){
+      flag = true;
+    } else if (flag){
+      //if flag is set but we still see cur has a left child, the binary tree is not a completed one
+      return false;
+    } else {
+      //if flag is not set and the left child is present
+      queue.offer(cur.left);
+    }
+    //same logic applied to the right child
+    if (cur.right == null){
+      flag = true;
+    } else if (flag){
+      return false;
+    } else {
+      queue.offer(cur.right);
+    }
+  }
+  return true;
 }
+}
+
+//Time : O(n)
+//Space: O(n)
 ```

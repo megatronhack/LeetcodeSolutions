@@ -15,42 +15,39 @@ Time complexity: O(N + E), N is the node num and E is the edge num.
 Space complexity: O(N), because BFS needs a queue which can hold up to all nodes of this graph.
 
 ```java
-class Solution {
-  public boolean isBipartite(int[][] graph) {
-    if (graph == null || graph.length == 0) {
+public class Solution {
+  public boolean isCompleted(TreeNode root) {
+    // Write your solution 
+    if (root == null) {
       return true;
-    }
-    int[] vis = new int[graph.length];
-    Arrays.fill(vis, 0);
-    for (int i = 0; i < graph.length; i++) {
-      if (!BFS(graph, i, vis)) {
-        return false;
-      }
-    }
-    return true;
   }
-
-  private boolean BFS(int[][] graph, int k, int[] vis) {
-    if (vis[k] != 0) {
-      return true;
+  Queue<TreeNode> queue = new LinkedList<TreeNode>();
+  //if the flag us set true, there should not be any child nodes afterwards
+  boolean flag = false;
+  queue.offer(root);
+  while (!queue.isEmpty()){
+    TreeNode cur = queue.poll();
+    //if any of the child is not present, set the flag to true
+    if (cur.left == null){
+      flag = true;
+    } else if (flag){
+      //if flag is set but we still see cur has a left child, the binary tree is not a completed one
+      return false;
+    } else {
+      //if flag is not set and the left child is present
+      queue.offer(cur.left);
     }
-    Queue<Integer> queue = new ArrayDeque<>();
-    queue.offer(k);
-    vis[k] = 1;
-    while (!queue.isEmpty()) {
-      int curr = queue.poll();
-      int color = vis[curr] == 1 ? -1 : 1;
-      for (int n : graph[curr]) {
-        if (vis[n] == 0) {
-          vis[n] = color;
-          queue.offer(n);
-        } else if (vis[n] != color) {
-          return false;
-        }
-      }
+    //same logic applied to the right child
+    if (cur.right == null){
+      flag = true;
+    } else if (flag){
+      return false;
+    } else {
+      queue.offer(cur.right);
     }
-    return true;
   }
+  return true;
+}
 }
 ```
 

@@ -186,7 +186,7 @@ PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(k, new Comparator<In
 ```
 maxHeap.peek();  //peekFirst
 maxHeap.offer();  //depending on your comparator, maxheap is ..
-maxHeap.poll();  //pollF
+maxHeap.poll();  //pollFirst
 ```
 
 

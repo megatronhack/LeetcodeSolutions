@@ -11,26 +11,36 @@ Time complexity: O(N)
 Space complexity: O(N), because we have maintain a queue which can hold up to n/2 nodes.
 
 ```java
-class Solution {
-  public List<List<Integer>> levelOrder(TreeNode root) {
-    List<List<Integer>> res = new ArrayList<>();
-    if (root == null) {
-      return res;
+public class Solution {
+  public List<List<Integer>> layerByLayer(TreeNode root) {
+    // Write your solution here
+    List<List<Integer>> list = new ArrayList<List<Integer>>();
+    if (root == null){
+      return list;
     }
-    Queue<TreeNode> levelNodeQ = new LinkedList<>();
-    levelNodeQ.offer(root);
-    while (!levelNodeQ.isEmpty()) {
-      int levelSize = levelNodeQ.size();
-      List<Integer> levelList = new ArrayList<>();
-      for (int i = 0; i < levelSize; i++) {
-        TreeNode curr = levelNodeQ.poll();
-        levelList.add(curr.val);
-        if (curr.left != null) levelNodeQ.offer(curr.left);
-        if (curr.right != null) levelNodeQ.offer(curr.right);
+
+    Queue<TreeNode> queue = new LinkedList<TreeNode>();
+    queue.offer(root);
+    while (!queue.isEmpty()){
+      //the list storing all the nodes on the current level
+      List<Integer> curLayer = new ArrayList<Integer>();
+      //the size of the current level
+      int size = queue.size();
+      //traverse all the nodes on the current level and prepare for the next level
+      for (int i = 0; i < size; i++){
+        TreeNode cur = queue.poll();
+        curLayer.add(cur.key);
+        if (cur.left != null){
+          queue.offer(cur.left);
+        }
+        if (cur.right != null){
+          queue.offer(cur.right);
+        }
       }
-      res.add(levelList);
+      list.add(curLayer);
     }
-    return res;
+    return list;
   }
 }
+
 ```
