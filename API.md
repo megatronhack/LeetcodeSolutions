@@ -1,6 +1,6 @@
 ## Array
 
-```
+```java
 int[] array = new int[array.length];    // array length
 int[] max = new int[]{Integer.MIN_VALUE}; // create an array with value  
 int[] emptyArray = new int[]{};   // empty array  
@@ -14,7 +14,7 @@ Arrays.asList(i,j)  // new array to list
 
 List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
 
-```
+```java
 set.contains()  
 set.add()  
 Set<Integer> set = new HashSet<Integer>();  
@@ -34,7 +34,7 @@ set.remove();
 
 List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
 
-```
+```java
 List<GraphNode>
 List<List<Integer>> result = new ArrayList<List<Integer>>();
 List<String> result =  new ArrayList<String>();
@@ -55,7 +55,7 @@ ListNode dummy = new ListNode(0);
 
 List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
 
-```
+```java
 Map<Integer, List<Integer>> map = new HashMap<Integer,List<Integer>>();
 HashMap.put()    //key,value together
 HashMap.get()    //get value
@@ -68,7 +68,7 @@ HashMap.keySet()  //  create a set out of the key elements
 
 ## Integer
 
-```
+```java
 Integer.MIN_VALUE;
 Integer.MAX_VALUE;
 ```
@@ -77,7 +77,7 @@ Integer.MAX_VALUE;
 
 ## String 
 
-```
+```java
 String s = new String("word");
 String s = "hello";   //double quote is string, single is chart
 char[] arraySet = s.toCharArray();  // string to char array
@@ -109,7 +109,7 @@ sb.append();
 
 ## Char
 
-```
+```java
 Character.isLetterOrDigit(ch)//return boolean, check whether the char is a digit or character('0'-'9', 'a'-'z', 'A'-'Z')
 Character.toLowerCase(ch)//change the char to lower case
 ```
@@ -118,7 +118,7 @@ Character.toLowerCase(ch)//change the char to lower case
 
 ## Deque stack 单向 LIFO
 
-```
+```java
 Deque<Character> stack = new LinkedList<Character>();
 Deque<Character> stack = new ArrayDeque<Character>();
 stack.push();   // to left side add, = offerFirst();
@@ -134,11 +134,11 @@ stack.add; // addlast
 
 ## Queue:FIFO
 
-```
+```java
 Queue<Integer> queue = new ArrayDeque<Integer>();
-queue.offer() // add element at the end; like offerLast. 1 2 3, offer 4, becoming 1 2 3 4
-queue.remove() //return and remove the first element when queue is empty, raise exception
-queue.poll() // return and remove the first element.  when queue is empty, returns null.   1 2 3, return 2 3, head is 1
+queue.offer() // add element at the end; like offerLast. 1 2 3, offer 4, becoming 1 2 3 4 // == offerLast
+queue.remove() //return and remove the first element when queue is empty, raise exception // == pollFirst
+queue.poll() // return and remove the first element.  when queue is empty, returns null.   1 2 3, return 2 3, head is 1 //  = pollFirst
 queue.peek() // return value but not remove
 ```
 
@@ -146,15 +146,15 @@ queue.peek() // return value but not remove
 
 ## Final API:
 
-```
+```java
 private static final char[] PS = new char[]{'(',')','<','>','{','}'};
 ```
 
 
 
-## HEAP Or Comparator interface
+## HEAP or Comparator interface
 
-```
+```java
 2 methods:
 
 (1)compare  (2)equals
@@ -174,7 +174,9 @@ Comparable interface
 1 method:(1)compareTo
 ```
 
-```
+## Priority Queue and Heap
+
+```java
 //use a maxheap to store the k smallest elements
 PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(k, new Comparator<Integer>(){
   @Override
@@ -187,9 +189,7 @@ PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(k, new Comparator<In
 });
 ```
 
-## Priority Queue
-
-```
+```java
 maxHeap.peek();  //peekFirst
 maxHeap.offer();  //depending on your comparator, maxheap is ..
 maxHeap.poll();  //pollFirst
