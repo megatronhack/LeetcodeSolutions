@@ -195,6 +195,6 @@ maxHeap.poll();  //pollFirst
 
 ```java
 Collections.reverse(mylist) ;// Reversing an ArrayList, Reversing a LinkedList, Reversing an array.  1 2 3 4 > 4 3 2 1
-
+boolean[][] visited = new boolean[rows][collumn]; //default boolean false
 ```
 

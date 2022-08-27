@@ -8,42 +8,59 @@
 
 Time complexity: O(klogk)，因为会重复k-1次，堆最多不到2k个元素，所以offer操作需要logk的复杂度。
 
-Space complexity: O(k + n^2)，堆里会有不到2k个元素，额外的需要一个和矩阵同等大小的vis数组来记录访问情况。
+Space complexity: O(k + mn)，堆里会有不到2k个元素，额外的需要一个和矩阵同等大小mn的vis数组来记录访问情况。
 
 ```java
-class Solution {
+public class Solution {
   public int kthSmallest(int[][] matrix, int k) {
-    if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-      return -1;
-    }
-    PriorityQueue<int[]> pq =
-        new PriorityQueue<>(
-            k,
-            new Comparator<int[]>() {
-              public int compare(int[] c1, int[] c2) {
-                int v1 = matrix[c1[0]][c1[1]];
-                int v2 = matrix[c2[0]][c2[1]];
-                return Integer.compare(v1, v2);
-              }
-            });
-    int n = matrix.length;
-    boolean[][] vis = new boolean[n][n];
-    vis[0][0] = true;
-    pq.offer(new int[] {0, 0});
-    for (int i = 0; i < k - 1; i++) {
-      int[] curr = pq.poll();
-      int x = curr[0], y = curr[1];
-      if (x + 1 < n && !vis[x + 1][y]) {
-        pq.offer(new int[] {x + 1, y});
-        vis[x + 1][y] = true;
+    // Write your solution here
+    int rows = matrix.length;
+    int column = matrix[0].length;
+    //BFS, need a minheap on the value of each cells
+    PriorityQueue<Cell> minHeap = new PriorityQueue<Cell>(k, new Comparator<Cell>(){
+      @Override
+      public int compare (Cell c1, Cell c2){
+        if (c1.value == c2.value){
+          return 0;
+        }
+        return c1.value < c2.value ? -1 : 1;
       }
-      if (y + 1 < n && !vis[x][y + 1]) {
-        pq.offer(new int[] {x, y + 1});
-        vis[x][y + 1] = true;
+    });
+    //all the generated cells will be marked true, to avid being generated more than once
+    boolean[][] visited = new boolean[rows][column];
+    minHeap.offer(new Cell(0, 0, matrix[0][0]));
+    visited[0][0] = true;
+    //iterate k-1 rounds, and BFS the smallest k-1 cells
+    for (int i = 0; i < k -1; i++){
+      Cell cur = minHeap.poll();
+      //the neighbor cell will be inserted back to the minheap only if 
+      //1. it is not out of boundary
+      //2. it has not been generated before
+      //Because for each cell it could be generated twice
+      if (cur.row +1 < rows && !visited[cur.row + 1][cur.column]){
+        minHeap.offer(new Cell(cur.row +1, cur.column, matrix[cur.row + 1][cur.column]));
+        visited[cur.row + 1][cur.column] = true;
+      }
+      if (cur.column +1 < column && !visited[cur.row][cur.column +1]){
+        minHeap.offer(new Cell(cur.row, cur.column+1, matrix[cur.row][cur.column + 1]));
+        visited[cur.row][cur.column +1] = true;
       }
     }
-    int[] coor = pq.peek();
-    return matrix[coor[0]][coor[1]];
+    return minHeap.peek().value;
   }
+  static class Cell{
+    int row;
+    int column;
+    int value;
+    Cell(int row, int column, int value){
+      this.row = row;
+      this.column = column;
+      this.value = value;
+    }
+  }
+
 }
+
+//Time: O(klogk)
+//Space: O(mn + k) where m is the row of matrix, n is the column of the matrix
 ```
