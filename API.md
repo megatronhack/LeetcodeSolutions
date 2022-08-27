@@ -176,6 +176,8 @@ Comparable interface
 
 ## Priority Queue and Heap
 
+Class比较，比如Integer，用a.equals(b); Value比较，比如int, 用 a == b
+
 ```java
 //use a maxheap to store the k smallest elements
 PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(k, new Comparator<Integer>(){
