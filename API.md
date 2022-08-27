@@ -21,10 +21,10 @@ Set<Integer> set = new HashSet<Integer>();
 set.toCharArray();  // string set                 
 Set<String> set = new HashSet<>();     
 set.contains();  
-set.remove();       
+set.remove(); 
 ```
 
-xxxxxxxxxx public class Solution {  public int[] moveZero(int[] array) {    if (array.length <= 1) {      return array;    }    int slow = 0;    for (int i = 0; i < array.length; i++) {      if (array[i] != 0) {        array[slow++] = array[i];      }    }    while (slow < array.length) array[slow++] = 0;    return array;  }}java
+
 
 ## KnaryTreeNode
 
