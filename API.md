@@ -12,7 +12,7 @@ Arrays.asList(i,j)  // new array to list
 
 ## Set 
 
-List,map,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
+List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
 
 ```
 set.contains()  
@@ -32,7 +32,7 @@ set.remove();
 
 ## List
 
-List,map,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
+List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
 
 ```
 List<GraphNode>
@@ -53,7 +53,7 @@ ListNode dummy = new ListNode(0);
 
 ## HashMap
 
-List,map,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
+List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
 
 ```
 Map<Integer, List<Integer>> map = new HashMap<Integer,List<Integer>>();
