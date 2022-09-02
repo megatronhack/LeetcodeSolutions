@@ -14,7 +14,8 @@ Integer min = Integer.MIN_VALUE;
 
 ## Binary Search
 
-
+full bst: 全树
+complete bst: 最后一层可以不全，但是左边有，不能有右
 
 ## Linked List
 
@@ -58,7 +59,9 @@ MergeSort: Time: NlogN; Space: LogN;
 
 ## DFS
 
+Combination: 所有的, 62. All Subsets I, "abc", the subsets are [“”, “a”, “ab”, “abc”, “ac”, “b”, “bc”, “c”]
 
+permutation: 顺序matter
 
 ## String II
 

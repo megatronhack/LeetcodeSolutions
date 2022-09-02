@@ -2,39 +2,42 @@
 
 和[leetcode 39](39-Combination-Sum.md)差不多，只是答案的表现性质稍有区别。我们这里用一个和`coins`等长的List来表明每个面额需要多少个才能组成`target`，所以每个答案的长度都是和coins等长的。
 
-Time complexity: O(N * (T/M)^N). N is the number of denominations, T is target value and M is the min value among the denominations.
+Time complexity: O(N * (T/M)^N).  99^N  N is the number of denominations, T is target value and M is the min value among the denominations.
 
 Space complexity: O(N), n level call stack and n size combination. Result space is not counted.
 
 ```java
 public class Solution {
+ // each combination is represented as a List<Integer> cur,
+ //and cur.get[i] = the number of coins of coins[i]
+ //all the combinations are stored in the result as a list of List<Integer> in result
   public List<List<Integer>> combinations(int target, int[] coins) {
-    List<List<Integer>> res = new ArrayList<>();
-    if (coins == null || coins.length == 0) {
-      return res;
-    }
-    List<Integer> comb = new ArrayList<>();
-    for (int i = 0; i < coins.length; i++) {
-      comb.add(0);
-    }
-    dfs(coins, 0, target, comb, res);
-    return res;
+    // Write your solution here
+    List<List<Integer>> result = new ArrayList<List<Integer>>();
+    List<Integer> cur = new ArrayList<>();
+    dfs(result,cur,coins,target,0);
+    return result;
+    
   }
 
-  private void dfs(int[] coins, int level, int left, List<Integer> comb, List<List<Integer>> res) {
-    if (level == coins.length) {
-      if (left == 0) {
-        res.add(new ArrayList<>(comb));
+  public void dfs(List<List<Integer>> result, List<Integer> cur, int[] coins, int target, int index){
+    if(index == coins.length - 1){
+      if(target % coins[coins.length - 1] == 0){
+       cur.add(target / coins[coins.length - 1]);
+       result.add(new ArrayList<Integer>(cur));
+       cur.remove(cur.size() - 1);
       }
-      return;
+    return; 
     }
-    int deno = coins[level];
-    int num = left / deno;
-    for (int i = 0; i <= num; i++) {
-      comb.set(level, i);
-      dfs(coins, level + 1, left - i * deno, comb, res);
-      comb.set(level, 0);
-    }
+  //for coins[index], we can pick 0,1,2,...target / coins[index] coins  
+   int max = target / coins[index];
+   for(int i = 0; i <= max; i++ ){
+      cur.add(i);
+      //remember to modify the remaining cents for the next level
+      dfs(result,cur,coins,target - i * coins[index], index + 1);
+      cur.remove(cur.size() - 1);
+   }
   }
 }
+
 ```

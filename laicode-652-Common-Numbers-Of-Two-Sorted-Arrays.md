@@ -22,20 +22,30 @@ Time complexity: O(max(M, N)), M and N are length of two arrays respectively.
 ```java
 public class Solution {
   public List<Integer> common(int[] A, int[] B) {
-    int p1 = 0, p2 = 0;
-    List<Integer> res = new ArrayList<>();
-    while (p1 < A.length && p2 < B.length) {
-      if (A[p1] == B[p2]) {
-        res.add(A[p1]);
-        p1++;
-        p2++;
-      } else if (A[p1] > B[p2]) {
-        p2++;
+    // Write your solution here
+    List<Integer> result = new ArrayList<Integer>();
+    if (A == null || B == null){
+      return result;
+    }
+
+    int i = 0;
+    int j = 0;
+    while (i < A.length && j <B.length){
+      if (A[i] == B[j]){
+        result.add(A[i]);
+        i++;
+        j++;
+      }else if (A[i] < B[j]){
+        i++;
       } else {
-        p1++;
+        j++;
       }
     }
-    return res;
+    return result;
   }
 }
+
+//Time: O(m+n)
+//Space: O(min(m,n))
+
 ```

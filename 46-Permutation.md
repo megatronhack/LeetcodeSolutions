@@ -9,34 +9,46 @@ Time complexity: O(N! * N), `N!`是全排列的答案个数，N是元素个数�
 Space complexity: O(N), N层调用栈。
 
 ```java
-class Solution {
-  public List<List<Integer>> permute(int[] nums) {
-    List<List<Integer>> res = new ArrayList<>();
-    if (nums == null) {
-      return res;
+public class Solution {
+  public List<String> permutations(String input) {
+    List<String> result = new ArrayList<String>();
+    if (input == null){
+      return result;
     }
-    dfs(nums, 0, res);
-    return res;
+    char[] array = input.toCharArray();
+    helper(array, 0, result);
+    return result;
   }
-
-  private void dfs(int[] nums, int level, List<List<Integer>> res) {
-    if (level == nums.length) {
-      List<Integer> permutation = new ArrayList<>();
-      for(int n : nums) permutation.add(n);
-      res.add(permutation);
+  //choose the character to be at the positio of 'index'
+  //all the already chosen positions are (0, idnex - 1)
+  //all the candicate characters can be at position "index"
+  //are in the subarray of (index, array.length - 1)
+  private void helper(char[] array, int index, List<String> result){
+    //terminate condition:
+    //only when we have already chosen the characters for all the position
+    //we can have a complete permutation
+    if (index == array.length){
+      result.add(new String(array));
       return;
     }
-    for (int i = level; i < nums.length; i++) {
-      swap(nums, level, i);
-      dfs(nums, level + 1, res);
-      swap(nums, level, i);
+    //all the possible characters coule be placed at index are
+    //the characters in the subarray(index, array.length - 1);
+    for (int i = index; i < array.length; i++){
+      swap(array,index, i);
+      helper(array, index + 1, result);
+      //remember to swap back when back track to previous level
+      swap(array, index, i);
     }
   }
 
-  private void swap(int[] nums, int i, int j) {
-    int temp = nums[i];
-    nums[i] = nums[j];
-    nums[j] = temp;
+  private void swap(char[] array, int left, int right){
+    char tmp = array[left];
+    array[left] = array[right];
+    array[right] = tmp;
   }
 }
+
+//Time: O(n!)
+//Space:O(n)
+
 ```

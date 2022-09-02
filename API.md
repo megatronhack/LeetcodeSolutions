@@ -58,10 +58,14 @@ List,map,set的data structure都不能是primitive: boolean , byte , char , shor
 ```java
 Map<Integer, List<Integer>> map = new HashMap<Integer,List<Integer>>();
 HashMap.put()    //key,value together
-HashMap.get()    //get value
+HashMap.get()    //get value, primitive type double
 HashMap.values()     return collections of values
 HashMap.containsKey()
 HashMap.keySet()  //  create a set out of the key elements
+HashMap.getValue()   // get value, a Double object, like Integer wrapper type
+HashMap.Entry() //return reference
+HashMap.entrySet()  // returns a set view of the map
+HashMap.Entry<String, Integer> entry : Hashmap.entrySet()
 ```
 
 
@@ -83,20 +87,29 @@ String s = "hello";   //double quote is string, single is chart
 char[] arraySet = s.toCharArray();  // string to char array
 s.equals();  // checking actual value
 s.indexOf('0'); //return first occurrence index of '0' in the string. 
-
-int matchIndex = s.indexOf("0", fromIndex); ////returns the position of the first occurrence of a 
-//value starting "fromIndex" in a string, returns -1 if the value is not found.
+s.charAt(i)// getting element
+s.length();
+int matchIndex = s.indexOf("a", fromIndex); ////returns the position of the first occurrence of "a" starting "fromIndex" in a string, returns -1 if the value is not found.
 
 s.toCharArray(); 
-String str = String.valueOf(arr);//The method valueOf() will convert the entire char array into a string.
-//这里的String. 本身就是内置API
+String str = String.valueOf(arr);//The method valueOf() will convert the entire char array into a string.//这里的String. 本身就是内置API
 
-s.length();
 s.substring(start,end)  // not include end index  
 
-int matchIndex = input.indexOf(s, fromIndex); //Check if there exists a substring same as s in the substring of input starting at fromIndex.
+new String(sourceArray,0,slow) // new a string from source array, start form index 0 to slow-1
+```
+
+## Char
+
+```java
+char[] array = string.toCharArray();
+```
 
 
+
+## StringBuilder
+
+```java
 StringBuilder sb = new StringBuilder();
 sb.toString();
 sb.length();
@@ -155,10 +168,12 @@ private static final char[] PS = new char[]{'(',')','<','>','{','}'};
 ## HEAP or Comparator interface
 
 ```java
-2 methods:
+3 methods:
 
-(1)compare  (2)equals
-
+(1)compare  // compare value of 2 objects  >> belong to comparator/comparable interface
+(2)equals //will take any Object as a parameter
+(3)compareTo  // compare value of 2 string objects, compareTo will only take Strings. >> belong to comparable interfance
+    
 (1)compare
   static class MyComparator implements Comparator<Entry>{
      @Override
@@ -170,8 +185,6 @@ private static final char[] PS = new char[]{'(',')','<','>','{','}'};
      }
   }
 
-Comparable interface
-1 method:(1)compareTo
 ```
 
 ## Priority Queue and Heap
@@ -193,8 +206,18 @@ PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(k, new Comparator<In
 
 ```java
 maxHeap.peek();  //peekFirst
-maxHeap.offer();  //depending on your comparator, maxheap is ..
-maxHeap.poll();  //pollFirst
+maxHeap.offer();  //depending on your comparator, maxheap is ..  nlogn 
+maxHeap.poll();  //pollFirst, nlongn  >>  You can build your heap in O(n), heapSort. Then you pop elements off, one at a time, each taking O(log n) time. This takes O(n log n) time total.
+```
+
+```java
+//Minheap
+PriorityQueue<Map.Entry<String, Integer>> minHeap = new PriorityQueue<>(k, new Comparator<Map.Entry<String, Integer>>(){
+ @Override
+ public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2){
+   return e1.getValue().compareTo(e2.getValue());
+ }
+});
 ```
 
 

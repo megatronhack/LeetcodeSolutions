@@ -15,47 +15,57 @@ Time complexity: O(n + nlogk), n for get frequency map, poll and offer operation
 Space complexity: O(n + k), n for hash map and k for heap.
 
 ```java
-class Solution {
-  public List<String> topKFrequent(String[] words, int k) {
-    List<String> res = new ArrayList<>();
-    if (words == null || words.length == 0 || k == 0) {
-      return res;
-    }
-    Map<String, Integer> freqMap = getFreqMap(words);
-    PriorityQueue<Map.Entry<String, Integer>> minHeap =
-        new PriorityQueue<>(
-            k,
-            new Comparator<>() {
-              public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2) {
-                if (e1.getValue().equals(e2.getValue())) {
-                  return e2.getKey().compareTo(e1.getKey());
-                }
-                return e1.getValue().compareTo(e2.getValue());
-              }
-            });
-    for (Map.Entry<String, Integer> entry : freqMap.entrySet()) {
-      if (minHeap.size() < k) {
-        minHeap.offer(entry);
-      } else {
-        if (entry.getValue() >= minHeap.peek().getValue()) {
-          minHeap.offer(entry);
-          minHeap.poll();
-        }
-      }
-    }
-    for (int i = 0; i < k; i++) {
-      res.add(minHeap.poll().getKey());
-    }
-    Collections.reverse(res);
-    return res;
+public class Solution {
+  public String[] topKFrequent(String[] combo, int k) {
+   //corner case
+   if (combo.length == 0){
+     return new String[0];
+   }
+   //get all distinct strings as keys and their frenquencies as value
+   Map<String, Integer> freqMap = getFreqMap(combo);
+   //minheap on the frenquencirs of the strings
+   //Notice: using Map.Entry as element type directly so that all the operations are mostly efficient
+   PriorityQueue<Map.Entry<String, Integer>> minHeap = new PriorityQueue<>(k, new Comparator<Map.Entry<String, Integer>>(){
+     @Override
+     public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2){
+       return e1.getValue().compareTo(e2.getValue());
+     }
+   });
+
+   for (Map.Entry<String, Integer> entry : freqMap.entrySet()){
+     if (minHeap.size() < k){
+       minHeap.offer(entry);
+     }else if(entry.getValue() > minHeap.peek().getValue()){
+       minHeap.poll();
+       minHeap.offer(entry);
+     }
+   }
+   //because the return is an array and requires the strings sorted by frenquencies, use helper method
+   return freqArray(minHeap);
   }
 
-  private Map<String, Integer> getFreqMap(String[] words) {
+  private Map<String, Integer> getFreqMap(String[] combo){
     Map<String, Integer> freqMap = new HashMap<>();
-    for (String word : words) {
-      freqMap.put(word, freqMap.getOrDefault(word, 0) + 1);
+    for  (String s : combo){
+      Integer freq = freqMap.get(s);
+      if (freq == null){
+        freqMap.put(s, 1);
+      }else{
+        freqMap.put(s, freq + 1);
+      }
     }
     return freqMap;
   }
+
+  private String[] freqArray(PriorityQueue<Map.Entry<String, Integer>> minHeap){
+    String[] result = new String[minHeap.size()];
+    for (int i = minHeap.size() - 1; i >= 0; i--){
+      result[i] = minHeap.poll().getKey();
+    }
+    return result;
+  }
 }
+//Time: put in hashmap O(n), use minheap O(nlogk), pop result from heap O(klogk)
+//Space: O(n)
+
 ```

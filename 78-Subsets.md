@@ -11,26 +11,30 @@ Time complexity: O(2^n)
 Space complexity: O(n), because of n level call stack. Also, the size of result is not taken into consideration.
 
 ```java
-class Solution {
-  public List<List<Integer>> subsets(int[] nums) {
-    List<List<Integer>> res = new ArrayList<>();
-    if(nums == null){
-      return res;
+public class Solution {
+  public List<String>  subSets(String set) {
+    List<String> result = new ArrayList<String>();
+    if (set == null){
+      return result;
     }
-    dfs(nums, 0, new ArrayList<>(), res);
-    return res;
+    char[] arraySet = set.toCharArray();
+    //record the current subset
+    StringBuilder sb = new StringBuilder();
+    dfs(arraySet, sb, 0, result);
+    return result;
   }
-
-  private void dfs(int[] nums, int level, List<Integer> subset, List<List<Integer>> res){
-    if(level == nums.length){
-      res.add(new ArrayList<>(subset));
+  //at each level, determine the character at the position "index" to be picked or not
+  private void dfs(char[] set, StringBuilder sb, int index, List<String> result){
+    if (index == set.length){
+      result.add(sb.toString());
       return;
     }
-
-    subset.add(nums[level]);
-    dfs(nums, level + 1, subset, res);
-    subset.remove(subset.size() - 1);
-    dfs(nums, level + 1, subset, res);
+    //1. not pick the character at index
+    dfs(set, sb, index + 1, result);
+    //2. pick the character at index
+    dfs(set, sb.append(set[index]), index + 1, result);
+    //remember to remove the added character when back tracking to the previous level
+    sb.deleteCharAt(sb.length() - 1);
   }
 }
 ```

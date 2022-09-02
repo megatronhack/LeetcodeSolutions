@@ -9,31 +9,35 @@ Time complexity: O(n*2^(2n))，因为最后会有2^2n量级的答案。注意是
 Space complexity: O(n)，2n层调用栈，2n长度的StringBuilder来记录排列。
 
 ```java
-class Solution {
-  public List<String> generateParenthesis(int n) {
-    List<String> res = new ArrayList<>();
-    if (n < 0) {
-      return res;
-    }
-    dfs(n, 0, 0, new StringBuilder(), res);
-    return res;
+public class Solution {
+  public List<String> validParentheses(int n) {
+    // Write your solution here
+    //char[] ||  StringBuilder || left index ||right index
+    List<String> result = new ArrayList<String>();
+    StringBuilder sb = new StringBuilder();
+    helper(result, 0, 0, sb, n);
+    return result;
   }
 
-  private void dfs(int n, int left, int right, StringBuilder permutation, List<String> res) {
-    if (left + right == n * 2) {
-      res.add(permutation.toString());
+  private void helper(List<String> result, int left, int right, StringBuilder sb, int n){
+    //base case
+    if (left == n && right == n){
+      result.add(sb.toString());
       return;
     }
-    if (left < n) {
-      permutation.append('(');
-      dfs(n, left + 1, right, permutation, res);
-      permutation.deleteCharAt(permutation.length() - 1);
+    //when to add'('
+    if (left < n){
+      sb.append('(');
+      helper(result,left + 1, right, sb, n);
+      sb.deleteCharAt(sb.length() - 1);
     }
-    if (left > right) {
-      permutation.append(')');
-      dfs(n, left, right + 1, permutation, res);
-      permutation.deleteCharAt(permutation.length() - 1);
+    //when to add')'
+    if (right < left){
+      sb.append(')');
+      helper(result, left, right + 1, sb, n);
+      sb.deleteCharAt(sb.length() - 1);
     }
   }
 }
+
 ```
