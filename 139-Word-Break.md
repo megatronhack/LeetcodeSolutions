@@ -2,9 +2,21 @@
 
 经典DP题，给定一个字符串`s`和一个单词数组，计算`s`是否可以由数组里的单词拼接而得。
 
-我们用`breakable`来存放子问题答案，`breakable[i]`表示`[0, i)`子串是否可以由给定单词拼接得到。那么显然，只要任意的`j`满足`j < i`，`breakable[j] == true`而且`s.substring(j, i)`出现在了单词数组里，那么`[0, i)`子串就可以由给定的单词数组拼接得到。
+我们用`breakable`来存放子问题答案，`breakable[i]`表示`[0, i)`子串是否可以由给指定单词拼接得到。那么显然，只要任意的`j`满足`j < i`，`breakable[j] == true`而且`s.substring(j, i)`出现在了单词数组里，那么`[0, i)`子串就可以由给定的单词数组拼接得到。
 
 `breakable[0]`表示`[0, 0)`子串，空串当然是可以的，所以为`true`。从1开始，一直到`s.length()`这样才可以涵盖整个字符串。对于每个小于`i`的`j`进行遍历，只要满足之前的条件，那么说明`[0, i)`是可以拆分得到单词的。一直到最后，那么`breakable[s.length()]`就代表整个字符串是否可以。
+
+"0 1 2 3 4 5"
+
+"r o b b o b"
+
+"t  f  f  t  f  f  t  "
+
+Example: Dictionary: {“bob”, “cat”, “rob”}
+
+Word: “robob” return false
+
+Word: “robbob” return true since it can be composed by "rob", "bob"
 
 Time complexity: O(N^2)，如果substring方法算作O(1)的话。
 

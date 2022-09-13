@@ -2,6 +2,8 @@
 
 和[leetcode 39](39-Combination-Sum.md)差不多，只是答案的表现性质稍有区别。我们这里用一个和`coins`等长的List来表明每个面额需要多少个才能组成`target`，所以每个答案的长度都是和coins等长的。
 
+![Laicode 73. Combinations Of Coins](assets\images\Laicode 73. Combinations Of Coins.jpg)
+
 Time complexity: O(N * (T/M)^N).  99^N  N is the number of denominations, T is target value and M is the min value among the denominations.
 
 Space complexity: O(N), n level call stack and n size combination. Result space is not counted.

@@ -1,5 +1,25 @@
 # Laicode 646. Store Number Of Nodes In Left Subtree
 
+**Examples**
+
+ 
+
+​         1(6)
+
+​        /     \
+
+​      2(3)    3(0)
+
+​     /   \
+
+   4(1)   5(0)
+
+  /    \    \
+
+6(0)   7(0)  8(0)
+
+The numNodesLeft is shown in parentheses.
+
 给定一个二叉树，把所有节点左子树大小存在对应节点的`numNodesLeft`里。
 
 又到了我们喜闻乐见的二叉树了，还是那三件事情：
@@ -16,17 +36,24 @@ Space complexity: O(H), where H is the height.
 ```java
 public class Solution {
   public void numNodesLeft(TreeNodeLeft root) {
+    // what you expect from leaf node
+    // what to do at current layer
+    // what to report for parent node
     getNodesNum(root);
   }
 
-  private int getNodesNum(TreeNodeLeft root){
-    if(root == null){
+  private int getNodesNum(TreeNodeLeft root) {
+        //base case
+    if (root == null) {
       return 0;
     }
     int leftNum = getNodesNum(root.left);
-    int rightNum = getNodesNum(root.right);
     root.numNodesLeft = leftNum;
+    int rightNum = getNodesNum(root.right);
     return leftNum + rightNum + 1;
   }
 }
+
+//Time: O (n)
+//Space: O(height)
 ```

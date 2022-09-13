@@ -13,50 +13,42 @@ Space complexity: O(M * N)
 ```java
 public class Solution {
   public int largest(int[][] matrix) {
-    if (matrix.length == 0 || matrix[0].length == 0) {
-      return 0;
-    }
-    int m = matrix.length, n = matrix[0].length;
-    int[][] colPrefixSum = calculateColPrefixSum(matrix);
-    int res = Integer.MIN_VALUE;
-    for (int top = 0; top < m; top++) {
-      for (int bottom = top; bottom < m; bottom++) {
-        int[] colSum = new int[n];
-        for (int j = 0; j < n; j++) {
-          colSum[j] = colPrefixSum[bottom][j] - (top == 0 ? 0 : colPrefixSum[top - 1][j]);
-        }
-        int localMaxSum = maxSubarraySum(colSum);
-        res = Math.max(res, localMaxSum);
+    int n = matrix.length;
+    int m = matrix[0].length;
+    int result = Integer.MIN_VALUE;
+    for (int i = 0; i < n; i++) {
+      int[] cur = new int[m];
+      for (int j = i; j < n; j++) {
+        //for each row i, we add the rows one by one for row j
+        // to make sure each time we only introduce o(n) time
+        add(cur,matrix[j]);
+        //for each possible pair of rows i, j
+        //we would like to know what is the largest submatrix sum 
+        //using top row as row i and bottom row as row j
+        //we "flatten" these area to a one dimensional array
+        result = Math.max(result,max(cur));
       }
     }
-    return res;
+    return result;
   }
 
-  private int maxSubarraySum(int[] array) {
-    int currSum = array[0];
-    int res = currSum;
-    for (int i = 1; i < array.length; i++) {
-      if (currSum < 0) {
-        currSum = 0;
-      }
-      currSum += array[i];
-      res = Math.max(res, currSum);
+  private void add(int[] cur, int[] add) {
+    for (int i = 0; i < cur.length; i++) {
+      cur[i] += add[i];
     }
-    return res;
   }
 
-  private int[][] calculateColPrefixSum(int[][] matrix) {
-    int m = matrix.length, n = matrix[0].length;
-    int[][] prefixSum = new int[m][n];
-    for (int j = 0; j < n; j++) {
-      prefixSum[0][j] = matrix[0][j];
+  private int max(int[] cur) {
+    int result = cur[0];
+    int tmp = cur[0];
+    for (int i = 1; i < cur.length; i++) {
+      tmp = Math.max(tmp + cur[i], cur[i]);
+      result = Math.max(result, tmp);
     }
-    for (int i = 1; i < m; i++) {
-      for (int j = 0; j < n; j++) {
-        prefixSum[i][j] = prefixSum[i - 1][j] + matrix[i][j];
-      }
-    }
-    return prefixSum;
+    return result;
   }
 }
+//Time: O(n*m*m)
+//Space: O(n*m)
+
 ```

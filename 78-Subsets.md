@@ -6,6 +6,8 @@
 
 dfs到一层的时候，当前层的元素无非就是进入当前子集，或者不进入当前子集。level到达数组末尾的时候，把当前的子集放入答案，然后返回。注意加入答案时要新建ArrayList，因为java传参的传值，传的是这个子集的地址值。如果不新建ArrayList，已经放入答案的子集会被后续的遍历给修改掉。
 
+![78.Subsets](assets\images\78.Subsets.jpg)
+
 Time complexity: O(2^n)
 
 Space complexity: O(n), because of n level call stack. Also, the size of result is not taken into consideration.

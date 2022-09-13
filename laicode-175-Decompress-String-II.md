@@ -1,4 +1,8 @@
-# Laicode 175. Decompress String II
+Laicode 175. Decompress String II
+
+建议用method2string builder，简单点
+
+**Method 1:**
 
 给定压缩后的字符串，对其进行解压。比如`a1c0b2c4`变成`abbcccc`。
 
@@ -18,51 +22,108 @@ Time complexity: O(n)，三轮遍历。
 ```java
 public class Solution {
   public String decompress(String input) {
-    char[] sc = input.toCharArray();
-    return decodeLong(sc, decodeShort(sc));
+ // Method 1: "in place".
+  // When we say in place, it usually means the input is a long enough
+  // char array, and the original string only occupies part of the array
+  // starting from index 0, and usually the length to represent the
+  // original string is given.
+    if (input.isEmpty()) {
+      return input;
+    }
+    char[] array = input.toCharArray();
+    // We need to handle the
+    // "a0", "a1", "a2" case (the decoded string is shorter) and
+    // "a3", "a4" ... case (the decoded string is longer)
+    // in two pass to avoid conflict, since the encoding of the two cases
+    // require different directions.
+    return decodeLong(array, decodeShort(array));
   }
 
-  private int decodeShort(char[] sc) {
+  // return the length of he decoded string,
+  // only cares about "a0", "a1", "a2", A.K.A
+  // the decoded string is shorter.
+  private int decodeShort(char[] input) {
+    // since the decoded string is shorter, we should
+    // do the decoding work from left to right direction.
     int end = 0;
-    for (int i = 0; i < sc.length; i += 2) {
-      int digit = sc[i + 1] - '0';
-      if (0 <= digit && digit <= 2) {
-        fillChars(sc, sc[i], end, digit);
-        end += digit;
+    for (int i = 0; i < input.length; i += 2) {
+      int digit = getDigit(input[i + 1]);
+      if (digit >= 0 && digit <= 2) {
+        for (int j = 0; j < digit; j++) {
+          input[end++] = input[i];
+        }
       } else {
-        sc[end++] = sc[i];
-        sc[end++] = sc[i + 1];
+        // we don't handle the longer decoded string here.
+        input[end++] = input[i];
+        input[end++] = input[i + 1];
       }
     }
     return end;
   }
-
-  private String decodeLong(char[] sc, int len) {
-    int newLen = len;
-    for (int i = 0; i < len; i++) {
-      int digit = sc[i] - '0';
-      if (3 <= digit && digit <= 9) {
-        newLen += digit - 2;
+  // take care of "a3", "a4", "a5",....
+  // the decoded string is longer.
+  // length: the length of the valid partition starting from index 0.
+  private String decodeLong(char[] input, int length) {
+    // we need to calculate the new required length.
+    int newLength = length;
+    for (int i = 0; i < length; i++) {
+      int digit = getDigit(input[i]);
+      if (digit > 2 && digit <= 9) {
+        newLength += digit - 2;
       }
     }
-    char[] tc = new char[newLen];
-    int j = newLen - 1;
-    for (int i = len - 1; i >= 0; i--) {
-      int digit = sc[i] - '0';
-      if (3 <= digit && digit <= 9) {
-        fillChars(tc, sc[--i], j - digit + 1, digit);
-        j -= digit;
+    // Notice: if it is required to do this in place, usually the input
+    // array is a sufficient large one, you will not need to
+    // allocate a new array. This solution is only for demonstration.
+    char[] result = new char[newLength];
+    int end = newLength - 1;
+    for (int i = length - 1; i >= 0; i--) {
+      int digit = getDigit(input[i]);
+      if (digit > 2 && digit <= 9) {
+        i--;
+        for (int j = 0; j < digit; j++) {
+          result[end--] = input[i];
+        }
       } else {
-        tc[j--] = sc[i];
+        // we already take care the shorter cases, "a1" in previous pass.
+        // we can leave as it is. e.g. the input could be "abc2".
+        result[end--] = input[i];
       }
     }
-    return new String(tc);
+    return new String(result);
   }
 
-  private void fillChars(char[] sc, char c, int start, int amount) {
-    for (int i = 0; i < amount; i++) {
-      sc[start + i] = c;
+  private int getDigit(char digit) {
+    return digit - '0';
+  }
+ // Time Complexity: O(n)
+ // Space Complexity: O(1)
+}
+
+```
+
+**Method2: String builder**
+
+Time On
+
+Space On
+
+```
+public class Solution {
+  public String decompress(String input) {
+    // Write your solution here
+    char[] array = input.toCharArray();
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < array.length; i++){
+      char ch = array[i++];
+      int count = array[i] - '0';
+      for (int c = 0; c < count; c++){
+        sb.append(ch);
+      }
     }
+    return sb.toString();
   }
 }
+
 ```
+

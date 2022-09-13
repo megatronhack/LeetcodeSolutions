@@ -1,55 +1,92 @@
 # 438. Find All Anagrams in a String
 
-给定两个字符串`s`和`p`，在`s`中找出所有与`p`异构的子串，并输出所有的子串起始的下标。
+给定两个字符串`s`和`pl，在`s`中找出所有与`l`异构的子串，并输出所有的子串起始的下标。
+
+examples: l = "abcbac", s = "ab", return [0, 3] since the substring with length 2 starting from index 0/3 are all anagrams of "ab" ("ab", "ba").
 
 Clarification:
 + 字符范围？小写字母
-+ s和p的长度？只保证p的长度不为0
++ s和l的长度？只保证p的长度不为0
 
-sliding window经典题。用一个和p等长的窗口在s里滑动，一开始的窗口是s[0, p.length)。用`sCnt`和`pCnt`来记录s[0, p.length)和p[0, p.length)里各个字符出现的频率。
+sliding window经典题。 通过hashmap记录short string的char和出现次数。
 
-两个频率数组相减放入delta数组来表示目前窗口和p里各个字符频率的差异，delta[i]为正表示ascii码为i的字符在s[0, p.length)中出现比p多，反之亦然。作为异构，我们当然希望delta数组所有数字都是0的，这样表示两边所有字符的频率都一样。所以我们把delta里所有数字的绝对值相加，如果为0的话，就表示s[0, p.length)正好是一个和p异构的子串。
+ public class Solution {  public boolean match(String input, String pattern) {    //Iterative way    //case 1: if the char is a character compare whether they are equal    //case 2: if the char is a digit, move the pointer in string input by count positions    //Having traverse all the elements, then compare whether the two pointers reached the end of the input and pattern    int si = 0; //    int ti = 0;    while (si < input.length() && ti < pattern.length()){      if (pattern.charAt(ti) < '0' || pattern.charAt(ti) > '9') {        if (input.charAt(si) != pattern.charAt(ti)) {          return false;        }        si++;        ti++;      } else {        int count = 0;        while (ti < pattern.length() && pattern.charAt(ti) >= '0' && pattern.charAt(ti) <= '9') {          count = count * 10 + (pattern.charAt(ti) - '0');          ti++;        }        si += count;      }    }    return si == input.length() && ti == pattern.length();  }}//Time:O(n)//Space:O(1)​java
 
-接着，我们从下标1的地方开始，s[i-1]是刚刚被sliding window排出去的字符l，s[i + p.length - 1]是刚进入window的字符r。鉴于window的内容已经变了，所以对应的`delta[l]`和`delta[r]`也应该改变。在变动之前，先将这俩的绝对值从deltaSum中剔除。delta[l]--，因为window里少了l。delta[r]++，因为window多了个r。再把他俩的绝对值重新加入deltaSum，如果deltaSum为0的话，此时的`s[i, i + p.length - 1]`就和p是异构，把i加入答案。重复此过程，一直到s的最后一个改长度子串。
+通过滑动窗口
 
-Time complexity: O(N), we only access every character once.
+//Time: O(n)
 
-Space complexity: O(1), only constant space is needed. But here we convert the string to char array, so it's actually O(M + N). We can achieve O(1) space by not converting string to char array and use String.charAt(i) to access each character.
+//Space: O(n) where n is the number of characters in input string alphabet
 
 ```java
-class Solution {
-  public List<Integer> findAnagrams(String s, String p) {
-    List<Integer> res = new ArrayList<>();
-    if (s == null || s.length() == 0 || s.length() < p.length()) {
-      return res;
+public class Solution {
+  public List<Integer> allAnagrams(String sh, String lo) {
+    //Assumptions: sh and lo are not null, sh is not empty
+    List<Integer> result = new ArrayList<Integer>();
+    if (lo.length() == 0){
+      return result;
     }
-    int[] sCnt = new int[256];
-    int[] pCnt = new int[256];
-    int[] delta = new int[256];
-    int deltaSum = 0;
-    char[] sc = s.toCharArray();
-    char[] pc = p.toCharArray();
-    for (int i = 0; i < pc.length; i++) {
-      sCnt[sc[i]]++;
-      pCnt[pc[i]]++;
+    //when short string is longer than long string, no way of short string is anagram of long string.
+    if (sh.length() > lo.length()){
+      return result;
     }
-    for (int i = 0; i < sCnt.length; i++) {
-      delta[i] = sCnt[i] - pCnt[i];
-      deltaSum += Math.abs(delta[i]);
+    Map<Character, Integer> map = countMap(sh);
+    //when we get an instance of 'a' in 1, we let count of 'a' decremented by 1
+    //and only when the count is from 1 to 0, we have 'a' totally matched
+    int match = 0;
+    //when move the sliding window by one step from left to right,what we only need to change is
+     //1. remove the leftmost character at the previous sliding window
+     //2. add the rightmost character at the current sliding window
+    for (int i = 0; i < lo.length(); i++){
+        //handle the new added character(rightmost) at current sliding window
+      char tmp = lo.charAt(i);
+      Integer count = map.get(tmp);
+      if (count != null){
+        //the number of needed count should be --.
+        //and only when the count is from 1 to 0, we find an additional
+        //match of distinct character
+        map.put(tmp, count - 1);
+        if (count == 1){
+          match++;
+        }
+      }
+      //handle the leftmost character at the previous sliding window
+      if (i >= sh.length()) {
+        tmp = lo.charAt(i - sh.length());
+        count = map.get(tmp);
+        if (count != null){
+        //the number of needed count should be ++.
+        //and only when the count is from 0 to 1, we are short for one
+        //match of distinct character
+          map.put(tmp, count + 1);
+          if (count == 0){
+            match--;
+          }
+        }
+      }
+      //for the current sliding window, if all the disctinct characters are matched, the count are all zero
+      //we find the anagram 
+      if (match == map.size()){
+        result.add(i - sh.length() + 1);
+      }
     }
-    if (deltaSum == 0) {
-      res.add(0);
+    return result;
+
+  }
+
+  private Map<Character, Integer> countMap(String sh){
+    Map<Character, Integer> map = new HashMap<Character, Integer>();
+    for (char ch : sh.toCharArray()){
+      Integer count = map.get(ch);
+      if (count == null){
+        map.put(ch,1);
+      } else {
+        map.put(ch, count + 1);
+      }
     }
-    for (int i = 1; i <= sc.length - pc.length; i++) {
-      char l = sc[i - 1];
-      char r = sc[i + pc.length - 1];
-      deltaSum -= Math.abs(delta[l]) + Math.abs(delta[r]);
-      delta[l]--;
-      delta[r]++;
-      deltaSum += Math.abs(delta[l]) + Math.abs(delta[r]);
-      if (deltaSum == 0) res.add(i);
-    }
-    return res;
+    return map;
   }
 }
+//Time: O(n)
+//Space: O(d) where d is the number of characters in input string alphabet
 ```

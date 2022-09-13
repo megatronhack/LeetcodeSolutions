@@ -38,25 +38,37 @@ class Solution {
 
 在递归的思路中，我们可以看到递归过程中存在着大量的重复计算。比如f(x)会被算很多次，这样造成了不必要的时间复杂度上的浪费。
 
-为了避免重复计算，我们用一个长度为`n+1`的数组`fibo`来盛放中间过程的值。`fibo[x]`存的就是`F(x)`的值，这样我们可以避免大量的重复计算。从`fibo[2]`开始向后计算，每一步都依赖于前面的答案，直到`fibo[n]`为止。这样我们最后就可以得到`F(n)`的值了。
+为了避免重复计算，这样我们可以避免大量的重复计算。从`sum`开始向后计算，每一步都依赖于前面的答案，直到`fibo[n]`为止。这样我们最后就可以得到`F(n)`的值了。
 
 Time complexity: O(n)
 
-Space complexity: O(n)
+Space complexity: O(1)
 
 ```java
-class Solution {
-  public int fib(int n) {
-    if(n <= 0){
+public class Solution {
+  public long fibonacci(int K) {
+    // Write your solution here
+        // Write your solution here
+    if (K <= 0) {
       return 0;
     }
-    int[] fibo = new int[n + 1];
-    fibo[0] = 0;
-    fibo[1] = 1;
-    for(int i = 2; i <= n; i++){
-      fibo[i] = fibo[i - 2] + fibo[i - 1];
+    if (K == 1) {
+      return 1;
     }
-    return fibo[n];
-  }
+      
+    long a = 0;
+    long b = 1;
+    while (K > 1) {
+      long sum = a + b;
+      a = b;
+      b = sum;
+      K--;
+    }
+   return b;
+    }
 }
+
+//Time:O(n)
+//Space:O(1)
+
 ```

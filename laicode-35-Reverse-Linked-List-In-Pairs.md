@@ -6,6 +6,8 @@
 
 那其实就是一对一对的反转，反转后的新头传回去给上一对反转时候用。
 
+![Laicode 35. Reverse Linked List In Pairs](assets\images\Laicode 35. Reverse Linked List In Pairs.jpg)
+
 Time complexity: O(n)
 
 Space complexity: O(n), because n/2 level call stacks.

@@ -2,31 +2,54 @@
 
 给定一个数组的数字，每个下标的数字代表这个下标的地方能往后走几步。问从0开始，是否能走到最后一个下标。
 
+**Examples**
+
+- {1, 3, 2, 0, 3}, we are able to reach the end of array(jump to index 1 then reach the end of the array)
+- {2, 1, 1, 0, 2}, we are not able to reach the end of array
+
 ## DP Approach
 
 这题可以用动态规划的思想来解决，用`reachEnd`数组来存放子问题答案。`reachEnd[i]`表示`i`是否可以走到最后一个下标，`true`就是可以，`false`就是不可以。
 
-`reachEnd[len - 1]`肯定是true，它自己就是最后一个下标。我们从倒数第二个下标开始往前推，每到一个下标为`i`的地方，就看看`[i + 1, i + nums[i]]`这个范围里有没有能走到最后的下标，如果有的话就代表`i`可以走到最后。如果没有，就说明`i`不可以走到最后。就这样一直到最开始的下标，我们就可以知道它到底可不可以走到最后。
+`reachEnd[len - 1]`肯定是true，它自己就是最后一个下标。
+
+我们从倒数第二个下标开始往前推，每到一个下标为`i`的地方，就看看`[i + array[i]`自己的index到end index这个范围里有没有能走到最后的下标，如果有的话就代表`i`可以走到最后。
+
+如果没有，就说明`i`不可以走到最后。就查询目前我们能不能跳到之前已经推算过的地方，如果有跳到之前任意为true的地方，我们就设为true。 直到最后，我们就可以知道它到底可不可以走到最后。
 
 Time complexity: O(N^2)
 
 Space complexity: O(N)
 
 ```java
-class Solution {
-  public boolean canJump(int[] nums) {
-    boolean[] reachEnd = new boolean[nums.length];
-    reachEnd[nums.length - 1] = true;
-    for (int i = nums.length - 2; i >= 0; i--) {
-      for (int j = i; j <= i + nums[i] && j < nums.length; j++) {
-        if (reachEnd[j]) {
-          reachEnd[i] = true;
+public class Solution {
+  public boolean canJump(int[] array) {
+    // canJump[i] means from index i can jump to index array.length - 1
+    //Assumptions: array is not null and is not empty
+    if (array.length == 1) {
+      return true;
+    }
+    boolean[] canJump = new boolean[array.length];
+    for (int i = array.length - 2; i >= 0; i--) {
+      //if from index i, it is already possible to jump to the end of the array
+      if (i + array[i] >= array.length - 1) {
+        canJump[i] = true;
+      } else {
+      //if any of the reachable indeices from index i is reachable to the end of the array
+      for (int j = array[i]; j >= 1; j--) {
+        if (canJump[j + i]) {
+          canJump[i] = true;
+          //break;
         }
       }
+      }
     }
-    return reachEnd[0];
+    return canJump[0];
   }
 }
+//Time: O(n^2)
+//Space: O(n)
+
 ```
 
 ## Greedy Approach

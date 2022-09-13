@@ -1,5 +1,9 @@
 # Laicode 611. Compress String II
 
+建议用**method2** string Builder简单
+
+**METHOD 1:**
+
 对字符串进行压缩，连续的相同字符压缩成`字符+数字`的形式。比如`abbcccdeee" -> "a1b2c3d1e3"。
 
 分两轮遍历，第一轮遍历的时候先处理两个及以上的字母。双指针`slow`和`fast`，`[0, slow)`存的是已经处理好的部分，`fast`是当前正在处理的下标。每当fast后面有和它一样的字符时，fast就不断后移，最后看看到底有几个。如果只有一个的话，那么这个字符x最后会变成`x1`，所以被压缩之后长度反而变成了2。如实拷贝下`x`，并且新长度加2。如果x有多个话，那就如实拷贝x，并且拷贝个数。压缩之后的长度，变成了数字的长度加上这个字符的一个长度，slow指针同时往后移个数的位数次。
@@ -59,3 +63,33 @@ public class Solution {
   }
 }
 ```
+
+Method 2:String Builder
+
+time on
+
+space on
+
+```
+public class Solution {
+  public String compress(String input) {
+    // Write your solution here
+    char[] array = input.toCharArray();
+    StringBuilder sb = new StringBuilder();
+    int slow = 0;
+    int fast = 0;
+    while(fast < array.length){
+       sb.append(array[fast]);
+       int count = 1;
+       while(fast + 1 < array.length && array[fast + 1] == array[fast]){
+         count++;
+         fast++;
+       }
+       sb.append(count);
+       fast++;
+    }
+    return sb.toString();
+  }
+}
+```
+

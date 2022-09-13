@@ -6,6 +6,7 @@ int[] max = new int[]{Integer.MIN_VALUE}; // create an array with value
 int[] emptyArray = new int[]{};   // empty array  
 Arrays.sort(array);  
 Arrays.asList(i,j)  // new array to list  
+Arrays.copyOf(myArray,end)// copy an array from index 0 to index end - 1;
 ```
 
 
@@ -13,6 +14,10 @@ Arrays.asList(i,j)  // new array to list
 ## Set 
 
 List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
+
+String[] s ，或者所有array都***不可以***放到Set<String> set = new HashSet<>(s)进行转换。（得用for loop用set一个一个add）
+
+List<String> s **可以**放到Set<String> set = new HashSet<>(s)进行转换。
 
 ```java
 set.contains()  
@@ -32,7 +37,9 @@ set.remove();
 
 ## List
 
-List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
+List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double . 
+
+list: [1,2,3,4,5]
 
 ```java
 List<GraphNode>
@@ -54,6 +61,8 @@ ListNode dummy = new ListNode(0);
 ## HashMap
 
 List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
+
+{key:value}
 
 ```java
 Map<Integer, List<Integer>> map = new HashMap<Integer,List<Integer>>();
@@ -81,6 +90,8 @@ Integer.MAX_VALUE;
 
 ## String 
 
+"string"
+
 ```java
 String s = new String("word");
 String s = "hello";   //double quote is string, single is chart
@@ -89,7 +100,7 @@ s.equals();  // checking actual value
 s.indexOf('0'); //return first occurrence index of '0' in the string. 
 s.charAt(i)// getting element
 s.length();
-int matchIndex = s.indexOf("a", fromIndex); ////returns the position of the first occurrence of "a" starting "fromIndex" in a string, returns -1 if the value is not found.
+int matchIndex = s.indexOf("abc", fromIndex); ////returns the position of the first occurrence of "abc" starting "fromIndex" in a string(our case is "s"), returns -1 if the value is not found.
 
 s.toCharArray(); 
 String str = String.valueOf(arr);//The method valueOf() will convert the entire char array into a string.//这里的String. 本身就是内置API
@@ -103,6 +114,9 @@ new String(sourceArray,0,slow) // new a string from source array, start form ind
 
 ```java
 char[] array = string.toCharArray();
+char[] arrya = new char[];
+Character.isLetterOrDigit(ch)//return boolean, check whether the char is a digit or character('0'-'9', 'a'-'z', 'A'-'Z')
+Character.toLowerCase(ch)//change the char to lower case
 ```
 
 
@@ -116,15 +130,6 @@ sb.length();
 sb.deleteCharAt();
 sb.deleteCharAt(cur.length() - 1);
 sb.append(); 
-```
-
-
-
-## Char
-
-```java
-Character.isLetterOrDigit(ch)//return boolean, check whether the char is a digit or character('0'-'9', 'a'-'z', 'A'-'Z')
-Character.toLowerCase(ch)//change the char to lower case
 ```
 
 
@@ -227,5 +232,6 @@ PriorityQueue<Map.Entry<String, Integer>> minHeap = new PriorityQueue<>(k, new C
 ```java
 Collections.reverse(mylist) ;// Reversing an ArrayList, Reversing a LinkedList, Reversing an array.  1 2 3 4 > 4 3 2 1
 boolean[][] visited = new boolean[rows][collumn]; //default boolean false
+int count = array[i] - '0'; // getting number. exa: int 5 = '5' - '0'  
 ```
 

@@ -9,7 +9,7 @@
 base case是，任一字符串长度为0，那么需要更改的数量就是另一个字符串的长度。如果两个字符串的首个字符相同，那么更改距离其实就是除去首字符之后子串的更改距离。如果两个字符首个字符不相同，那么我们可以通过替换，删除或者增加来继续递归，直到遇到base case为止。
 
 这样我们最后就可以计算出最少需要改动多少次。但是这个方法最致命的缺点就是大量的重复计算，比如这里的`word1[1, len1)`和`word2[2, len2)`至少会被重复计算三次。分别是：
-+ word1[0, len1), word2[1, len2), replace
++ x class Solution {    public boolean searchMatrix(int[][] matrix, int target) {        if(matrix == null || matrix.length == 0 || matrix[0].length == 0){            return false;        }        int m = matrix.length, n = matrix[0].length;        int l = 0, r = m - 1;        int targetRow = -1;        while(l <= r){            int mid = l + (r-l >> 1);            if(matrix[mid][0] <= target && target <= matrix[mid][n - 1]){                targetRow = mid;                break;            }else if(matrix[mid][0] > target){                r = mid - 1;            }else{                l = mid + 1;            }        }        if(targetRow == -1){            return false;        }else {            return binSearch(matrix[targetRow], target);        }    }​    private boolean binSearch(int[] nums, int target){        int l = 0, r = nums.length - 1;        while(l < r){            int mid = l + (r-l>>1);            if(nums[mid] == target){                return true;            }else if(nums[mid] < target){                l = mid + 1;            }else{                r = mid - 1;            }        }        return nums[l] == target;    }​    private boolean binSearch2(int[] nums, int target){        int l = 0, r = nums.length - 1;        while(l <= r){            int mid = l + (r-l>>1);            if(nums[mid] == target){                return true;            }else if(nums[mid] < target){                l = mid + 1;            }else{                r = mid - 1;            }        }        return false;    }}java
 + word1[0, len1), word2[2, len2), delete
 + word1[1, len1), word2[1, len2), insert
 
@@ -57,35 +57,32 @@ Time complexity: O(M * N), where M is the length of word1 and N is the length of
 Complexity: O(M * N)
 
 ```java
-class Solution {
-  public int minDistance(String word1, String word2) {
-    if (word1.length() == 0) {
-      return word2.length();
-    }
-    if (word2.length() == 0) {
-      return word1.length();
-    }
-    int[][] dis = new int[word1.length() + 1][word2.length() + 1];
-    for (int i = 0; i <= word1.length(); i++) {
-      for (int j = 0; j <= word2.length(); j++) {
+public class Solution {
+  public int editDistance(String one, String two) {
+    // Use M[i][j] represent the minumum number of operations needed s1 size with i and s2 size with j
+    int[][] distance = new int[one.length() + 1][two.length() + 1];
+    // Think about the scenarion what if the elemnts at index i and j are equal
+    // What is the distance of insert, replace, and delete and the change in index
+    for (int i = 0; i < one.length() + 1; i++) {
+      for (int j = 0; j < two.length() + 1; j++) {
         if (i == 0 && j == 0) {
-          dis[i][j] = 0;
-        } else if (i == 0) {
-          dis[i][j] = j;
+          distance[0][0] = 0;
+        } else if ( i == 0) {
+          distance[i][j] = j;
         } else if (j == 0) {
-          dis[i][j] = i;
+          distance[i][j] = i;
+        } else if (one.charAt(i-1) == two.charAt(j-1)) {
+          distance[i][j] = distance[i -1][j - 1];
         } else {
-          int delDis = dis[i - 1][j] + 1;
-          int addDis = dis[i][j - 1] + 1;
-          int repDis = dis[i - 1][j - 1] + 1;
-          if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-            repDis--;
-          }
-          dis[i][j] = Math.min(repDis, Math.min(addDis, delDis));
+          distance[i][j] = Math.min(distance[i -1][j - 1] + 1, distance[i - 1][j] + 1);
+          distance[i][j] = Math.min(distance[i][j], distance[i][j -1] + 1);
         }
       }
     }
-    return dis[word1.length()][word2.length()];
+    return distance[one.length()][two.length()];
   }
 }
+//Time: O(m*n)
+//Space: O(m*n)
+
 ```

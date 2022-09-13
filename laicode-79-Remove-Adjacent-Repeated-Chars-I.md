@@ -17,19 +17,23 @@ Space complexity: O(n), because of the extra char array we use.
 ```java
 public class Solution {
   public String deDup(String input) {
-    if(input == null || input.length() <= 1){
+    // Write your solution here
+    if (input == null){
       return input;
     }
-    char[] sc = input.toCharArray();
-    int slow = 1;
-    for(int i = 1; i < sc.length; i++){
-      if(sc[i] != sc[i - 1]){
-        sc[slow++] = sc[i];
+    char[] array = input.toCharArray();
+    int slow = 0;
+    for(int i = 0; i < array.length; i++){
+      if (i == 0 || array[i] != array[i-1]){
+        array[slow++] = array[i];
+      }else{
+        continue;
       }
     }
-    return new String(sc, 0, slow);
+    return new String(array, 0, slow);
   }
 }
+
 ```
 
 受[laicode 81. Remove Adjacent Repeated Characters III](laicode-81-Remove-Adjacent-Repeated-Char-III.md)启发，想出个通用的解法。时空复杂度不变。

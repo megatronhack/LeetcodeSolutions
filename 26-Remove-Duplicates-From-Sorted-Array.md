@@ -24,3 +24,28 @@ class Solution {
   }
 }
 ```
+
+如果要返回一个新的array的话，可以用copyOf
+
+On
+
+o1
+
+```
+public class Solution {
+  public int[] dedup(int[] array) {
+    // Write your solution here
+    if (array.length <= 1){
+      return array;
+    }
+    int slow = 1;
+    for (int i = 1; i < array.length; i++){
+      if (array[i] != array[slow - 1] )
+       array[slow++] =  array[i];
+      }
+
+   return Arrays.copyOf(array,slow);
+  }
+}
+```
+

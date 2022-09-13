@@ -4,31 +4,33 @@
 
 ## DP Approach
 
-简单的动态规划，`ones`数组存放子问题的答案，`ones[i]`的意义是以`i`结尾的最长全1子数组长度。
-
-那么我们可以看出来，如果`array[i]`为0的话，那么`ones[i]`肯定就是0。如果`array[i]`不为0的话，那么`ones[i] = ones[i - 1] + 1`。`ones[0]`就取决于`array[0]`，然后我们从第二个下标开始遍历一直到最后，每轮循环更新`ones[i]`然后记录最长的全1数组长度。
+简单的动态规划，`max`存放子问题的答案，`result`的意义是最长全1子数组长度。
 
 Time complexity: O(N)
 
-Space complexity: O(N)
+Space complexity: O(1)
 
 ```java
 public class Solution {
   public int longest(int[] array) {
-    if (array == null || array.length == 0) {
-      return 0;
-    }
-    int n = array.length;
-    int[] ones = new int[n];
-    ones[0] = array[0] == 1 ? 1 : 0;
-    int longestOnes = ones[0];
-    for (int i = 1; i < n; i++) {
-      ones[i] = array[i] == 1 ? ones[i - 1] + 1 : 0;
-      longestOnes = Math.max(longestOnes, ones[i]);
-    }
-    return longestOnes;
+    // Write your solution here
+    int max = 0;
+    int result = 0;
+    for (int i = 0; i <array.length; i++){
+      if (array[i] == 0){
+        max = 0;
+      }
+      else{
+        max = max + 1;
+        result = Math.max(result, max);
+      }     
+    } 
+    //return
+    return result;
   }
 }
+//time on
+//space o1
 ```
 
 ## Greedy Approach

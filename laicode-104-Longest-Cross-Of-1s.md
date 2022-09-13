@@ -15,76 +15,88 @@ Space complexity: O(M * N)
 ```java
 public class Solution {
   public int largest(int[][] matrix) {
-    if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+    //Assumptions: matrix is not null and has size of N*M where N >= 0 and M >= 0
+    //create a matrix to keep records of the size of the cross at M[i][j]
+    //return the global max
+    int n = matrix.length;
+    int m = matrix[0].length;
+    if (n == 0 || m == 0) {
       return 0;
     }
-    return merge(calculateLeftUp(matrix), calculateRightDown(matrix));
+    //leftup records the longest possible length for left and up arms ending at each cells in the matrix
+    int[][] leftUp = leftUp(matrix,n,m);
+    //rightdown records the longest possible length for right and down arms ending at each cells in the matrix
+    int[][] rightDown = rightDown(matrix,n,m);
+    return merge(leftUp, rightDown, n, m);
   }
 
-  private int[][] calculateLeftUp(int[][] matrix) {
-    int m = matrix.length, n = matrix[0].length;
-    int[][] left = new int[m][n];
-    int[][] up = new int[m][n];
-    for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) {
+  //Use a merge function to get the minvalue of the corresponding cells in the two matrix
+  //Update the global max value among all the cells in the merged function
+  private int merge(int[][] leftUp, int[][] rightDown, int n, int m) {
+    int result = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        leftUp[i][j] = Math.min(leftUp[i][j], rightDown[i][j]);
+        result = Math.max(result, leftUp[i][j]);
+      }
+    }
+    return result;
+  }
+  //calculate the max possible length of left and up arms for each of the cells in the matrix
+  private int[][] leftUp(int[][] matrix, int n, int m) {
+    int[][] left = new int[n][m];
+    int[][] up = new int[n][m];
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
         if (matrix[i][j] == 1) {
           if (i == 0 && j == 0) {
-            left[i][j] = 1;
             up[i][j] = 1;
+            left[i][j] = 1;
           } else if (i == 0) {
-            left[i][j] = left[i][j - 1] + 1;
             up[i][j] = 1;
+            left[i][j] = left[i][j-1] + 1;
           } else if (j == 0) {
+            up[i][j] = up[i-1][j] + 1;
             left[i][j] = 1;
-            up[i][j] = up[i - 1][j] + 1;
           } else {
-            left[i][j] = left[i][j - 1] + 1;
-            up[i][j] = up[i - 1][j] + 1;
+            up[i][j] = up[i-1][j] + 1;
+            left[i][j] = left[i][j-1] + 1;
           }
         }
       }
     }
-    merge(left, up);
+    //merge left and up return the merges matrix
+    merge(left, up, n, m);
     return left;
   }
 
-  private int[][] calculateRightDown(int[][] matrix) {
-    int m = matrix.length, n = matrix[0].length;
-    int[][] right = new int[m][n];
-    int[][] down = new int[m][n];
-    for (int i = m - 1; i >= 0; i--) {
-      for (int j = n - 1; j >= 0; j--) {
+  private int[][] rightDown(int[][] matrix, int n, int m) {
+    int[][] right = new int[n][m];
+    int[][] down = new int[n][m];
+    for (int i = n-1; i >= 0; i--) {
+      for (int j = m-1; j >= 0; j--) {
         if (matrix[i][j] == 1) {
-          if (i == m - 1 && j == n - 1) {
+          if (i == n - 1 && j == m - 1) {
             right[i][j] = 1;
             down[i][j] = 1;
-          } else if (i == m - 1) {
-            right[i][j] = right[i][j + 1] + 1;
-            down[i][j] = 1;
-          } else if (j == n - 1) {
-            right[i][j] = 1;
-            down[i][j] = down[i + 1][j] + 1;
+          } else if (i == n - 1) {
+            right[i][j]  = right[i][j+1] + 1;
+            down[i][j]  = 1;
+          } else if (j == m - 1) {
+            right[i][j]  = 1;
+            down[i][j]  = down[i+1][j] + 1;
           } else {
-            right[i][j] = right[i][j + 1] + 1;
-            down[i][j] = down[i + 1][j] + 1;
+            right[i][j] = right[i][j+1] + 1;
+            down[i][j] = down[i+1][j] + 1;
           }
         }
       }
     }
-    merge(right, down);
+    merge(right, down, n, m);
     return right;
   }
-
-  private int merge(int[][] d1, int[][] d2) {
-    int m = d1.length, n = d1[0].length;
-    int longestWing = 0;
-    for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) {
-        d1[i][j] = Math.min(d1[i][j], d2[i][j]);
-        longestWing = Math.max(longestWing, d1[i][j]);
-      }
-    }
-    return longestWing;
-  }
 }
+//Time:O(n*m)
+//Space:O(n*m)
+
 ```

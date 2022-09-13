@@ -4,9 +4,17 @@
 
 允许最多把K个0变成1，那也其实就是说找到最长的连续1的子数组，它里面最多可以有K个0。那么这题其实还是滑动窗口的问题。
 
-`st`记录滑动窗口的起始位置，每轮循环结束时我都要`[st, i]`里面不超过K个0。`count0`用来记录当前窗口里面0的个数，如果`A[i]`是0的话，`count0`就自增。下面开始维护，如果`count0`已经比k大了，而且st就往后一直走，走到count0不大于k为止。不过这里还有个隐藏条件，就是st也不能一直往后走，我们当然不希望st越界，所以限定st最多走到i后面一位。
+**Example 1: **input: array = [1,1,0,0,1,1,1,0,0,0], k = 2
 
-为什么最多走到i后面一位呢？因为如果k为0的话，那么其实就是子数组不允许有0。那么如果当前`A[i]`为0的话，那么st当然要从`i + 1`开始。维护好性质之后，我们可以知道`[st, i]`最多k个0，拿目前的窗口长度和之前的最大值比较并更新。
+traverse这个array，count用来记录已经翻转的次数flip chance, 通过fast和slow指针记录当前的sliding window。
+
+如果当前array[i]的数值为 1， 则需移动fast指针并update longest的值。
+
+如果当前array[i]的数值不为1, 2个case
+
+case 1: 如果还有翻转次数的话（flip chance < k）, 则使用翻转机会, 并且记录次数(count++) , update longest 的值。 
+
+case 2: 如果没有翻转次数，则移动slow指针。并判断当前slow指针array[slow]是否为0，翻转次数-1（count--）。 这么做的目的是，如果fast指针停滞，fast - slow之间的移动窗口我需要保证移动窗口向前走，并同时记录longest的值。
 
 Time complexity: O(N), we access each character at most twice.
 
@@ -14,22 +22,27 @@ Space complexity: O(1).
 
 ```java
 class Solution {
-  public int longestOnes(int[] A, int K) {
-    int st = 0, maxL = 0;
-    int count0 = 0;
-    for (int i = 0; i < A.length; i++) {
-      if (A[i] == 0) {
-        count0++;
-      }
-      while(count0 > K && st <= i){
-        if(A[st] == 0){
-          count0--;
+    public int longestOnes(int[] nums, int k) {
+    // Use a sliding window to move and update the longest value
+    int slow = 0;
+    int fast = 0;
+    int longest = 0;
+    int count = 0;//need a count to keep track of the flip count
+    while (fast < nums.length) {
+      if (nums[fast] == 1) {
+        fast++;
+        longest = Math.max(longest, fast - slow);
+      } else if (count < k) {//when mums[fast] != 1 and we still have flip chances to change 0 to 1
+        count++;
+        fast++;
+        longest = Math.max(longest, fast - slow);
+      } else if (nums[slow++] == 0){
+        //put num[slow++] in the condition which means whether nums[slow] == 0 or not slow++
+        //if the nums[slow] == 0 which means we get one more flip chance
+        count--;
         }
-        st++;
       }
-      maxL = Math.max(maxL, i - st + 1);
-    }
-    return maxL;
+     return longest;
   }
 }
 ```

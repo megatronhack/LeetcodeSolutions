@@ -6,7 +6,7 @@
 
 Time complexity: O(N)
 
-Space complexity: O(1)，如果返回答案不算的话。
+Space complexity: O(N)
 
 ```java
 public class Solution {
@@ -14,16 +14,17 @@ public class Solution {
     if (array == null || array.length <= 1) {
       return array;
     }
-    int slow = 0, fast = 0;
-    while (fast < array.length) {
-      int begin = fast;
-      while (fast < array.length && array[fast] == array[begin]) fast++;
-
-      if (fast - begin == 1) array[slow++] = array[begin];
+    int slow = 0;
+    char[] array = input.toCharArray();
+    for(int i = 0; i < array.length; i++){
+       if(i == 0  || array[i] != array[i - 1]){
+         array[slow++] =array[i];
+       }
+       else{
+         continue;
+       }
     }
-    int[] res = new int[slow];
-    for (int i = 0; i < slow; i++) res[i] = array[i];
-    return res;
+    return new String(array, 0, slow);
   }
 }
 ```

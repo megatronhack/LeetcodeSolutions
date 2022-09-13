@@ -4,31 +4,39 @@
 
 和 [55. Jump Game](55-Jump-Game.md) 差不多，但是这里需要求出最少走几步。
 
-那么我们依然用动态规划的思想，`minJumps[i]`代表`i`最少需要几步才可以走到最后的位置，`minJumps[len - 1]`是最后一个下标所以显然为0。从倒数第二个位置往前推，每到下标`i`的地方就看看`[i + 1, i + nums[i]]`范围内谁到最后的步数最少，取最少的那个加上1就是`i`到最后需要的步数。
+M[i] represents from current index i minimum number of jumps to reach target index
 
-最后我们返回`minJumps[0]`就可以了。
+那么我们依然用动态规划的思想，`minJumps[i]`代表`i`最少需要几步才可以走到最后的位置。从倒数第二个位置往前推，每到下标`i`的地方就看看范围内谁到最后的步数最少，取最少的那个加上1就是`i`到最后需要的步数。
+
+最后我们返回`minJumps[array.length - 1]`就可以了。
 
 Time complexity: O(N^2)
 
 Space complexity: O(N)
 
 ```java
-class Solution {
-  public int jump(int[] nums) {
-    int[] minJumps = new int[nums.length];
-    minJumps[nums.length - 1] = 0;
-    for (int i = nums.length - 2; i >= 0; i--) {
-      int localMinJumps = Integer.MAX_VALUE;
-      for (int j = i + 1; j <= i + nums[i] && j < nums.length; j++) {
-        if (minJumps[j] != -1) {
-          localMinJumps = Math.min(localMinJumps, minJumps[j]);
+public class Solution {
+  public int minJump(int[] array) {
+    // Use an array to keep records of the min steps from 0 to the index of i
+    int[] minStep = new int[array.length];
+    minStep[0] = 0; 
+    for (int i = 1; i < array.length; i++) {
+      minStep[i] = -1;//initialize as unreachable
+      for (int j = i -1; j >= 0; j--) {//if the minStep[j] can be reached from 0
+        if (minStep[j] != -1 && array[j] + j >= i) { 
+          if (minStep[i] == -1 || minStep[i] > minStep[j] + 1) {//update the minStep[i] when it is -1 or the steps is bigger
+            minStep[i] = minStep[j] + 1;
+          }
         }
       }
-      minJumps[i] = localMinJumps == Integer.MAX_VALUE ? -1 : localMinJumps + 1;
     }
-    return minJumps[0];
+    return minStep[array.length - 1];
   }
 }
+
+//Time:O(n^2)
+//Space: O(n)
+
 ```
 
 ## Greedy Approach

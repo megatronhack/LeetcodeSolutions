@@ -6,31 +6,51 @@
 
 如此一来，我们可以算出以每个`[i][j]`为右下角的最大全1正方形周长，我们就可以得到整个矩阵里最大的全1正方形的周长，从而计算出面积。
 
+**Examples**
+
+{ {0, 0, 0, 0},
+
+ {1, **1, 1,** 1},
+
+ {0, **1, 1,** 1},
+
+ {1, 0, 1, 1}}
+
+the largest square of 1s has length of 2
+
 Time complexity: O(M * N).
 
 Space complexity: O(M * N).
 
 ```java
-class Solution {
-  public int maximalSquare(char[][] matrix) {
-    if (matrix.length == 0 || matrix[0].length == 0) {
+public class Solution {
+  public int largest(int[][] matrix) {
+    // Assuptions: the matrix is a binary matrix (only contains 0 or 1 as the values)
+    //it is not null and has size n*n
+    int n = matrix.length;
+    if (n == 0) {
       return 0;
     }
-    int m = matrix.length, n = matrix[0].length;
-    int[][] maxSq = new int[m][n];
-    int maxSize = 0;
-    for (int i = 0; i < m; i++) {
+    int result = 0;
+    //dp[i][j] means the largest squares of 1's with right bottom
+    //cornrt as matrix[i][j]
+    int[][] largest = new int[n][n];
+    for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
         if (i == 0 || j == 0) {
-          maxSq[i][j] = matrix[i][j] == '1' ? 1 : 0;
-        } else if (matrix[i][j] == '1') {
-          maxSq[i][j] =
-              Math.min(maxSq[i - 1][j - 1], Math.min(maxSq[i - 1][j], maxSq[i][j - 1])) + 1;
+          largest[i][j] = matrix[i][j] == 1 ? 1:0;
+        } else if (matrix[i][j] == 1) {
+          largest[i][j] = Math.min(largest[i][j-1] + 1, largest[i-1][j] + 1);
+          largest[i][j] = Math.min(largest[i -1][j -1] + 1, largest[i][j]);
         }
-        maxSize = Math.max(maxSize, maxSq[i][j]);
+        result = Math.max(result, largest[i][j]);
       }
     }
-    return maxSize * maxSize;
+    return result;
   }
 }
+
+//Time:O(n*n)
+//Space:O(n*n)
+
 ```
