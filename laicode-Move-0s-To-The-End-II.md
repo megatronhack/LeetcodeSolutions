@@ -11,17 +11,23 @@ Space complexity: O(1)，如果答案不算入的话。
 ```java
 public class Solution {
   public int[] moveZero(int[] array) {
+    // Write your solution here
     if (array.length <= 1) {
       return array;
     }
     int slow = 0;
-    for (int i = 0; i < array.length; i++) {
-      if (array[i] != 0) {
-        array[slow++] = array[i];
+    for (int fast = 0; fast < array.length; fast++) {
+      if(array[fast] != 0) {
+        array[slow++] = array[fast];
       }
     }
-    while (slow < array.length) array[slow++] = 0;
+    //fill in the right part with 0
+    for (int i = slow; i < array.length; i++) {
+      array[i] = 0;
+    }
     return array;
   }
 }
+//Time: O(n)
+//Space: O(1)
 ```
