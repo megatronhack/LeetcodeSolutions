@@ -6,6 +6,22 @@
 
 所以计算rowMid的时候，我们用`(n + 1) / 2`来计算。这样当n是偶数时，还是一半。当n时奇数时，n就可以多算一行。colMid严格遵守`n / 2`就可以，偶数时候是一般的列，奇数时候就可以少算中间那列。因为中间那列用来给右边的矩形了。
 
+**Examples**
+
+{ {1,  2,  3}
+
+ {8,  9,  4},
+
+ {7,  6,  5} }
+
+after rotation is
+
+{ {7,  8,  1}
+
+ {6,  9,  2},
+
+ {5,  4,  3} }
+
 Time complexity: O(N * N)
 
 Space complexity: O(1)
@@ -15,17 +31,20 @@ class Solution {
   public void rotate(int[][] matrix) {
     if (matrix.length <= 1) return;
     int n = matrix.length;
-    int rowMid = (n + 1) / 2;
-    int colMid = n / 2;
+    int rowMid = (n + 1) / 2;  //2
+    int colMid = n / 2;       //1
     for (int i = 0; i < rowMid; i++) {
       for (int j = 0; j < colMid; j++) {
         int temp = matrix[i][j];
-        matrix[i][j] = matrix[n - 1 - j][i];
-        matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j];
-        matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i];
-        matrix[j][n - 1 - i] = temp;
+        matrix[i][j] = matrix[n - 1 - j][i];  // 1 > 7,  8 > 6  :  1 8 > 7 6
+        matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j];   // 7 6 >> 5 4
+        matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i];   // 5 4 >> 3 2
+        matrix[j][n - 1 - i] = temp;                           // 3 2 >> 1 8
       }
     }
   }
 }
+
+//tc: O(n^2)
+//sc: O(1)
 ```

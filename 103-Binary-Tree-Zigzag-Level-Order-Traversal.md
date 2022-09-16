@@ -1,57 +1,84 @@
 # 103. Binary Tree Zigzag Level Order Traversal
 
-这个二叉树Zigzag的遍历，需要用到双端队列，以及一个方向标记。
+这个二叉树Zigzag的遍历，需要用到dequeue双队列，以及一个layer记录奇偶层。
 
-我们用`towardsRight`来表示当前层是否是向右输出，然后用一个双端队列来存放每一层的元素。存放顺序都是从左到右，只不过分情况讨论，
-+ 如果`towardsRight`为`true`的话，表示向右输出。那么我们就不断地从队列头部拿取元素放入当前层的list里，左右非空孩子依次放入队尾。
-+ 如果`towardsRight`为`false`的话，表示向左输出。那么我们就不断地从队列尾部拿取元素放入当前层的list里，右左非空孩子依次放入队头。
+我们用`layer = 0 或1`， 奇数层或偶数层时候来表示当前层是poll元素的方向出，然后用一个双端队列来存放每一层的元素。存放顺序都是从左到右，只不过分情况讨论，
++ 如果`layer = 0`的话。表示向左输出,那么我们就不断地从队尾pollLast拿取元素放入当前层的list里，**左右**非空孩子依次放入队前offerFirst。
++ 如果`layer = 1`的话，表示向右输出。那么我们就不断地从队头pollFirst拿取元素放入当前层的list里，**右左**非空孩子依次放入队尾offerLast。
 
 每层结束之后，把当前层的list放入答案，并且改变方向。最后就可以得到zigzag level order。
+
+**Examples**
+
+​    5
+
+   /   \
+
+  3     8
+
+ /  \     \
+
+ 1   4     11
+
+the result is [5, 3, 8, 11, 4, 1]
 
 Time complexity: O(N)
 
 Space complexity: O(N), because the deque size could be up to N/2.
 
 ```java
-class Solution {
-  public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-    List<List<Integer>> res = new ArrayList<>();
+/**
+ * public class TreeNode {
+ *   public int key;
+ *   public TreeNode left;
+ *   public TreeNode right;
+ *   public TreeNode(int key) {
+ *     this.key = key;
+ *   }
+ * }
+ */
+public class Solution {
+  public List<Integer> zigZag(TreeNode root) {
     if (root == null) {
-      return res;
+      return new LinkedList<Integer>();
     }
-    Deque<TreeNode> deque = new ArrayDeque<>();
-    deque.offer(root);
-    boolean towardsRight = true;
-    while (!deque.isEmpty()) {
-      List<Integer> levelList = new ArrayList<>();
-      int size = deque.size();
-      if (towardsRight) {
-        for (int i = 0; i < size; i++) {
-          TreeNode curr = deque.pollFirst();
-          levelList.add(curr.val);
-          if (curr.left != null) {
-            deque.offerLast(curr.left);
+    //Need to travers the tree layer by layer by using a queue and return the result as a list
+    List<Integer> result = new ArrayList<Integer>();
+    int layer = 0;  //Odd layer from left to right even layer from right to left
+    Deque<TreeNode> dequeue = new LinkedList<TreeNode>();//because we need to polllast or pollfirst
+    dequeue.offer(root);
+    while (!dequeue.isEmpty()) {
+      int size = dequeue.size();//get the current layer's size first
+      for (int i = 0; i < size; i++){
+        if (layer == 0) {//check the layer number and decide which direction to poll. if even layer
+          TreeNode cur = dequeue.pollLast();
+          result.add(cur.key);
+          if (cur.right != null) {  
+            dequeue.offerFirst(cur.right);
           }
-          if (curr.right != null) {
-            deque.offerLast(curr.right);
+          if (cur.left != null) {
+            dequeue.offerFirst(cur.left);
+          }
+        } else {//odd layer like 1 from left to right
+          TreeNode cur = dequeue.pollFirst();
+          result.add(cur.key);
+          if (cur.left != null) {
+            dequeue.offerLast(cur.left);
+          }
+          if (cur.right != null) {
+            dequeue.offerLast(cur.right);
           }
         }
-      } else {
-        for (int i = 0; i < size; i++) {
-          TreeNode curr = deque.pollLast();
-          levelList.add(curr.val);
-          if (curr.right != null) {
-            deque.offerFirst(curr.right);
-          }
-          if (curr.left != null) {
-            deque.offerFirst(curr.left);
-          }
-        }
-      }
-      towardsRight = !towardsRight;
-      res.add(levelList);
     }
-    return res;
+    layer = 1 - layer;
   }
+  return result;
 }
+}
+
+//TC: O(n)
+//SC: O(n)
+
+// deque   3  8  5  result 5 3 8
+// deque  1 4 11              
 ```

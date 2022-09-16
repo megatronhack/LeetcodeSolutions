@@ -6,6 +6,10 @@
 
 那么我们思考一下，以后遇到这个题型，如果是最多保留k个，那就是控制`slow - k`和`i`不一样就好了。
 
+**Examples**
+
+- {1, 2, 2, 3, 3, 3} → {1, 2, 2, 3, 3}
+
 Time complexity: O(N)
 
 Space complexity: O(1)
@@ -26,3 +30,27 @@ class Solution {
   }
 }
 ```
+
+创建一个新的array On O1
+
+```
+public class Solution {
+  public int[] dedup(int[] array) {
+    // Write your solution here
+    if (array.length <= 2) {
+      return array;
+    }
+    int slow = 2;
+    for (int fast = 2; fast < array.length; fast++) {
+      if (array[slow - 2] != array[fast]) {
+        array[slow++] = array[fast];
+      } 
+    }
+    return Arrays.copyOf(array, slow);
+  }
+}
+//Time:O(n)
+//Space: O(1)
+
+```
+

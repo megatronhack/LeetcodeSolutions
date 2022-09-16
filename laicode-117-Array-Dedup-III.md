@@ -28,3 +28,35 @@ public class Solution {
   }
 }
 ```
+
+或者通过flag来判断，创建一个新的array
+
+On和O1
+
+```
+public class Solution {
+  public int[] dedup(int[] array) {
+    if (array == null || array.length <= 1) {
+      return array;
+    }
+    int end = 0;
+    //use flag to see if there is any duplicates of array[end]
+    boolean flag = false;
+    for (int i = 1; i < array.length; i++) {
+      if (array[i] == array[end]) {
+        flag = true;
+      } else if (flag == true) {
+        array[end] = array[i];
+        flag = false;
+      } else {
+        array[++end] = array[i];
+      }
+    }
+    return Arrays.copyOf(array, flag ? end : end + 1);
+  }
+}
+//tc: O(n)
+//sc: O(1)
+
+```
+
