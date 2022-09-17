@@ -25,7 +25,7 @@ class Solution {
 }
 ```
 
-如果要返回一个新的array的话，可以用copyOf
+xxxxxxxxxx public class Solution {  public List<String> validParentheses(int n) {    // Write your solution here    //char[] ||  StringBuilder || left index ||right index    List<String> result = new ArrayList<String>();    StringBuilder sb = new StringBuilder();    helper(result, 0, 0, sb, n);    return result;  }​  private void helper(List<String> result, int left, int right, StringBuilder sb, int n){    //base case    if (left == n && right == n){      result.add(sb.toString());      return;    }    //when to add'('    if (left < n){      sb.append('(');      helper(result,left + 1, right, sb, n);      sb.deleteCharAt(sb.length() - 1);    }    //when to add')'    if (right < left){      sb.append(')');      helper(result, left, right + 1, sb, n);      sb.deleteCharAt(sb.length() - 1);    }  }}​java
 
 On
 

@@ -2,7 +2,11 @@
 
 给定一个二叉搜索树，找到比target小的最大值。如若没有，就返回-2^31。
 
-那么初始化答案为-2^31，然后沿着BST向下搜索。如果遇到节点值小于target，那么更新答案并且向右子树搜索。如果大于或者等于target，那么就向左子树搜索。
+那么初始化答案为-2^31，然后沿着BST向下搜索。
+
+如果遇到节点值小于target，那么更新答案并且向右子树搜索。
+
+如果大于或者等于target，那么就向左子树搜索。
 
 Time complexity: O(H). H is the height.
 
@@ -25,3 +29,21 @@ public class Solution {
   }
 }
 ```
+
+**Examples**
+
+  5
+
+ /   \
+
+2    11
+
+   /   \
+
+  6   14
+
+largest number smaller than 1 is Integer.MIN_VALUE(Java) or INT_MIN(c++)
+
+largest number smaller than 10 is 6
+
+largest number smaller than 6 is 5

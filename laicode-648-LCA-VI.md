@@ -2,9 +2,13 @@
 
 给定一个K叉树，和M个节点，找到他们的最近公共祖先。
 
-这题是公共祖先的最通用的一题。思路其实也差不多，检查当前节点，如果为null或者出现在给定节点之中，那么直接返回当前节点给上层作为搜索结果。
+用一个set来记录。
 
-如果上一步没有返回，那么我们对当前节点的每一个孩子进行进一步搜索调用。搜索出来的结果不为null，那就记录下来并且count自增。count大于1的时候，说明当前节点是多个节点的公共祖先，就向上返回当前节点作为搜索结果。如果最后count不大于1，那么就返回搜索结果，可能为null也可能是唯一那个搜到的结果。
+和找最近公共祖先的其他题目也差不多的思路。只不过是挨个遍历子节点，记录搜寻结果。
+
+如果搜寻结果found != null，说明当前节点是两个节点的最近公共祖先。否则，搜到什么返回什么。
+
+这样最后我们就可以找到他们的最近公共祖先。
 
 Time complexity: O(N)
 
@@ -13,26 +17,47 @@ Space complexity: O(max(H, M)). H is height.
 ```java
 public class Solution {
   public KnaryTreeNode lowestCommonAncestor(KnaryTreeNode root, List<KnaryTreeNode> nodes) {
-    return lowestCommonAncestor(root, new HashSet<>(nodes));
+    // Write your solution here
+    Set<KnaryTreeNode> set = new HashSet<KnaryTreeNode>(nodes);
+    return helper(root,set);
   }
-
-  private KnaryTreeNode lowestCommonAncestor(KnaryTreeNode root, Set<KnaryTreeNode> nodeSet) {
-    if (root == null || nodeSet.contains(root)) {
+  private KnaryTreeNode helper(KnaryTreeNode root, Set<KnaryTreeNode> set){
+    if (root == null || set.contains(root)) {
       return root;
     }
-    int count = 0;
-    KnaryTreeNode res = null;
+    KnaryTreeNode found = null;
     for (KnaryTreeNode child : root.children) {
-      KnaryTreeNode searchRes = lowestCommonAncestor(child, nodeSet);
-      if (searchRes != null) {
-        count++;
-        res = searchRes;
+      KnaryTreeNode node = helper(child, set);
+      if (node == null) {
+        continue;
       }
-      if (count > 1) {
+      if (found == null) {
+        found = node;
+      } else {
         return root;
       }
     }
-    return res;
+   return found; 
   }
 }
+//time On 
+//space on
 ```
+
+**Examples**
+
+​    5
+
+   /  \
+
+   9  12
+
+  / | \   \
+
+ 1 2 3   14
+
+
+
+The lowest common ancestor of 2, 3, 14 is 5.
+
+The lowest common ancestor of 2, 3, 9 is 9.

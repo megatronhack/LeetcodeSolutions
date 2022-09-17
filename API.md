@@ -7,6 +7,8 @@ int[] emptyArray = new int[]{};   // empty array
 Arrays.sort(array);  
 Arrays.asList(i,j)  // new array to list  
 Arrays.copyOf(myArray,end)// copy an array from index 0 to index end - 1;
+    
+int[] array = new ArrayList<GraphNode>(map.values()); // create (array with map.values api)
 ```
 
 
@@ -17,7 +19,9 @@ List,map,set的data structure都不能是primitive: boolean , byte , char , shor
 
 String[] s ，或者所有array都***不可以***放到Set<String> set = new HashSet<>(s)进行转换。（得用for loop用set一个一个add）
 
-List<String> s **可以**放到Set<String> set = new HashSet<>(s)进行转换。
+List<String> s **可以**放到Set<String> set = new HashSet<>(s)进行转换
+
+List<TreeNode> nodes **可以**放到  Set<TreeNode> set = new HashSet<TreeNode>(nodes);
 
 ```java
 set.contains()  
@@ -157,7 +161,7 @@ Queue<Integer> queue = new ArrayDeque<Integer>();
 queue.offer() // add element at the end; like offerLast. 1 2 3, offer 4, becoming 1 2 3 4 // == offerLast
 queue.remove() //return and remove the first element when queue is empty, raise exception // == pollFirst
 queue.poll() // return and remove the first element.  when queue is empty, returns null.   1 2 3, return 2 3, head is 1 //  = pollFirst
-queue.peek() // return value but not remove
+queue.peek() // return value but not remove //peak first
 ```
 
 

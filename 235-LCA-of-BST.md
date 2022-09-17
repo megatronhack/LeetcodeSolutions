@@ -4,30 +4,29 @@
 
 二叉搜索树找两个节点的最近公共祖先其实很好找，找到那个比其中一个小以及比另外一个大的节点就行，该节点就是两个节点的最近公共祖先。
 
-Time complexity: O(H), where H is the height.
+Time complexity: O(logN)
 
 Space complexity: O(H), where H is the height.
 
 ```java
-class Solution {
-  public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-    if (root == null) {
-      return null;
-    }
-    if (p.val > q.val) {
-      return lowestCommonAncestor(root, q, p);
-    }
-    TreeNode curr = root;
-    while (curr != null) {
-      if (curr.val < p.val) {
-        curr = curr.right;
-      } else if (curr.val > q.val) {
-        curr = curr.left;
-      } else {
-        break;
-      }
-    }
-    return curr;
-  }
+public class Solution {
+  public TreeNode lca(TreeNode root, int p, int q) {
+    // Write your solution here
+   int small = Math.min(p,q);
+   int large = Math.max(p,q);
+   while(root != null){
+   if (root.key < small){
+      root = root.right;
+   }
+   else if (root.key > large){
+     root = root.left;
+   }
+   else{
+    return root;
+   }
+   
+   }  
+   return null;   
+ }
 }
 ```
