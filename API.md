@@ -100,6 +100,7 @@ Set<E> set = new HashSet<>();
 ```java
 Integer.MIN_VALUE;
 Integer.MAX_VALUE;
+Integer.valueOf(str); //to Convert a String to an Integer
 ```
 
 
@@ -118,11 +119,12 @@ s.indexOf('0'); //return first occurrence index of '0' in the string. returns -1
 s.charAt(i)// getting element
 s.length();
 int matchIndex = s.indexOf("abc", fromIndex); ////returns the position of the first occurrence of "abc" starting "fromIndex" in a string(our case is "s"), returns -1 if the value is not found.
-
+start = str.lastIndexOf("(");//return the last index of "(", return -1 if not found
 String str = String.valueOf(arr);//The method valueOf() will convert the entire char array into a string.//这里的String. 本身就是内置API
 
 char[] array = String.valueOf(n).toCharArray();//convert an int to char array
 s.substring(start,end)  // not include end index  
+s.substring(startIndex)  // from startindex to end  
 new String(sourceArray,0,slow) // new a string from source array, start form index 0 to slow-1
 s+= Integer.toString(root.key)//how to append in the string
 ```
