@@ -13,16 +13,25 @@ Space complexity: O(H).
 ```java
 public class Solution {
   public TreeNode reconstruct(int[] post) {
-    return reconstruct(post, new int[] {post.length - 1}, Integer.MIN_VALUE);
+    // Assumptions: post is not null,
+    // there is no duplicate in the binary search tree.
+    // Traversing position of the post order,
+    // we traverse and construct the binary search tree
+    // from the postOrder right to left.
+    int[] index = new int[] {post.length - 1};
+    return helper(post, index, Integer.MIN_VALUE);
   }
-
-  private TreeNode reconstruct(int[] post, int[] rootIndex, int min) {
-    if (rootIndex[0] < 0 || post[rootIndex[0]] < min) {
+  private TreeNode helper(int[] postorder, int[] index, int min) {
+    // Since it is a binary search tree,
+    // the "min" is actually the root,
+    // and we are using the root value to determine the boundary
+    // of left/right subtree.    
+    if (index[0] < 0 || postorder[index[0]] <= min) {
       return null;
     }
-    TreeNode root = new TreeNode(post[rootIndex[0]--]);
-    root.right = reconstruct(post, rootIndex, root.key + 1);
-    root.left = reconstruct(post, rootIndex, min);
+    TreeNode root = new TreeNode(postorder[index[0]--]);
+    root.right = helper(postorder, index, root.key);
+    root.left = helper(postorder, index, min);
     return root;
   }
 }
