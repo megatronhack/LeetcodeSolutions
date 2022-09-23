@@ -11,26 +11,31 @@ Time complexity: O(27). Each number can only have up to 3 digits. 3 * 3 * 3 = 27
 Space complexity: O(1). Constant space because we have have 4 level call stacks.
 
 ```java
-class Solution {
-  public List<String> restoreIpAddresses(String s) {
-    List<String> res = new ArrayList<>();
-    dfs(s.toCharArray(), 0, new ArrayList<>(), res);
-    return res;
+public class Solution {
+  public List<String> Restore(String ip) {
+    // Write your solution here
+    List<String> result = new ArrayList<>();
+    char[] array = ip.toCharArray();   // string ip to charArray
+    List<Integer> combo = new ArrayList<>();
+    dfs(array,0, combo, result);
+    return result;
   }
 
-  private void dfs(char[] sc, int level, List<Integer> comb, List<String> res) {
+  //helper
+  private void dfs(char[] array, int level, List<Integer> comb, List<String> result){
     if (comb.size() == 4) {
-      if (level == sc.length) {
-        res.add(combToIP(comb));
+      if (level == array.length) {
+        result.add(combToIP(comb));
       }
       return;
     }
+
     int currNum = 0;
-    for (int i = level; i < sc.length; i++) {
-      currNum = currNum * 10 + sc[i] - '0';
+    for (int i = level; i < array.length; i++) {
+      currNum = currNum * 10 + array[i] - '0';
       if (currNum > 255) break;
       comb.add(currNum);
-      dfs(sc, i + 1, comb, res);
+      dfs(array, i + 1, comb, result);
       comb.remove(comb.size() - 1);
 
       /**
@@ -49,4 +54,7 @@ class Solution {
     return ipBuilder.toString();
   }
 }
+
+//time  ( 4^3)   each number can only have up to 3 digits
+//space O1 ( 4 level stakcs)
 ```

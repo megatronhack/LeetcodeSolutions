@@ -9,22 +9,40 @@ Space complexity: Depends on the sorting algorithm.
 ```java
 public class Solution {
   public List<Integer> common(int[] A, int[] B) {
+    // Write your solution here
+    if (A == null || B == null){
+      return null;
+    }
+    HashMap<Integer, Integer> hashMap = new HashMap<>();
+    List<Integer> result = new ArrayList<>();     
+    //sort
     Arrays.sort(A);
     Arrays.sort(B);
-    int p1 = 0, p2 = 0;
-    List<Integer> res = new ArrayList<>();
-    while (p1 < A.length && p2 < B.length) {
-      if (A[p1] == B[p2]) {
-        res.add(A[p1]);
-        p1++;
-        p2++;
-      } else if (A[p1] > B[p2]) {
-        p2++;
+    //putting elements and its appearances into hashMap
+    for (int i = 0; i < A.length; i++) {
+      Integer count = hashMap.get(A[i]);
+      if (count == null) {
+        hashMap.put(A[i], 1);
       } else {
-        p1++;
+        hashMap.put(A[i], count + 1);
       }
     }
-    return res;
+    //check common
+    for(int i = 0; i < B.length; i++){
+      if (!hashMap.containsKey(B[i])){
+        continue;
+      }
+      else{
+      int count = hashMap.get(B[i]);
+       if (hashMap.get(B[i]) >= 1){
+        result.add(B[i]);
+        hashMap.put(B[i], count - 1 );
+       }
+      }
+    } 
+     return result; 
   }
 }
+//on
+//on
 ```

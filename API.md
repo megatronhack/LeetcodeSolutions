@@ -24,6 +24,7 @@ List<String> s **可以**放到Set<String> set = new HashSet<>(s)进行转换
 List<TreeNode> nodes **可以**放到  Set<TreeNode> set = new HashSet<TreeNode>(nodes);
 
 ```java
+set<String> set = new HashSet<>();
 set.contains()  
 set.add()  
 Set<Integer> set = new HashSet<Integer>();  
@@ -46,12 +47,12 @@ List,map,set的data structure都不能是primitive: boolean , byte , char , shor
 list: [1,2,3,4,5]
 
 ```java
-List<GraphNode>
+List<GraphNode> result = new ArrayList<GraphNode>();
 List<List<Integer>> result = new ArrayList<List<Integer>>();
 List<String> result =  new ArrayList<String>();
 list.isEmpty();
 list.remove(index);
-list.subList(size, cur.size()).clear(); //题目404
+list.subList(size, cur.size()).clear(); // arrlist.subList(2, 4); [A, B, C, D, E] >> [C, D]
 list.size()   // 大小
 list.get(i)  //取数
 list.add(array[i]);   //add在尾巴后
@@ -119,6 +120,7 @@ new String(sourceArray,0,slow) // new a string from source array, start form ind
 ```java
 char[] array = string.toCharArray();
 char[] arrya = new char[];
+char[] array = set.toCharArray(); //String set也可以
 Character.isLetterOrDigit(ch)//return boolean, check whether the char is a digit or character('0'-'9', 'a'-'z', 'A'-'Z')
 Character.toLowerCase(ch)//change the char to lower case
 ```

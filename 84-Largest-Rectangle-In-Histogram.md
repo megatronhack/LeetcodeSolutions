@@ -17,29 +17,30 @@ Time complexity: O(n) because each index only get pushed and poped once.
 Space complexity: O(n).
 
 ```java
-class Solution {
-  public int largestRectangleArea(int[] heights) {
-    if (heights == null || heights.length == 0) {
-      return 0;
-    }
-    Deque<Integer> ascendingIndices = new ArrayDeque<>();
-    ascendingIndices.push(-1);
-    int maxArea = 0;
-    for (int i = 0; i < heights.length; i++) {
-      while (ascendingIndices.peek() != -1 && heights[ascendingIndices.peek()] >= heights[i]) {
-        int h = heights[ascendingIndices.pop()];
-        int width = i - ascendingIndices.peek() - 1;
-        int currArea = h * width;
-        maxArea = Math.max(maxArea, currArea);
+public class Solution {
+  public int largest(int[] array) {
+    // Assumptions: array is not null, array.length >= 1,
+    // all the values in the array are non-negative.
+    int result = 0;
+    Deque<Integer> stack = new LinkedList<>();
+    for (int i = 0; i <= array.length; i++) {
+      int cur = i == array.length ? 0 : array[i];
+      while (!stack.isEmpty() && array[stack.peekFirst()] >= cur) {
+        int height = array[stack.pollFirst()];
+        // determine the left boundary of the largest rectangle
+        // with height array[i].       
+        int left = stack.isEmpty() ? 0 : stack.peekFirst() + 1;
+        // determine the right boundary of the largest rectangle
+        // with height of the popped element.
+        result = Math.max(result, height * (i - left));        
       }
-      ascendingIndices.push(i);
+      stack.offerFirst(i);
     }
-    while (ascendingIndices.peek() != -1) {
-      int h = heights[ascendingIndices.pop()];
-      int width = heights.length - ascendingIndices.peek() - 1;
-      maxArea = Math.max(maxArea, h * width);
-    }
-    return maxArea;
+    return result;
   }
 }
+
+//tc: O(n)
+//sc: O(n)
+
 ```
