@@ -4,7 +4,8 @@
 int[] array = new int[array.length];    // array length
 int[] max = new int[]{Integer.MIN_VALUE}; // create an array with value  
 int[] emptyArray = new int[]{};   // empty array  
-Arrays.sort(array);  
+Arrays.sort(array);  //void return
+Arrays.equals(a, b); 
 Arrays.asList(i,j)  // new array to list  
 Arrays.copyOf(myArray,end)// copy an array from index 0 to index end - 1;
 ```
@@ -47,6 +48,7 @@ List<List<Integer>> result = new ArrayList<List<Integer>>();
 List<String> result =  new ArrayList<String>();
 list.isEmpty();
 list.remove(index);
+list.remove(Integer.valueOf(1));//re,ove by value
 list.subList(size, cur.size()).clear(); //题目404
 list.size()   // 大小
 list.get(i)  //取数
@@ -101,6 +103,7 @@ Set<E> set = new HashSet<>();
 Integer.MIN_VALUE;
 Integer.MAX_VALUE;
 Integer.valueOf(str); //to Convert a String to an Integer
+int number = Integer.parseInt(string);//parseInt() The parseInt() function parses a string argument and returns an integer of the specified radix
 ```
 
 
@@ -127,6 +130,9 @@ s.substring(start,end)  // not include end index
 s.substring(startIndex)  // from startindex to end  
 new String(sourceArray,0,slow) // new a string from source array, start form index 0 to slow-1
 s+= Integer.toString(root.key)//how to append in the string
+s.replaceAll(".", "*")//Replace all symbol with *. The dot symbol can take place of any other symbol, that is why it is called the wildcard character.
+s.split("[.]")//split the string with "." and return as an array
+Integer.valueOf(s);//Convert a String to an Integer
 ```
 
 ## Char
@@ -272,4 +278,3 @@ Collections.reverse(mylist) ;// Reversing an ArrayList, Reversing a LinkedList, 
 boolean[][] visited = new boolean[rows][collumn]; //default boolean false
 int count = array[i] - '0'; // getting number. exa: int 5 = '5' - '0'  
 ```
-
