@@ -31,6 +31,7 @@
 ## Linked List
 
 + [206. Reverse Linked List](206-Reverse-Linked-List.md)
++ [25-Reverse-Nodes-in k-Group](25-Reverse-Nodes-in k-Group.md)
 + [876. Middle of the Linked List](876-Middle-of-the-Linked-List.md)
 + [141. Linked List Cycle](141-Linked-List-Cycle.md)
 + [142. Linked List Cycle II](142-Linked-List-Cycle-2.md)
@@ -303,3 +304,4 @@
 + [132. Palindrome Partitioning II](132-Palindrome-Partitioning-II.md)
 + [99. Recover Binary Search Tree](99-Recover-BST.md)
 + [96. Unique Binary Search Trees](96-Unique-BSTs.md)
++ [CodeSignal avoidObstacles](CodeSignal avoidObstacles.md)

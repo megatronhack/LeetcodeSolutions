@@ -103,7 +103,10 @@ Set<E> set = new HashSet<>();
 Integer.MIN_VALUE;
 Integer.MAX_VALUE;
 Integer.valueOf(str); //to Convert a String to an Integer
+Integer.toString(number).toCharArray()//convert an integer to char array
 int number = Integer.parseInt(string);//parseInt() The parseInt() function parses a string argument and returns an integer of the specified radix
+int a = Integer.parseInt(str);//parse a str to an int
+double digit2 = Double.parseDouble(rateStr[0]);//parse a str to double
 ```
 
 
@@ -133,6 +136,9 @@ s+= Integer.toString(root.key)//how to append in the string
 s.replaceAll(".", "*")//Replace all symbol with *. The dot symbol can take place of any other symbol, that is why it is called the wildcard character.
 s.split("[.]")//split the string with "." and return as an array
 Integer.valueOf(s);//Convert a String to an Integer
+String(inputString.chars().map(x -> (x - 'a' + 1) % 26 + 'a').toArray(), 0, inputString.length());
+//1. str.chsrs():In Java 8, there is a new method String.chars() which returns a stream of ints (IntStream) that represent the character codes.
+//2. toArray() :toArray() method of Chars Class is used to convert the char values, passed as the parameter to this method, into a Char Array.
 ```
 
 ## Char
