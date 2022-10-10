@@ -31,6 +31,7 @@
 ## Linked List
 
 + [206. Reverse Linked List](206-Reverse-Linked-List.md)
++ [25-Reverse-Nodes-in k-Group](25-Reverse-Nodes-in k-Group.md)
 + [876. Middle of the Linked List](876-Middle-of-the-Linked-List.md)
 + [141. Linked List Cycle](141-Linked-List-Cycle.md)
 + [142. Linked List Cycle II](142-Linked-List-Cycle-2.md)
@@ -106,6 +107,8 @@
 + [3. Longest Substring Without Repeating Characters](3-Longest-Substring-Without-Repeating-Chars.md)
 + [438. Find All Anagrams in a String](438-Find-All-Anagrams.md)
 + [1004. Max Consecutive Ones III](1004-Max-Consecutive-Ones-III.md)
++ [CodeSignal reverseInParentheses](CodeSignal reverseInParentheses.md)
++ [CodeSignal isIPv4Address](CodeSignal isIPv4Address.md)
 
 ## Bit Operation
 + [231. Power of Two](231-Power-Of-Two.md)
@@ -259,15 +262,15 @@
 + [laicode 683. Count Ascending Subsequence](laicode-683-Count-Ascending-Subsequence.md)
 + [laicode 217. Largest Set Of Points With Positive Slope](laicode-217-Largest-Set-Of-Points-With-Positive-Slope.md)
 + [laicode 176. Longest Common Substring](laicode-176-Longest-Common-Substring.md)
-+ [1143. Longest Common Subsequence](1143-Longest-Common-Subsequence.md)
-+ [1547. Minimum Cost to Cut a Stick](1547-Minimum-Cost-To-Cut-Stick.md)
-+ [laicode 657. Can I Win II](laicode-657-Can-I-Win-II.md)
++ ​                   [1143. Longest Common Subsequence](1143-Longest-Common-Subsequence.md)
++ [1547. Minimum Cost to Cut a Stick](1547-Minimum-Cost                                -To-Cut-Stick.md)
++ [laicode 657. Can I Win II ](laicode-657-Can-I-Win-II.md)                                           
 
-## Trie
-+ [79. Word Search](79-Word-Search.md)
+## Trie              
++ ​                           [                         79. Word Search](79-Word-Search.md)
 + [212. Word Search II](212-Word-Search-II.md)
 
-## Cross Training V
+## Cross Training V                              
 + [150. Evaluate Reverse Polish Notation](150-Evaluate-Reverse-Polish-Notation.md)
 + [33. Search in Rotated Sorted Array](33-Search-in-Rotated-Sorted-Array.md)
 + [81. Search in Rotated Sorted Array II](81-Search-In-Rotated-Sorted-Array-II.md)
@@ -301,3 +304,4 @@
 + [132. Palindrome Partitioning II](132-Palindrome-Partitioning-II.md)
 + [99. Recover Binary Search Tree](99-Recover-BST.md)
 + [96. Unique Binary Search Trees](96-Unique-BSTs.md)
++ [CodeSignal avoidObstacles](CodeSignal avoidObstacles.md)

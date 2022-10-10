@@ -4,7 +4,8 @@
 int[] array = new int[array.length];    // array length
 int[] max = new int[]{Integer.MIN_VALUE}; // create an array with value  
 int[] emptyArray = new int[]{};   // empty array  
-Arrays.sort(array);  
+Arrays.sort(array);  //void return
+Arrays.equals(a, b); 
 Arrays.asList(i,j)  // new array to list  
 Arrays.copyOf(myArray,end)// copy an array from index 0 to index end - 1;
     
@@ -52,12 +53,15 @@ List<List<Integer>> result = new ArrayList<List<Integer>>();
 List<String> result =  new ArrayList<String>();
 list.isEmpty();
 list.remove(index);
+list.remove(Integer.valueOf(1));//remove by value
 list.subList(size, cur.size()).clear(); // arrlist.subList(2, 4); [A, B, C, D, E] >> [C, D]
 list.size()   // 大小
 list.get(i)  //取数
 list.add(array[i]);   //add在尾巴后
 list.get(i).add(array[i])  // index 为i的位置，insert the element
 List<ListNode>   // 有指针
+list.add(new ArrayList<Integer>(cur));//add a list in the List<List<>>();
+List<E> copy = new ArrayList<>(list);//Copy a list
 ListNode dummy = new ListNode(0);
 ```
 
@@ -73,13 +77,32 @@ List,map,set的data structure都不能是primitive: boolean , byte , char , shor
 Map<Integer, List<Integer>> map = new HashMap<Integer,List<Integer>>();
 HashMap.put()    //key,value together
 HashMap.get()    //get value, primitive type double
-HashMap.values()     return collections of values
-HashMap.containsKey()
+HashMap.containsKey() ////return boolean
 HashMap.keySet()  //  create a set out of the key elements
+HashMap.values()  // return collections of values, like new ArrayList<E>(map.values())
 HashMap.getValue()   // get value, a Double object, like Integer wrapper type
 HashMap.Entry() //return reference
 HashMap.entrySet()  // returns a set view of the map
 HashMap.Entry<String, Integer> entry : Hashmap.entrySet()
+    //for (Map.Entry<String, String> entry : map.entrySet()) {
+    //System.out.println(entry.getKey() + "/" + entry.getValue());
+    //}
+//On Java 10+:
+for (var entry : map.entrySet()) {
+    System.out.println(entry.getKey() + "/" + entry.getValue());
+}
+
+```
+
+## HashSet
+
+```java
+Set<E> set = new HashSet<>();
+```
+
+```java
+int count = HashMap.getOrDefault(key, 0);// mapped with specified key. If no value is mapped with the provided key then the default value is returned. // we "set" 0 to default value
+HashMap.put(key, ++count);
 ```
 
 ```java
@@ -94,6 +117,11 @@ HashMap.put(key, ++count);
 ```java
 Integer.MIN_VALUE;
 Integer.MAX_VALUE;
+Integer.valueOf(str); //to Convert a String to an Integer
+Integer.toString(number).toCharArray()//convert an integer to char array
+int number = Integer.parseInt(string);//parseInt() The parseInt() function parses a string argument and returns an integer of the specified radix
+int a = Integer.parseInt(str);//parse a str to an int
+double digit2 = Double.parseDouble(rateStr[0]);//parse a str to double
 ```
 
 
@@ -106,18 +134,26 @@ Integer.MAX_VALUE;
 String s = new String("word");
 String s = "hello";   //double quote is string, single is chart
 char[] arraySet = s.toCharArray();  // string to char array
+
 s.equals();  // checking actual value
-s.indexOf('0'); //return first occurrence index of '0' in the string. 
+s.indexOf('0'); //return first occurrence index of '0' in the string. returns -1 if the value is not found. 
 s.charAt(i)// getting element
 s.length();
 int matchIndex = s.indexOf("abc", fromIndex); ////returns the position of the first occurrence of "abc" starting "fromIndex" in a string(our case is "s"), returns -1 if the value is not found.
-
-s.toCharArray(); 
+start = str.lastIndexOf("(");//return the last index of "(", return -1 if not found
 String str = String.valueOf(arr);//The method valueOf() will convert the entire char array into a string.//这里的String. 本身就是内置API
 
+char[] array = String.valueOf(n).toCharArray();//convert an int to char array
 s.substring(start,end)  // not include end index  
-
+s.substring(startIndex)  // from startindex to end  
 new String(sourceArray,0,slow) // new a string from source array, start form index 0 to slow-1
+s+= Integer.toString(root.key)//how to append in the string
+s.replaceAll(".", "*")//Replace all symbol with *. The dot symbol can take place of any other symbol, that is why it is called the wildcard character.
+s.split("[.]")//split the string with "." and return as an array
+Integer.valueOf(s);//Convert a String to an Integer
+String(inputString.chars().map(x -> (x - 'a' + 1) % 26 + 'a').toArray(), 0, inputString.length());
+//1. str.chsrs():In Java 8, there is a new method String.chars() which returns a stream of ints (IntStream) that represent the character codes.
+//2. toArray() :toArray() method of Chars Class is used to convert the char values, passed as the parameter to this method, into a Char Array.
 ```
 
 ## Char
@@ -141,6 +177,7 @@ sb.length();
 sb.deleteCharAt();
 sb.deleteCharAt(cur.length() - 1);
 sb.append(); 
+sb.reverse().toString();//reverse the sb, then turn it into a string
 ```
 
 
@@ -183,14 +220,29 @@ private static final char[] PS = new char[]{'(',')','<','>','{','}'};
 
 ## HEAP or Comparator interface
 
-```java
-3 methods:
+By default, the priority queue in Java is **min Priority queue with natural ordering**. To make it max, we have to use a custom comparator so that head of the queue returns the greatest element in the queue.
 
+```Java
+PriorityQueue<Integer> minHeap = new PriorityQueue<>(); 
+
+Java15: MaxHeap
+PriorityQueue<Integer> pq = new PriorityQueue(Collections.reverseOrder());
+
+PriorityQueue<Integer> maxHeap= new PriorityQueue<Integer>(k, new Comparator<Integer>() {   
+    @Override   
+    public int compare(Integer i, Integer j){    
+        if (i.equals(j)){     
+            return 0;    
+        }    
+        return i < j ? 1 : -1;   
+    }  
+});
+```
+
+```java
+Comparator interface: 2 methods:(1)compare  (2)equals
 (1)compare  // compare value of 2 objects  >> belong to comparator/comparable interface
-(2)equals //will take any Object as a parameter
-(3)compareTo  // compare value of 2 string objects, compareTo will only take Strings. >> belong to comparable interfance
-    
-(1)compare
+
   static class MyComparator implements Comparator<Entry>{
      @Override
      public int compare(Entry e1, Entry r2) {
@@ -200,6 +252,12 @@ private static final char[] PS = new char[]{'(',')','<','>','{','}'};
      return e1.value < e2.value ? -1 : 1;       
      }
   }
+
+(2)equals //will take any Object as a parameter
+
+Comparable interface: 1 method:(1)compareTo
+
+(1) compareTo  // compare value of 2 string objects, compareTo will only take Strings. >> belong to comparable interfance
 
 ```
 
@@ -258,4 +316,3 @@ Collections.reverse(mylist) ;// Reversing an ArrayList, Reversing a LinkedList, 
 boolean[][] visited = new boolean[rows][collumn]; //default boolean false
 int count = array[i] - '0'; // getting number. exa: int 5 = '5' - '0'  
 ```
-
