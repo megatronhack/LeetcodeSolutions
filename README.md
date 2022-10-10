@@ -262,12 +262,12 @@
 + [laicode 683. Count Ascending Subsequence](laicode-683-Count-Ascending-Subsequence.md)
 + [laicode 217. Largest Set Of Points With Positive Slope](laicode-217-Largest-Set-Of-Points-With-Positive-Slope.md)
 + [laicode 176. Longest Common Substring](laicode-176-Longest-Common-Substring.md)
-+ ​                   [1143. Longest Common Subsequence](1143-Longest-Common-Subsequence.md)
-+ [1547. Minimum Cost to Cut a Stick](1547-Minimum-Cost                                -To-Cut-Stick.md)
++ [1143. Longest Common Subsequence](1143-Longest-Common-Subsequence.md)
++ [1547. Minimum Cost to Cut a Stick](1547-Minimum-Cost-To-Cut-Stick.md)
 + [laicode 657. Can I Win II ](laicode-657-Can-I-Win-II.md)                                           
 
 ## Trie              
-+ ​                           [                         79. Word Search](79-Word-Search.md)
++ [79. Word Search](79-Word-Search.md)
 + [212. Word Search II](212-Word-Search-II.md)
 
 ## Cross Training V                              
