@@ -209,6 +209,9 @@ By default, the priority queue in Java is **min Priority queue with natural orde
 ```Java
 PriorityQueue<Integer> minHeap = new PriorityQueue<>(); 
 
+Java15: MaxHeap
+PriorityQueue<Integer> pq = new PriorityQueue(Collections.reverseOrder());
+
 PriorityQueue<Integer> maxHeap= new PriorityQueue<Integer>(k, new Comparator<Integer>() {   
     @Override   
     public int compare(Integer i, Integer j){    
