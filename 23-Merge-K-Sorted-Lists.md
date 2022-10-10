@@ -15,34 +15,38 @@ Time complexity: O(N * logk) where k is the number of lists and N is the total n
 Space complexity: O(k). Min heap will have k elements most of the time.
 
 ```java
-class Solution {
-  public ListNode mergeKLists(ListNode[] lists) {
-    if (lists == null || lists.length == 0) {
-      return null;
+public class Solution {
+  public ListNode merge(List<ListNode> listOfLists) {
+    // Write your solution here/.
+    PriorityQueue<ListNode> minHeap = new PriorityQueue<ListNode>(11, new MyComparator());
+    ListNode dummy = new ListNode(0);
+    ListNode cur = dummy;
+    for (ListNode node : listOfLists){
+        if(node != null){
+          minHeap.offer(node);
+        }
     }
-    int k = lists.length;
-    if (k == 1) return lists[0];
-
-    PriorityQueue<ListNode> minHeap =
-        new PriorityQueue<>(
-            new Comparator<ListNode>() {
-              @Override
-              public int compare(ListNode p1, ListNode p2) {
-                return Integer.compare(p1.val, p2.val);
-              }
-            });
-    for (int i = 0; i < k; i++) {
-      if (lists[i] != null) minHeap.offer(lists[i]);
+    while(!minHeap.isEmpty()){
+        cur.next = minHeap.poll();
+        if (cur.next.next != null){
+          minHeap.offer(cur.next.next);
+        }
+        cur = cur.next;
+    } 
+    return dummy.next;
+  }   
+    
+    static class MyComparator implements Comparator<ListNode>{
+        @Override
+        public int compare(ListNode o1, ListNode o2) {
+          if(o1.value == o2.value){
+              return 0;
+          }
+        return o1.value < o2.value ?  -1 : 1;
+        }   
     }
-    ListNode dummyHead = new ListNode(0);
-    ListNode p = dummyHead;
-    while (!minHeap.isEmpty()) {
-      ListNode curr = minHeap.poll();
-      p.next = curr;
-      p = p.next;
-      if (curr.next != null) minHeap.offer(curr.next);
-    }
-    return dummyHead.next;
-  }
 }
+
+//time n * logk
+//space k
 ```

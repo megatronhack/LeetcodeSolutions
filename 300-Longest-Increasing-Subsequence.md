@@ -12,27 +12,36 @@ Space complexity: O(n)
 
 ```java
 class Solution {
-  public int lengthOfLIS(int[] nums) {
-    if (nums.length <= 1) {
-      return nums.length;
+    public int lengthOfLIS(int[] array) {
+        
+    // use the dp to solve this problem
+    if (array == null || array.length <= 0) {
+      return 0;
     }
-
-    int n = nums.length;
-    int[] LIS = new int[n];
-    LIS[0] = 1;
-    int res = 1;
-    for (int i = 1; i < n; i++) {
-      int localLongest = 0;
+    int[] M = new int[array.length];
+    int max = 1;
+    for (int i = 0; i < array.length; i++) {
+      M[i] = 1;//initialize the M[i] as 1, since the shortest one has length 1
       for (int j = 0; j < i; j++) {
-        if (nums[j] < nums[i]) localLongest = Math.max(localLongest, LIS[j]);
+        if (array[j] < array[i]) {
+          M[i] = Math.max(M[j] + 1,M[i]);
+
+        }
+         max= Math.max(max, M[i]);
       }
-      localLongest++;
-      res = Math.max(res, localLongest);
-      LIS[i] = localLongest;
     }
-    return res;
+    // for (int num : M) {
+    //   max = Math.max(max, num);
+    // }
+    return max;
   }
 }
+```
+
+```
+Input: nums = [10,9,2,5,3,7,101,18]
+Output: 4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
 ```
 
 ## Binary Search Approach

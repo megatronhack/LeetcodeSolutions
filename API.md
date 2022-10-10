@@ -82,6 +82,11 @@ HashMap.entrySet()  // returns a set view of the map
 HashMap.Entry<String, Integer> entry : Hashmap.entrySet()
 ```
 
+```java
+int count = HashMap.getOrDefault(key, 0);// mapped with specified key. If no value is mapped with the provided key then the default value is returned. // we "set" 0 to default value
+HashMap.put(key, ++count);
+```
+
 
 
 ## Integer
@@ -198,9 +203,18 @@ private static final char[] PS = new char[]{'(',')','<','>','{','}'};
 
 ```
 
-## Priority Queue and Heap
+compare 和 compareTo的用法
 
-Class比较，比如Integer，用a.equals(b); Value比较，比如int, 用 a == b
+```java
+int cmp = Integer.compare(l1.get(i), l2.get(j)); //return 0 or -1 or 1
+int compare = a.get(i).compareTo(b.get(j)); //return 0 or -1 or 1
+```
+
+## Priority Queue and HEAP
+
+Class比较，比如Integer，用a.equals(b); 
+
+Value比较，比如int, 用 a == b
 
 ```java
 //use a maxheap to store the k smallest elements
@@ -215,14 +229,18 @@ PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(k, new Comparator<In
 });
 ```
 
+**MaxHeap**
+
 ```java
 maxHeap.peek();  //peekFirst
 maxHeap.offer();  //depending on your comparator, maxheap is ..  nlogn 
 maxHeap.poll();  //pollFirst, nlongn  >>  You can build your heap in O(n), heapSort. Then you pop elements off, one at a time, each taking O(log n) time. This takes O(n log n) time total.
 ```
 
+**MinHeap**
+
 ```java
-//Minheap
+
 PriorityQueue<Map.Entry<String, Integer>> minHeap = new PriorityQueue<>(k, new Comparator<Map.Entry<String, Integer>>(){
  @Override
  public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2){

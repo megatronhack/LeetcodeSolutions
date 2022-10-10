@@ -13,59 +13,119 @@
 
 ```java
 public class Solution {
-  public int numOfSteps(int[] values) {
-    StringBuilder boardBuilder = new StringBuilder();
-    for (int i = 0; i < values.length; i++) {
-      boardBuilder.append(values[i]);
-    }
-    Queue<State> queue = new LinkedList<>();
-    Set<String> vis = new HashSet<>();
-    int[][] nextIndexMap =
-        new int[][] {{1, 4}, {0, 2, 5}, {1, 3, 6}, {2, 7}, {0, 5}, {1, 4, 6}, {2, 5, 7}, {3, 6}};
+  static class Board {
+    public final static int R = 2;
+    public final static int C = 4;
 
-    String initialBoard = boardBuilder.toString();
-    State initial = new State(initialBoard, initialBoard.indexOf('0'));
-    queue.offer(initial);
-    vis.add(initial.board);
-    int steps = 0;
-    while (!queue.isEmpty()) {
-      int size = queue.size();
-      for (int i = 0; i < size; i++) {
-        State curr = queue.poll();
-        if (isSolved(curr.board)) return steps;
-        for (int nextIndex : nextIndexMap[curr.zeroIndex]) {
-          String nextBoard = swap(curr.board, curr.zeroIndex, nextIndex);
-          boolean unvisited = vis.add(nextBoard);
-          if (!unvisited) continue;
-          queue.offer(new State(nextBoard, nextIndex));
+    public Board() {
+    }
+  
+  public Board(int[] values) {
+    for (int i = 0; i < R; i++) {
+      for (int j = 0; j < C; j++) {
+        board[i][j] = values[i*C + j];
+      }
+    }
+  }
+
+  public void swap (int i1, int j1, int i2, int j2) {
+    int tmp = board[i1][j1];
+    board[i1][j1] = board[i2][j2];
+    board[i2][j2] = tmp;
+  }
+
+  public int[] findZero() {
+    for (int i = 0; i < R; i++) {
+      for (int j = 0; j < C; j++) {
+        if (board[i][j] == 0) {
+          return new int[] {i, j};
         }
       }
-      steps++;
     }
-
-    return -1;
+    return null;
   }
 
-  private boolean isSolved(String state) {
-    String solved = "01234567";
-    return state.equals(solved);
+  public boolean outOfBound(int i, int j) {
+    return i < 0 || i >= R || j < 0 || j >= C;
   }
 
-  private String swap(String s, int i, int j) {
-    StringBuilder sb = new StringBuilder(s);
-    sb.setCharAt(i, s.charAt(j));
-    sb.setCharAt(j, s.charAt(i));
-    return sb.toString();
-  }
-
-  class State {
-    String board;
-    int zeroIndex;
-
-    State(String board, int zeroIndex) {
-      this.board = board;
-      this.zeroIndex = zeroIndex;
+  @Override
+  public int hashCode() {
+    int code = 0;
+    for (int i = 0; i < R; i++) {
+      for (int j = 0; j < C; j++) {
+        code = code * 10 + board[i][j];
+      }
     }
+    return code;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (!(o instanceof Board)) {
+      return false;
+    }
+    Board b = (Board) o;
+    for (int i = 0; i < R; i++) {
+      for (int j = 0; j < C; j++) {
+        if (board[i][j] != b.board[i][j]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public Board clone() {
+    Board c = new Board();
+    for (int i = 0; i < R; i++) {
+      for (int j = 0; j < C; j++) {
+        c.board[i][j] = board[i][j];
+      }
+    }
+    return c;
+  }
+  private int[][] board = new int[R][C];
+}
+
+final static int[][] DIRS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  public int numOfSteps(int[] values) {
+    Queue<Board> queue = new ArrayDeque<>();
+    Map<Board, Integer> boardStep = new HashMap<>();
+
+    Board start = new Board(new int[] {0, 1, 2, 3, 4, 5, 6, 7});
+    queue.offer(start);
+    boardStep.put(start, 0);
+
+    while (!queue.isEmpty()) {
+      Board board = queue.poll();
+      int step = boardStep.get(board);
+
+      int[] zeroPos = board.findZero();
+      int zeroI = zeroPos[0];
+      int zeroJ = zeroPos[1];
+
+      for (int[] dir : DIRS) {
+        int i = zeroI + dir[0];
+        int j = zeroJ + dir[1];
+        if (!board.outOfBound(i, j)) {
+          board.swap(zeroI, zeroJ, i, j);
+          if (!boardStep.containsKey(board)) {
+            Board newBoard = board.clone();
+            queue.offer(newBoard);
+            boardStep.put(newBoard, step + 1);
+          }
+          board.swap(zeroI, zeroJ, i, j);
+        }
+      }
+    }
+    return boardStep.getOrDefault(new Board(values), -1);
   }
 }
+// assuming the board is always 2 by 4
+//Time: O(|number of unique boards|)
+//Space: O(|number of unique boards| * 8)
+
 ```

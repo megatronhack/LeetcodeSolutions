@@ -11,36 +11,29 @@ Spaec complexity: O(k) because of the map.
 ```java
 public class Solution {
   public List<Integer> majority(int[] array, int k) {
-    Map<Integer, Integer> counter = new HashMap<>();
-    for (int num : array) {
-      if (counter.containsKey(num)) {
-        counter.put(num, counter.get(num) + 1);
+    // Traverse the array and use a hashmap to keep records of the number and the occurence
+    // Use a set to record the numbers with occurence more than array.length / k
+    // Add the elements from the set to a list and return as the result
+    // TC: O(n) SC: O(n)
+    HashMap<Integer, Integer> map = new HashMap<>();
+    Set<Integer> set = new HashSet<>();
+    List<Integer> result = new ArrayList<>();
+    for (int i = 0; i < array.length; i++) {
+      if (map.containsKey(array[i])) {
+        int count = map.get(array[i]);
+        map.put(array[i], count + 1);
       } else {
-        if (counter.size() < k - 1) {
-          counter.put(num, 1);
-        } else {
-          List<Integer> keyList = new ArrayList<>(counter.keySet());
-          for (int key : keyList) {
-            int count = counter.get(key);
-            if (count == 1) counter.remove(key);
-            else counter.put(key, count - 1);
-          }
-        }
+        map.put(array[i], 1);
       }
-    }
-
-    List<Integer> majorityList = new ArrayList<>();
-    Map<Integer, Integer> freqMap = new HashMap<>();
-    for (int num : array) {
-      if (counter.containsKey(num)) {
-        freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+      if (map.get(array[i]) > array.length / k) {
+        set.add(array[i]);
       }
+    } 
+    for (int num : set) {
+      result.add(num);
     }
-    for (int num : freqMap.keySet()) {
-      int count = freqMap.get(num);
-      if (count > array.length / k) majorityList.add(num);
-    }
-    return majorityList;
+    return result;
   }
 }
 ```
+

@@ -17,21 +17,30 @@ Time complexity: O(n)
 Space complexity: O(1)
 
 ```java
-class Solution {
-  public int majorityElement(int[] array) {
-    if (array.length == 1) return array[0];
-
-    int candidate = array[0], count = 1;
+public class Solution {
+  public int majority(int[] array) {
+    // Assumptions: array is not null and is not empty.
+    // majority number guarantees to exist.
+    int candidate = array[0];
+    int count = 1;
     for (int i = 1; i < array.length; i++) {
       if (count == 0) {
+        count++;
         candidate = array[i];
-        count = 1;
+      } else if (candidate == array[i]) {
+        count++;
       } else {
-        if (array[i] == candidate) count++;
-        else count--;
+        count--;
       }
     }
     return candidate;
   }
 }
+//tc: O(n)
+//sc: O(1)
+
 ```
+
+**Examples**
+
+- A = {1, 2, 1, 2, 1}, return 1

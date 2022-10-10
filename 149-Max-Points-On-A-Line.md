@@ -15,40 +15,55 @@ Time complexity: O(n^2)
 Space complexity: O(n) because of the hash map.
 
 ```java
-class Solution {
-  public int maxPoints(int[][] points) {
-    if (points.length <= 2) {
-      return points.length;
-    }
-    int res = 2;
-    int n = points.length;
-    for (int i = 0; i < n - 1; i++) {
-      int overlapped = 0, vertical = 0, sloped = 0;
-      Map<String, Integer> slopeCount = new HashMap<>();
-      int x1 = points[i][0], y1 = points[i][1];
-      for (int j = i + 1; j < n; j++) {
-        int x2 = points[j][0], y2 = points[j][1];
-        if (x1 == x2) {
-          if (y1 == y2) overlapped++;
-          else vertical++;
+public class Solution {
+  public int most(Point[] points) {
+    // Assumptions: points is not null, and points.length >= 2.
+    // record the maximum number of points on the same line.
+    int result = 0;
+    // we use each pair of points to form a line.
+    for (int i = 0; i < points.length; i++) {
+      Point seed = points[i];
+      // any line can be represented by a point and a slope.
+      // we take the point as seed and try to find all possible slopes.
+      int same = 1;// record the points with same <x,y>.
+      int sameX = 0; // record the points with same x, for the special case of infinite slope.
+      int most = 0;
+      // record the maximum number of points on the same line
+      // crossing the seed point.      
+      HashMap<Double, Integer> cnt = new HashMap<Double, Integer>();
+      //a map with all possible slopes
+      for (int j = 0; j < points.length; j++) {
+        if (i == j) {
           continue;
         }
-        int dx = x1 - x2, dy = y1 - y2;
-        int gcdXY = gcd(dx, dy);
-        dx /= gcdXY;
-        dy /= gcdXY;
-        String k = dy + "/" + dx;
-        slopeCount.put(k, slopeCount.getOrDefault(k, 0) + 1);
-        sloped = Math.max(sloped, slopeCount.get(k));
+        Point tmp = points[j];
+        if (tmp.x == seed.x && tmp.y == seed.y) {
+          same++;
+          //handle the points with same <x, y>
+        } else if (tmp.x == seed.x) {
+          sameX++;
+          //handle the points with same x
+        } else {
+          //otherwise just calculate the slope and increment the counter for the calculated clope
+          double slope = ((tmp.y - seed.y) + 0.0) / (tmp.x - seed.x);
+          if (!cnt.containsKey(slope)) {
+            cnt.put(slope, 1);
+          } else {
+            cnt.put(slope, cnt.get(slope) + 1);
+          }
+          most = Math.max(most, cnt.get(slope));
+        }
       }
-      int localMax = Math.max(sloped, Math.max(overlapped, vertical)) + 1;
-      res = Math.max(res, localMax);
+      most = Math.max(most, sameX) + same;
+      result = Math.max(result, most);
     }
-    return res;
-  }
-
-  private int gcd(int x, int y) {
-    return y == 0 ? x : gcd(y, x % y);
+    return result;
   }
 }
+//tc: O(n^2)
+//sc: O(n)
 ```
+
+**Examples**
+
+- <0, 0>, <1, 1>, <2, 3>, <3, 3>, the maximum number of points on a line is 3(<0, 0>, <1, 1>, <3, 3> are on the same line)

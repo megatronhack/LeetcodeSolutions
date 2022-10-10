@@ -12,48 +12,35 @@ Space complexity: O(k^3)
 
 ```java
 public class Solution {
-  public long kth(int k) {
-    boolean[][][] vis = new boolean[k + 1][k + 1][k + 1];
-    PriorityQueue<Tuple> minHeap = new PriorityQueue<>();
-
-    vis[1][1][1] = true;
-    minHeap.offer(new Tuple(1, 1, 1, 3 * 5 * 7));
-    for (int i = 1; i < k; i++) {
-      Tuple curr = minHeap.poll();
-      int x = curr.x, y = curr.y, z = curr.z;
-      if (!vis[x + 1][y][z]) {
-        vis[x + 1][y][z] = true;
-        minHeap.offer(new Tuple(x + 1, y, z, curr.val * 3));
+  // Method 1: BFS
+  public long kth(int K) {
+    // Assumptions: K >= 1.
+    PriorityQueue<Long> minHeap = new PriorityQueue<>(K);
+    Set<Long> visited = new HashSet<>();
+    // we use the actual product value to represent the states
+    // <x,y,z>, the value is 3^x * 5^y * 7^z, and the initial
+    // state is <1,1,1>.
+    minHeap.offer(3 * 5 * 7L);
+    visited.add(3 * 5 * 7L);
+    while (K > 1) {
+      long current = minHeap.poll();
+      // for the state <x+1,y,z>, the actual value is *3.
+      if (visited.add(3 * current)) {
+        minHeap.offer(3 * current);
       }
-      if (!vis[x][y + 1][z]) {
-        vis[x][y + 1][z] = true;
-        minHeap.offer(new Tuple(x, y + 1, z, curr.val * 5));
+      // for the state <x,y+1,z>, the actual value is *5.
+      if (visited.add(5 * current)) {
+        minHeap.offer(5 * current);
       }
-      if (!vis[x][y][z + 1]) {
-        vis[x][y][z + 1] = true;
-        minHeap.offer(new Tuple(x, y, z + 1, curr.val * 7));
+      // for the state <x,y,z+1>, the actual value is *7.
+      if (visited.add(7 * current)) {
+        minHeap.offer(7 * current);
       }
+      K--;
     }
-    return minHeap.peek().val;
-  }
-
-  class Tuple implements Comparable<Tuple> {
-    int x;
-    int y;
-    int z;
-    long val;
-
-    Tuple(int x, int y, int z, long val) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-      this.val = val;
-    }
-
-    @Override
-    public int compareTo(Tuple another) {
-      return Long.compare(this.val, another.val);
-    }
+    return minHeap.peek();
   }
 }
+//time k logk                log2k
+//space Ok
 ```

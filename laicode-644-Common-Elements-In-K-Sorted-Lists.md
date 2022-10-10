@@ -10,6 +10,44 @@ Time complexity: O(N) where N is the total number of elements in all lists.
 
 Space complexity: O(N) in worst case.
 
+```Java
+public class Solution {
+  public List<Integer> commonElementsInKSortedArrays(List<List<Integer>> input) {
+    // Use a list to store the common elements 
+    // Traverse all the list in the input and get common elements for all the lists
+    // Use the compare function to check the common elements in sorted lists
+    List<Integer> result = input.get(0);
+    for (int i = 1; i < input.size(); i++) {
+      result = helper(result, input.get(i));
+    }
+    return result;
+  }
+
+  private List<Integer> helper(List<Integer> a, List<Integer> b) {
+    List<Integer> res = new ArrayList<>();
+    int i = 0;
+    int j = 0;
+    while (i < a.size() && j < b.size()) {
+      //int cmp = Integer.compare(l1.get(i), l2.get(j));
+      int compare = a.get(i).compareTo(b.get(j));
+      if (compare == 0) {
+        res.add(a.get(i));
+        i++;
+        j++;
+      } else if (compare < 0) {
+        i++;
+      } else {
+        j++;
+      }
+    }
+    return res;
+  } 
+}
+//tc: k * n// where n is the len of each sorted list
+//sc: O(n)
+
+```
+
 ```java
 public class Solution {
   public List<Integer> commonElementsInKSortedArrays(List<List<Integer>> input) {

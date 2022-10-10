@@ -9,27 +9,44 @@ Time complexity: O(n) because each index is pushed and popped at most once.
 Space complexity: O(k)
 
 ```java
-class Solution {
-  public int[] maxSlidingWindow(int[] nums, int k) {
-    Deque<Integer> window = new ArrayDeque<>();
-    int n = nums.length;
-    int[] res = new int[n - k + 1];
-    // let i be the window's right boundary
-    for (int i = 0; i < n; i++) {
-      while (!window.isEmpty() && window.peekFirst() < i - k + 1) {
-        // remove all indexes out of left boundary
-        window.pollFirst();
+public class Solution {
+  public List<Integer> maxWindows(int[] array, int k) {
+    // Assumptions: array is not null or not empty,
+    // k >= 1 and k <= a.length.
+    List<Integer> max = new ArrayList<Integer>();
+    // use a descending deque to solve this problem,
+    // we store the index instead of the actual value in the deque,
+    // and we make sure:
+    // 1. the deque only contains index in the current sliding window.
+    // 2. for any index, the previous index with smaller value is
+    // discarded from the deque.
+    Deque<Integer> deque = new LinkedList<Integer>();
+    for (int i = 0; i < array.length; i++) {
+      // discard any index with smaller value than index i.
+      while (!deque.isEmpty() && array[deque.peekLast()] <= array[i]) {
+        deque.pollLast();
       }
-      while (!window.isEmpty() && nums[window.peekLast()] < nums[i]) {
-        // remove all indexes of elements that are smaller than current one
-        window.pollLast();
+      // it is possible the head element is out of the current
+      // sliding window so we might need to discard it as well.
+      // remove all indexes out of left boundary
+      if (!deque.isEmpty() && deque.peekFirst() <= i - k) {
+        deque.pollFirst();
       }
-      window.offerLast(i);
+      deque.offerLast(i);
+      //add element in the list of max when the current index is equal or bigger than k - 1
       if (i >= k - 1) {
-        res[i - k + 1] = nums[window.peekFirst()];
+        max.add(array[deque.peekFirst()]);
       }
     }
-    return res;
+    return max;
   }
 }
+//tc: O(n)
+//sc: O(n)
 ```
+
+**Examples**
+
+A = {1, 2, 3, 2, 4, 2, 1}, K = 3, the windows are {{1,2,3}, {2,3,2}, {3,2,4}, {2,4,2}, {4,2,1}},
+
+and the maximum values of each K-sized sliding window are [3, 3, 4, 4, 4]

@@ -44,3 +44,5 @@ public class Solution {
 //sc: O(n)
 
 ```
+
+- { 2, 1, **3, 3, 4** }, the largest rectangle area is 3 * 3 = 9(starting from index 2 and ending at index 4)
