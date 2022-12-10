@@ -75,7 +75,7 @@ List,map,set的data structure都不能是primitive: boolean , byte , char , shor
 
 ```java
 Map<Integer, List<Integer>> map = new HashMap<Integer,List<Integer>>();
-HashMap.put()    //key,value together
+HashMap.put()    //key,value together. Returns:the previous value associated with key, or null if there was no mapping for key.
 HashMap.get()    //get value, primitive type double
 HashMap.containsKey() ////return boolean
 HashMap.keySet()  //  create a set out of the key elements
