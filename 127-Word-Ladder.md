@@ -15,43 +15,48 @@ Clarification:
 这样如果最后可以转换到结束词，就会被我们搜到并返回步数。如果转换不到，最后就搜不到，按照题意返回0即可。
 
 ```java
-class Solution {
+public class Solution {
   public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-    Set<String> wordSet = new HashSet<>(wordList);
-    if (!wordSet.contains(endWord)) return 0;
-
-    wordSet.remove(beginWord);
-    wordSet.remove(endWord);
+    // Write your solution here
+    Set<String> wordSet = new HashSet(wordList);
+    if (!wordSet.contains(endWord)){
+      return 0;
+    }
 
     Queue<String> queue = new ArrayDeque<>();
     queue.offer(beginWord);
+
+    Set<String> visited = new HashSet<>();
+    visited.add(beginWord);
+
     int step = 1;
-    while (!queue.isEmpty()) {
-      step++;
+    while(!queue.isEmpty()){
+      ++step;
       int size = queue.size();
-      for (int i = 0; i < size; i++) {
-        char[] word = queue.poll().toCharArray();
-        for (int j = 0; j < word.length; j++) {
-          char backup = word[j];
-          for (char c = 'a'; c <= 'z'; c++) {
-            if (c == backup) continue;
-            word[j] = c;
-            String mutation = new String(word);
-            if (mutation.equals(endWord)) {
-              return step;
-            }
-            if (wordSet.contains(mutation)) {
-              queue.offer(mutation);
-              wordSet.remove(mutation);
-            }
-            word[j] = backup;
-          }
-        }
+      for(int i = 0; i < size; i++){
+         char[] word = queue.poll().toCharArray();
+         for(int j = 0; j < word.length; j++){   
+             char origin = word[j];
+             for(char c = 'a'; c <= 'z'; c++){
+                word[j] = c;
+                String mutation = new String(word); 
+                if(mutation.equals(endWord)){
+                    return step;
+                }
+                if(wordSet.contains(mutation) && !visited.contains(mutation)){
+                   queue.offer(mutation);
+                   visited.add(mutation);
+                }
+                word[j] = origin;
+             }
+         }
       }
     }
     return 0;
   }
 }
+// time 26*M * n              M is the deque word length,  n is the size of our word list
+//space M* n         M is no. of character that we had in our string & N is the size of our wordList.
 ```
 
 # Bi-directional BFS
@@ -111,3 +116,7 @@ class Solution {
   }
 }
 ```
+
+Example: start = "git", end = "hot", dictionary = {"git","hit","hog","hot"}
+
+Output: 3

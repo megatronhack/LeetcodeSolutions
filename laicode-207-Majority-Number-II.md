@@ -45,3 +45,37 @@ public class Solution {
   }
 }
 ```
+
+easier way
+
+```java
+public class Solution {
+  public List<Integer> majority(int[] array) {
+    // Use a hashmap with the key reoresents the number in the array and value represents the occurence
+    // Then get the value from the map and compare with array.length / 3, 
+    // if it is bigger then put their keys in the list
+    List<Integer> result = new ArrayList<>();
+    Map<Integer, Integer> map = new HashMap<>();
+    Set<Integer> set = new HashSet<>();
+    for (int i = 0; i < array.length; i++) {
+      if (map.containsKey(array[i])) {
+        int count = map.get(array[i]);
+        map.put(array[i], count +1);
+      } else {
+        map.put(array[i], 1);
+      }
+      if (map.get(array[i]) > array.length / 3) {
+        set.add(array[i]);
+      }
+    }
+     for (int num : set) {
+       result.add(num);
+     }
+    return result;
+  }
+}
+//tc: O(n)
+//sc: O(n)
+
+```
+

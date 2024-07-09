@@ -4,57 +4,76 @@
 
 针对这个限制，我们压入栈就不能像179题那样压入字符了，而是压入对应的优先级数字。这样我们在压入左括号的时候就不仅检查这个左括号是否还有余额，如果栈为空或者栈顶括号对应的优先级大于当前的优先级，那么当前的左括号才可以压入。压入右括号的时候，检查的情况不变，栈不为空而且栈顶得是对应的左括号方可将此右括号加入搜索。
 
-Time complexity: O(x * x!) where x = l + m + n.
+Time complexity: O(2n^2m) where n is the type of ps and m is the total number of the ps
 
-Space complexity: O(x) if the result doesn't count.
+Space complexity: O(2m)
 
 ```java
 public class Solution {
+  private static final char[] ps = new char[] {'(', ')', '<', '>', '{', '}'};
   public List<String> validParenthesesIII(int l, int m, int n) {
-    List<String> res = new ArrayList<>();
-    int targetLen = (l + m + n) * 2;
-    int[] lmnRemain = new int[] {l, l, m, m, n, n};
-    char[] lmnChars = new char[] {'(', ')', '<', '>', '{', '}'};
-    dfs(lmnRemain, lmnChars, targetLen, new ArrayDeque<>(), new StringBuilder(), res);
-    return res;
+    // use the dfs to solve this problem
+    //case 1: when add a new left parenthesis, check the validation by using the stack, 
+    //then check the priority, if not in conflict then push it to stack
+    //case 2: when add a new right parentheses, check whether it match the top of the stack
+    //while traverse the char array, need to record the number of that type of parenthese that can be added
+    // need to use the stack to check the validation and know when to offer and when to poll
+
+    //tc: 2n^2m where n is the type of ps and m is the total number of the ps
+    //sc: O(2m)
+    int[] remain = new int[] {l, l, m, m, n, n};
+    StringBuilder sb = new StringBuilder();
+    Deque<Integer> stack = new LinkedList<>();
+    int totalLevels = 2*l + 2*m + 2*n;
+    List<String> result = new ArrayList<>();
+    helper(ps, remain, stack, sb, totalLevels, result);
+    return result;
   }
 
-  private void dfs(
-      int[] lmnRemain,
-      char[] lmnChars,
-      int targetLen,
-      Deque<Integer> stack,
-      StringBuilder permutation,
-      List<String> res) {
-    if (permutation.length() == targetLen) {
-      res.add(permutation.toString());
+  private void helper(char[] ps, int[] remain, Deque<Integer> stack, 
+  StringBuilder sb, int totalLevels, List<String> result) {
+    //base case
+    if (sb.length() == totalLevels) {
+      result.add(sb.toString());
       return;
     }
-    for (int i = 0; i < lmnRemain.length; i++) {
+    //dfs rule: for each level how many states we can try
+    for (int i = 0; i < ps.length; i++) {
+    //if we choose to add left ps
       if (i % 2 == 0) {
-        // left paretheses
-        if (lmnRemain[i] > 0 && (stack.isEmpty() || stack.peek() > i)) {
-          stack.push(i);
-          permutation.append(lmnChars[i]);
-          lmnRemain[i]--;
-          dfs(lmnRemain, lmnChars, targetLen, stack, permutation, res);
-          lmnRemain[i]++;
-          permutation.deleteCharAt(permutation.length() - 1);
-          stack.pop();
-        }
+        //need to check remain and priority
+        if (remain[i] > 0 && (stack.isEmpty() || stack.peekFirst() > i )) {
+          stack.offerFirst(i);
+          remain[i]--;
+          sb.append(ps[i]);
+          helper(ps, remain, stack, sb, totalLevels, result);
+          stack.pollFirst();
+          remain[i]++;
+          sb.deleteCharAt(sb.length() - 1);
+        } 
       } else {
-        // right parentheses
-        if (!stack.isEmpty() && stack.peek() == i - 1) {
-          stack.pop();
-          permutation.append(lmnChars[i]);
-          lmnRemain[i]--;
-          dfs(lmnRemain, lmnChars, targetLen, stack, permutation, res);
-          lmnRemain[i]++;
-          permutation.deleteCharAt(permutation.length() - 1);
-          stack.push(i - 1);
-        }
+      // if we choose to add the right ps
+      // need to check the remain and peekFirst in the stack whether it is in pair with current one
+      if (remain[i] > 0 && !stack.isEmpty() && stack.peekFirst() == i - 1) {
+        stack.pollFirst();
+        remain[i]--;
+        sb.append(ps[i]);
+        helper(ps, remain, stack, sb, totalLevels, result);
+        stack.offerFirst(i - 1);
+        remain[i]++;
+        sb.deleteCharAt(sb.length() - 1);
+      }
       }
     }
   }
 }
+
 ```
+
+Get all valid permutations of l pairs of (), m pairs of <> and n pairs of {}, subject to the priority restriction: {} higher than <> higher than ().
+
+**Examples**
+
+  l = 1, m = 1, n = 0, all the valid permutations are ["()<>", "<()>", "<>()"].
+
+  l = 2, m = 0, n = 1, all the valid permutations are [“()(){}”, “(){()}”, “(){}()”, “{()()}”, “{()}()”, “{}()()”].

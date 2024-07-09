@@ -10,52 +10,63 @@ Space complexity: O(k^3)
 
 ```java
 public class Solution {
-  public List<Integer> closest(int[] a, int[] b, int[] c, int k) {
-    // sanity check if necessary
-    boolean[][][] vis = new boolean[k][k][k];
-    PriorityQueue<Tuple> minHeap = new PriorityQueue<>();
-
-    vis[0][0][0] = true;
-    minHeap.offer(new Tuple(0, 0, 0, a[0], b[0], c[0]));
-    for (int i = 0; i < k - 1; i++) {
-      Tuple curr = minHeap.poll();
-      int ai = curr.ai, bi = curr.bi, ci = curr.ci;
-      if (ai + 1 < a.length && !vis[ai + 1][bi][ci]) {
-        vis[ai + 1][bi][ci] = true;
-        minHeap.offer(new Tuple(ai + 1, bi, ci, a[ai + 1], b[bi], c[ci]));
+  public List<Integer> closest(final int[] a, final int[] b, final int[] c, int k) {
+    // Assumptions: a, b, c are not null, length >= 1,
+    // k >= 1 && k <= a.length * b.length * c.length.
+    // we will need a min heap, with comparator to compare the distance.
+    // Note that we are using the index in a,b,c as values in the List<Integer>.
+    PriorityQueue<List<Integer>> minHeap = new PriorityQueue<>(2 * k, new Comparator<List<Integer>>() {
+      @Override
+      public int compare(List<Integer> o1, List<Integer> o2) {
+        long d1 = distance(o1, a, b, c);
+        long d2 = distance(o2, a, b, c);
+        if (d1 == d2) {
+          return 0;
+        }
+        return d1 < d2 ? -1 : 1;
       }
-      if (bi + 1 < b.length && !vis[ai][bi + 1][ci]) {
-        vis[ai][bi + 1][ci] = true;
-        minHeap.offer(new Tuple(ai, bi + 1, ci, a[ai], b[bi + 1], c[ci]));
+    });
+    // Note that List's equals() method has been already overridden,
+    // and it is comparing the actual elements in the List.
+    Set<List<Integer>> visited = new HashSet<>();
+    // The initial state is <0,0,0>, meaning picking the smallest elements
+    // from the three arrays.
+    List<Integer> cur = Arrays.asList(0, 0, 0);
+    visited.add(cur);
+    minHeap.offer(cur);
+    while (k > 0) {
+      cur = minHeap.poll();
+      List<Integer> n = Arrays.asList(cur.get(0) + 1, cur.get(1), cur.get(2));
+      if (n.get(0) < a.length && visited.add(n)) {
+        minHeap.offer(n);
       }
-      if (ci + 1 < c.length && !vis[ai][bi][ci + 1]) {
-        vis[ai][bi][ci + 1] = true;
-        minHeap.offer(new Tuple(ai, bi, ci + 1, a[ai], b[bi], c[ci + 1]));
+      n = Arrays.asList(cur.get(0), cur.get(1) + 1, cur.get(2));
+      if (n.get(1) < b.length && visited.add(n)) {
+        minHeap.offer(n);
       }
+      n = Arrays.asList(cur.get(0), cur.get(1), cur.get(2) + 1);
+      if (n.get(2) < c.length && visited.add(n)) {
+        minHeap.offer(n);
+      }
+      k--;
     }
-    Tuple res = minHeap.peek();
-    return Arrays.asList(a[res.ai], b[res.bi], c[res.ci]);
+    // at last, we replace the index with actual values in a, b, c.
+    cur.set(0, a[cur.get(0)]);
+    cur.set(1, b[cur.get(1)]);
+    cur.set(2, c[cur.get(2)]);
+    return cur;
   }
 
-  class Tuple implements Comparable<Tuple> {
-    int ai, bi, ci;
-    int aVal, bVal, cVal;
-    Long dis;
-
-    Tuple(int ai, int bi, int ci, int aVal, int bVal, int cVal) {
-      this.ai = ai;
-      this.bi = bi;
-      this.ci = ci;
-      this.aVal = aVal;
-      this.bVal = bVal;
-      this.cVal = cVal;
-      this.dis = (long) aVal * aVal + bVal * bVal + cVal * cVal;
-    }
-
-    @Override
-    public int compareTo(Tuple another) {
-      return Long.compare(this.dis, another.dis);
-    }
+  private long distance(List<Integer> point, int[] a, int[] b, int[] c) {
+    long dis = 0;
+    dis += a[point.get(0)] * a[point.get(0)];
+    dis += b[point.get(1)] * b[point.get(1)];
+    dis += c[point.get(2)] * c[point.get(2)];
+    return dis;
   }
+
 }
+//Time:O(klogk)
+//Space: O(k)
+
 ```

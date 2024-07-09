@@ -9,65 +9,71 @@ Time complexity: O(m * n * 3^L), L is the max length of word. This is only for w
 Space complexity: O(N) where N is the total number of letters in the dictionary.
 
 ```java
-class Solution {
+public class Solution {
   public List<String> findWords(char[][] board, String[] words) {
-    List<String> res = new ArrayList<>();
-    if (board.length == 0 || board[0].length == 0 || words.length == 0) {
-      return res;
+    // Write your solution here
+  List<String> result = new ArrayList<>();
+  TrieNode root = buildTrie(words);
+  int m = board.length;
+  int n = board[0].length;
+  for(int i = 0; i < m; i++){
+    for(int j = 0; j < n; j++){
+      dfs(board,i,j,root,result);
     }
-
-    TrieNode root = buildTrie(words);
-    int m = board.length, n = board[0].length;
-    for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) {
-        dfs(board, i, j, root, res);
-      }
-    }
-    return res;
   }
-
-  private void dfs(char[][] board, int r, int c, TrieNode p, List<String> res) {
-    if (r < 0 || r >= board.length || c < 0 || c >= board[0].length || board[r][c] == '#') {
+  return result;
+  }
+    private void dfs(char[][] board, int row, int column, TrieNode root, List<String> result ){
+    //base case
+    if (row >= board.length || row < 0 || column >= board[0].length || column < 0 || board[row][column] == '#'){
+         return;
+    }
+    char ch = board[row][column];
+    int nextIndex = ch - 'a';
+    if(root.next[nextIndex] == null){
       return;
     }
 
-    char ch = board[r][c];
-    int nextIndex = ch - 'a';
-    if (p.next[nextIndex] == null) return;
-
-    p = p.next[nextIndex];
-    if (p.word != null) {
-      res.add(p.word);
-      p.word = null;
+    root = root.next[nextIndex];
+    if (root.word != null){
+      result.add(root.word);
+      root.word = null;
     }
-
-    board[r][c] = '#';
-
-    dfs(board, r + 1, c, p, res);
-    dfs(board, r - 1, c, p, res);
-    dfs(board, r, c + 1, p, res);
-    dfs(board, r, c - 1, p, res);
-
-    board[r][c] = ch;
-  }
-
-  private TrieNode buildTrie(String[] words) {
+    //change it
+    board[row][column] = '#';
+    
+    dfs(board,row + 1, column,root,result);
+    dfs(board,row - 1, column,root,result);
+    dfs(board,row, column + 1,root,result);
+    dfs(board,row,column - 1,root,result);
+    
+     board[row][column] = ch;
+    }
+    
+    private TrieNode buildTrie(String[] words){
     TrieNode root = new TrieNode();
-    for (String word : words) {
+    for (String word : words){
       TrieNode p = root;
-      for (int i = 0; i < word.length(); i++) {
+      for(int i = 0; i < word.length(); i++){
         int nextIndex = word.charAt(i) - 'a';
-        if (p.next[nextIndex] == null) p.next[nextIndex] = new TrieNode();
-        p = p.next[nextIndex];
+        if(p.next[nextIndex] == null){
+           p.next[nextIndex] = new TrieNode();
+        }
+      p = p.next[nextIndex];
       }
-      p.word = word;
+    p.word = word;
     }
     return root;
-  }
+   }
 
-  class TrieNode {
-    String word;
-    TrieNode[] next = new TrieNode[26];
-  }
+    class TrieNode{
+      String word;
+      TrieNode[] next = new TrieNode[26];
+    }
+    
 }
+
+//ime complexity: O(m * n * 3^L), L is the max length of word. This is only for worst case. In actual running, trie will help prune the search tree significantly.
+
+//Space complexity: O(N) where N is the total number of letters in the dictionary.
 ```

@@ -67,3 +67,53 @@ class Solution {
     }
 }
 ```
+
+
+
+## N-ary Tree Preorder Traversal
+
+需要处理children node的排序问题 Collections.reverse(node.children);
+
+注意offerFirst和pollFirst的顺序去处理这个问题。
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+    public List<Integer> preorder(Node root) {
+        //Need to traverse the tree level by level by using a stack
+        //Use the list to add the cur node's value and return
+        List<Integer> res = new ArrayList<>();
+        Deque<Node> stack = new LinkedList<Node>();
+        if (root == null) return res;
+        stack.offerFirst(root);
+        while(!stack.isEmpty()){
+            Node cur = stack.pollFirst();
+            res.add(cur.val);
+            Collections.reverse(cur.children);
+            for (Node child : cur.children){
+                stack.offerFirst(child);
+            }
+        }
+        return res;
+    }
+}
+```
+

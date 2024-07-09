@@ -8,31 +8,46 @@ Time complexity: O(2^n)
 
 Space complexity: O(n) if the result doesn't count.
 
+![Laicode 640. All Subsets of Size K](assets\images\Laicode 640. All Subsets of Size K.jpg))
+
 ```java
 public class Solution {
   public List<String> subSetsOfSizeK(String set, int k) {
-    List<String> res = new ArrayList<>();
+    List<String> result = new ArrayList<>();
     if (set == null) {
-      return res;
+      return result;
     }
-    subsetsK(set.toCharArray(), 0, k, new StringBuilder(), res);
-    return res;
+    char[] array = set.toCharArray();
+    StringBuilder sb = new StringBuilder();
+    helper(array, 0, sb, result, k);
+    return result;
   }
-
-  private void subsetsK(char[] sc, int level, int k, StringBuilder subset, List<String> res) {
-    if (subset.length() == k) {
-      res.add(subset.toString());
+  private void helper(char[] array, int index, StringBuilder sb, List<String> result, int k) {
+    //base case
+    if (sb.length() == k) {
+      result.add(sb.toString());
       return;
     }
-    if (level == sc.length) {
+    if (index == array.length) {
       return;
     }
-
-    subset.append(sc[level]);
-    subsetsK(sc, level + 1, k, subset, res);
-    subset.deleteCharAt(subset.length() - 1);
-
-    subsetsK(sc, level + 1, k, subset, res);
+    //if we choose to add current char
+    helper(array, index + 1, sb.append(array[index]), result, k);
+    //delete the char when the recursion function finished
+    sb.deleteCharAt(sb.length() - 1);
+    //if we choose not to add the current char
+    helper(array, index + 1, sb, result, k);
   }
 }
+//tc: 0(2^n)
+//sc: O(n)
+
 ```
+
+**Examples**
+
+Set = "abc", K = 2, all the subsets are [“ab”, “ac”, “bc”].
+
+Set = "", K = 0, all the subsets are [""].
+
+Set = "", K = 1, all the subsets are [].

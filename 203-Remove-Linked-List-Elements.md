@@ -20,7 +20,7 @@ Return: 1 --> 2 --> 3 --> 4 --> 5
 
   //o1
 
-```
+```java
    if (head == null){
       return null;
     }

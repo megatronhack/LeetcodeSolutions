@@ -11,30 +11,42 @@ Time complexity: O(2^n).
 Space complexity: O(n), n level call stack for DFS and sort.
 
 ```java
-class Solution {
-  public List<List<Integer>> subsetsWithDup(int[] nums) {
-    List<List<Integer>> res = new ArrayList<>();
-    if (nums.length == 0) {
-      return res;
+public class Solution {
+  public List<String> subSets(String set) {
+    //Use the DFS to solve this question
+    //Turn the input string into a char array
+    //For each layer, decide whether to add that element or not
+    //Need to deduplicate for some branched if choose not to add the duplicate element
+    List<String> result = new ArrayList<>();
+    if (set == null) {
+      return result;
     }
-    Arrays.sort(nums);
-    subsets(nums, 0, new ArrayList<>(), res);
-    return res;
+    char[] array = set.toCharArray();
+    Arrays.sort(array);
+    StringBuilder sb = new StringBuilder();
+    dfs(array, 0, sb, result);
+    return result;
   }
 
-  private void subsets(int[] nums, int level, List<Integer> subset, List<List<Integer>> res) {
-    if (level == nums.length) {
-      res.add(new ArrayList<>(subset));
+  private void dfs(char[] array, int index, StringBuilder sb, List<String> result) {
+    //base case
+    if (index == array.length) {
+      result.add(sb.toString());
       return;
     }
-    subset.add(nums[level]);
-    subsets(nums, level + 1, subset, res);
-    subset.remove(subset.size() - 1);
-
-    int nextLevel = level + 1;
-    while (nextLevel < nums.length && nums[nextLevel] == nums[level]) nextLevel++;
-
-    subsets(nums, nextLevel, subset, res);
+    //recursion rule
+    //choose to add the element at current layer
+    dfs(array, index + 1, sb.append(array[index]), result);
+    sb.deleteCharAt(sb.length() - 1);
+    //need to deduplicate when choose not to add the element and the element is the same with the following one
+    while (index + 1 < array.length && array[index] == array[index + 1]) {
+      index++;
+    }
+    //choose not to add the current element
+    dfs(array, index + 1, sb, result);
   }
 }
+//tc: O(2^n)
+//sc: O(n)
 ```
+

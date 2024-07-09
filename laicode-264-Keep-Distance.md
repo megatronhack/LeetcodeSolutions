@@ -4,7 +4,11 @@
 
 还是经典的DFS题目，我们可以根据题目的要求来搜索。我们可以从k开始往前搜，因为这样可以一开始减少分支情况从而降低一些复杂度。
 
-按照题目要求，相同元素x之间必须间隔x个元素，这样去不断地搜索。base case就是间隔为0，说明序列已经生成好了，就返回true表示有这么个序列。否则，我们就从下标0开始，遍历所有可以安排的位置，然后逐一向下搜索。只要下层返回true，就代表下层搜索找到了一个合理的序列，当前层也就立刻停止搜索向上返回true。
+按照题目要求，相同元素x之间必须间隔x个元素，这样去不断地搜索。
+
+base case就是间隔为0，说明序列已经生成好了，就返回true表示有这么个序列。
+
+否则，我们就从下标0开始，遍历所有可以安排的位置，然后逐一向下搜索。只要下层返回true，就代表下层搜索找到了一个合理的序列，当前层也就立刻停止搜索向上返回true。
 
 最后只要最上层的搜索结果是true，我们就可以返回这个序列了。否则，返回null代表没有结果。
 
@@ -42,3 +46,17 @@ public class Solution {
   }
 }
 ```
+
+Given an integer k, arrange the sequence of integers [1, 1, 2, 2, 3, 3, ...., k - 1, k - 1, k, k], such that the output integer array satisfy this condition:
+
+Between each two i's, they are exactly i integers (for example: between the two 1s, there is one number, between the two 2's there are two numbers).
+
+**If there does not exist such sequence, return null.**
+
+**Assumptions:**
+
+- k is guaranteed to be > 0
+
+**Examples:**
+
+- k = 3, The output = { 2, 3, 1, 2, 1, 3 }.
