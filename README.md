@@ -1,4 +1,6 @@
-## [API Note](API.md)
+## [API Java Note](API Java Note.md)
+
+[API python Note]()
 
 ## [Personal Note](Note.md)
 

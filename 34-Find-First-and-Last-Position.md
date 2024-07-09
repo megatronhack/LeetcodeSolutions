@@ -20,71 +20,97 @@ Space complexity: O(1)
 
 ```java
 class Solution {
-    private final int[] noAns = {-1, -1};
     public int[] searchRange(int[] nums, int target) {
-        if(nums == null || nums.length == 0){
-            return noAns;
+        if (nums == null || nums.length == 0){
+            return new int[]{-1,-1};
         }
-        if(nums[0] > target || nums[nums.length - 1] < target){
-            return noAns;
-        }
-
-        int[] ans = {firstOccurrence(nums, target), -1};
-        if(ans[0] == -1){
-            return ans;
-        }else{
-            ans[1] = lastOccurrence(nums, target);
-            return ans;
-        }
-
+        int start = firstOccur(nums,target);
+        int end = lastOccur(nums,target);
+        return new int[]{start,end};
     }
 
-    private int firstOccurrence(int[] nums, int target){
-        int l = 0, r = nums.length - 1;
-        while(l < r){
-            int mid = l + (r-l >> 1);
-            if(nums[mid] < target){
-                l = mid + 1;
-            }else{
-                r = mid;
+    public int firstOccur(int[] array, int target){
+        int left = 0;
+        int right = array.length - 1;
+        while(left < right - 1){
+            int mid = left + (right - left) / 2;
+            if(array[mid] >= target){
+                right = mid;
+            }
+            else{
+                left = mid;
             }
         }
-        return nums[l] == target ? l : -1;
+        if(array[left] == target){
+            return left;
+        }
+        if(array[right] == target){
+            return right;
+        }
+        return -1;
     }
 
-    /**
-     * Call this only if firstOccurrence doesn't return -1.
-     */
-    private int lastOccurrence(int[] nums, int target){
-        int l = 0, r = nums.length - 1;
-        while(r - l > 1){
-            int mid = l + (r-l >> 1);
-            if(nums[mid] <= target){
-                l = mid;
-            }else{
-                r = mid - 1;
+    public int lastOccur(int[] array, int target){
+        int left = 0;
+        int right = array.length - 1;
+        while(left < right - 1){
+            int mid = left + (right - left) / 2;
+            if(array[mid] <= target){
+                left = mid;
+            }
+            else{
+                right = mid;
             }
         }
-        return nums[r] == target ? r : l;
-    }
-
-    private int lastOccurrence2(int[] nums, int target){
-        int l = 0, r = nums.length - 1;
-        while(l <= r){
-            int mid = l + (r-l >> 1);
-            if(nums[mid] == target){
-                if(mid == nums.length - 1 || nums[mid + 1] > target){
-                    return mid;
-                }else{
-                    l = mid + 1;
-                }
-            }else if(nums[mid] < target){
-                l = mid + 1;
-            }else{
-                r = mid - 1;
-            }
+        if(array[right] == target){
+            return right;
+        }
+        if(array[left] == target){
+            return left;
         }
         return -1;
     }
 }
 ```
+
+```python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums:
+            return [-1, -1]
+
+        start = self.firstOccur(nums, target)
+        end = self.lastOccur(nums, target)
+        return [start, end]
+
+    def firstOccur(self, nums: List[int], target: int) -> int:
+        left = 0
+        right = len(nums) - 1
+        while left < right - 1:
+            mid = left + (right - left) // 2
+            if nums[mid] >= target:
+                right = mid 
+            else:
+                left = mid 
+        if nums[left] == target:
+            return left
+        if nums[right] == target:
+            return right
+        return -1
+
+    def lastOccur(self, nums: List[int], target: int) -> int:
+        left = 0
+        right = len(nums) - 1
+        while left < right - 1:
+            mid = left + (right - left) // 2
+            if nums[mid] <= target:
+                left = mid 
+            else:
+                right = mid 
+        if nums[right] == target:
+            return right
+        if nums[left] == target:
+            return left            
+        return -1
+```
+

@@ -6,12 +6,6 @@
 
 先来左右边界检查，接着是二分搜索第一个GE的数。
 
-循环不变量是：我们要找的数始终落在[l, r]这个闭区间内。
-
-当nums[mid] < target时，这个数肯定在[mid + 1, r]里。当nums[mid] >= target时，这个数肯定在[l, mid]里。通过这样来维持循环不变量。
-
-最后结束的时候，l == r，说明第一个GE的数就是这个。
-
 Time complexity: O(logN)
 
 Space complexity: O(1)
@@ -19,32 +13,64 @@ Space complexity: O(1)
 ```java
 class Solution {
     public int searchInsert(int[] nums, int target) {
-        if(nums == null || nums.length == 0){
-            return -1;
+       if(nums == null || nums.length == 0){
+           return -1;
+       }
+      int left = 0;
+      int right = nums.length - 1;
+      while (left < right){
+        int mid = left + (right - left) / 2;
+        if(nums[mid] < target){
+            left = mid + 1;
         }
-        if(nums[0] >= target){
-            return 0;
-        }else if(nums[nums.length - 1] < target){
-            return nums.length;
-        }else{
-            return firstGE(nums, target);
+        else if(nums[mid] > target){
+            right = mid - 1;
         }
-    }
+        else{
+            return mid;
+        }
+      }
+      //corner one element
+      if(nums.length == 1 && nums[0] == target){
+          return left;
+      }
 
-    /**
-     * Find the first one that is greater than or equal to target.
-     */
-    private int firstGE(int[] nums, int target){
-        int l = 0, r = nums.length - 1;
-        while(l < r){
-            int mid = l + (r-l >> 1);
-            if(nums[mid] < target){
-                l = mid + 1;
-            }else{
-                r = mid;
-            }
-        }
-        return l;
+      if(nums.length == 1 && nums[0] < target){
+          return right + 1;
+      }
+        
+      if(target <= nums[left]){
+          return left;
+      }
+      else{
+          return right + 1;
+      }
     }
 }
 ```
+
+```python
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        left = 0
+        right = len(nums) - 1
+        while left <  right:
+            mid = left + (right - left) // 2
+            if nums[mid] < target:
+                left = mid + 1
+            elif nums[mid] > target:
+                right = mid - 1
+            else:
+                return mid
+        ## corner one element case
+        if len(nums) == 1 and nums[0] == target:
+            return left
+        if len(nums) == 1 and nums[0] < target:
+            return right + 1
+
+        if nums[left] >= target:
+            return left
+        else:
+            return right + 1
+```
+
