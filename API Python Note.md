@@ -1,36 +1,34 @@
 ## Array
 
-```java
-int[] array = new int[array.length];    // array length
-int[] max = new int[]{Integer.MIN_VALUE}; // create an array with value  
-int[] emptyArray = new int[]{};   // empty array  
-Arrays.sort(array);  
-Arrays.asList(i,j)  // new array to list  
-Arrays.copyOf(myArray,end)// copy an array from index 0 to index end - 1;
+```python
+len(array)    ##  array length  ps:如果local var定义了个len,会和Built in len冲突
+array = [1,2,3] ##  create an array with value  
+array = []     ## empty array  
+array.append(1) ##  add
+array.sort(array);  
+array.copf(myArray,end)##  copy an array from index 0 to index end - 1;
     
-int[] array = new ArrayList<GraphNode>(map.values()); // create (array with map.values api)
+list(array) ## Create an array from the values of a
 ```
 
 
 
 ## Set 
 
-List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
-
-String[] s ，或者所有array都***不可以***放到Set<String> set = new HashSet<>(s)进行转换。（得用for loop用set一个一个add）
-
-List<String> s **可以**放到Set<String> set = new HashSet<>(s)进行转换
-
-List<TreeNode> nodes **可以**放到  Set<TreeNode> set = new HashSet<TreeNode>(nodes);
-
-```java
-set.contains()  
-set.add()  
-Set<Integer> set = new HashSet<Integer>();  
-set.toCharArray();  // string set                 
-Set<String> set = new HashSet<>();     
-set.contains();  
-set.remove(); 
+```py
+my_set = set() ## my_set  = {}  # This creates an empty dictionary, not a set
+my_set = {1, 2, 3}  ## my_set with element 1 2 3
+my_set.add(4
+my_set.remove(4)       
+print("a" in my_string_set)  # Output: True ## Check if a set contains an element (Same as above).
+      
+string_set = {"hello", "world"}       
+Example 1: Converting each string to a list of characters   
+char_array = [char for word in string_set for char in word] # Convert each string in the set to a list of characters         
+Example 2: Concatenating all strings and then converting to a list of characters
+concatenated_string = "".join(string_set) # Concatenate all strings in the set into a single string
+char_array = list(concatenated_string)  # Convert the concatenated string to a list of characters          
+print(char_array)  # Output: ['h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd']
 ```
 
 
@@ -41,44 +39,43 @@ set.remove();
 
 ## List
 
-List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double . 
+```python
+my_list = [1, 2, 3, 4, 5]
+is_empty = len(my_list) == 0
+print(is_empty)  # Output: False
+ 
+my_list.append(6)  ## add   
+del my_list[index] ## delete
+del my_list[2:]  ## like java sublist. here delete from index to end
+len(my_list) ## length, size
+mylist.reverse() ## [5,4,3,2,1]
+my_list[i] ## same as java list.get(i)
 
-list: [1,2,3,4,5]
 
-```java
-List<GraphNode>
-List<List<Integer>> result = new ArrayList<List<Integer>>();
-List<String> result =  new ArrayList<String>();
-list.isEmpty();
-list.remove(index);
-list.subList(size, cur.size()).clear(); //题目404
-list.size()   // 大小
-list.get(i)  //取数
-list.add(array[i]);   //add在尾巴后
-list.get(i).add(array[i])  // index 为i的位置，insert the element
-List<ListNode>   // 有指针
-ListNode dummy = new ListNode(0);
+mylist[::-1] ## [5,4,3,2,1] slicing, sequence[start:stop:step], : means you want the whole list. The -1 is the step size, which means you want to step backwards through the list, effectively reversing it.
 ```
 
 
 
 ## HashMap
 
-List,map,set的data structure都不能是primitive: boolean , byte , char , short , int , long , float and double 
-
 {key:value}
 
-```java
-Map<Integer, List<Integer>> map = new HashMap<Integer,List<Integer>>();
-HashMap.put()    //key,value together
-HashMap.get()    //get value, primitive type double
-HashMap.values()     return collections of values
-HashMap.containsKey()
-HashMap.keySet()  //  create a set out of the key elements
-HashMap.getValue()   // get value, a Double object, like Integer wrapper type
-HashMap.Entry() //return reference
-HashMap.entrySet()  // returns a set view of the map
-HashMap.Entry<String, Integer> entry : Hashmap.entrySet()
+```python
+key = 1
+value = [1, 2, 3]  or {'key1': 'value1', 'key2': 2, 3: 'value3'}
+map[key] = value
+print(map)  # Output: {1: [1, 2, 3]} or {'key1': 'value1', 'key2': 2, 3: 'value3'}
+
+map.get(key) ## get value
+map.values() ## return collections of values
+if 'key' in map: ## hashMap.containsKey()
+    
+map.keys()  ## HashMap.keySet()   create a set out of the key elements
+print(map.keys()) ## a view object here output :dict_keys(['key1', 'key2', 3]), can be accessed with for key in map.keys().   but easier to conver to List as: list(map.keys())
+
+for k, v in map.items(): ## HashMap.Entry() iterating over items
+map.items() # HashMap.entrySet() returns a set view of the map. map.items() returns a view object that displays a list of (key, value) tuples.  output: print(my_dict.items()):  dict_items([('key1', 'value1'), ('key2', 2), (3, 'value3')])
 ```
 
 
@@ -96,31 +93,33 @@ Integer.MAX_VALUE;
 
 "string"
 
-```java
-String s = new String("word");
-String s = "hello";   //double quote is string, single is chart
-char[] arraySet = s.toCharArray();  // string to char array
-s.equals();  // checking actual value
-s.indexOf('0'); //return first occurrence index of '0' in the string. 
-s.charAt(i)// getting element
-s.length();
-int matchIndex = s.indexOf("abc", fromIndex); ////returns the position of the first occurrence of "abc" starting "fromIndex" in a string(our case is "s"), returns -1 if the value is not found.
+```python
+s = "hello"
+array = list(s)  ## string to char array  # Output: ['h', 'e', 'l', 'l', 'o']
+string 1 == string 2;  // ## checking actual value
+s.find('o'); ## ## Output: 4
+s[i] ## s.charAt(i) getting element
+len(s)  ## same as java s.length()
+match_index = s.find("abc", from_index) ## returns the position of the first occurrence of "llo", returns -1 if the value is not found.
 
-s.toCharArray(); 
-String str = String.valueOf(arr);//The method valueOf() will convert the entire char array into a string.//这里的String. 本身就是内置API
+charArray = list(s) ## java s.toCharArray();  # Output: ['h', 'e', 'l', 'l', 'o']
+str_value = ''.join(charArray)  ## Output: "hello"  .  similar to String str = String.valueOf(arr); //The method valueOf() will convert the entire char array into a string.//这里的String. 本身就是内置API
 
-s.substring(start,end)  // not include end index  
+start = 1   end = 4   substring = s[start:end]   print(substring)  # Output: "ell" . java s.substring(start,end) not include end index  
 
-new String(sourceArray,0,slow) // new a string from source array, start form index 0 to slow-1
+source_array = ['h', 'e', 'l', 'l', 'o']
+length = 3
+new_string = ''.join(source_array[:length])
+#  print(new_string)  # Output: "hel".  in java  new String(sourceArray,0,slow) // new a string from source array, start form index 0 to slow-1
 ```
 
 ## Char
 
-```java
-char[] array = string.toCharArray();
-char[] arrya = new char[];
-Character.isLetterOrDigit(ch)//return boolean, check whether the char is a digit or character('0'-'9', 'a'-'z', 'A'-'Z')
-Character.toLowerCase(ch)//change the char to lower case
+```python
+ch = 'a'
+ch.isalnum() ## java Character.isLetterOrDigit(ch)//return boolean, check whether the char is a digit or character('0'-'9', 'a'-'z', 'A'-'Z')
+ch.lower() ## java Character.toLowerCase(ch)//change the char to lower case
+ch.upper()
 ```
 
 
@@ -141,15 +140,19 @@ sb.append();
 ## Deque stack 单向 LIFO
 
 ```java
-Deque<Character> stack = new LinkedList<Character>();
-Deque<Character> stack = new ArrayDeque<Character>();
-stack.push();   // to left side add, = offerFirst();
+// if only using a list, similar but not that many apis
+stack = []
+stack.appened();   // to left side add, = offerFirst();
 stack.pop();    // the left side pop = pollFirst();
-stack.offerFirst();
-stack.pollFirst()
-stack.offerLast();
-stack.pollLast()
-stack.add; // addlast
+
+// deque stack
+from collections import deque
+stack = deque()   
+stack.appendleft(4)  // java stack.offerFirst();
+stack.append(4) // append right
+    
+stack.popleft()  // # Remove from the left side
+stack.pop()   // remove right
 ```
 
 
@@ -157,11 +160,7 @@ stack.add; // addlast
 ## Queue:FIFO
 
 ```java
-Queue<Integer> queue = new ArrayDeque<Integer>();
-queue.offer() // add element at the end; like offerLast. 1 2 3, offer 4, becoming 1 2 3 4 // == offerLast
-queue.remove() //return and remove the first element when queue is empty, raise exception // == pollFirst
-queue.poll() // return and remove the first element.  when queue is empty, returns null.   1 2 3, return 2 3, head is 1 //  = pollFirst
-queue.peek() // return value but not remove //peak first
+
 ```
 
 
@@ -233,9 +232,10 @@ PriorityQueue<Map.Entry<String, Integer>> minHeap = new PriorityQueue<>(k, new C
 
 ## OTHERS
 
-```java
-Collections.reverse(mylist) ;// Reversing an ArrayList, Reversing a LinkedList, Reversing an array.  1 2 3 4 > 4 3 2 1
-boolean[][] visited = new boolean[rows][collumn]; //default boolean false
-int count = array[i] - '0'; // getting number. exa: int 5 = '5' - '0'  
+```python
+array = ['5', '3', '2']
+i = 0
+count = int(array[i]) - int('0')
+print(count)  # Output: 5
 ```
 
