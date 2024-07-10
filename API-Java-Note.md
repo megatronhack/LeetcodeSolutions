@@ -76,6 +76,7 @@ List,map,set的data structure都不能是primitive: boolean , byte , char , shor
 ```java
 Map<Integer, List<Integer>> map = new HashMap<Integer,List<Integer>>();
 HashMap.put(key,)    //key,value together. This method returns returns previous value associated with the key if present, else return -1.
+HashMap.put()    //key,value together. Returns:the previous value associated with key, or null if there was no mapping for key.
 HashMap.get()    //get value, primitive type double
         V value = map.getOrDefault(key, defaultValue);  
 HashMap.getValue()   // get value, a Double object, like Integer wrapper type
