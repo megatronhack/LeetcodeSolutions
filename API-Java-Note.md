@@ -75,12 +75,14 @@ List,map,set的data structure都不能是primitive: boolean , byte , char , shor
 
 ```java
 Map<Integer, List<Integer>> map = new HashMap<Integer,List<Integer>>();
-HashMap.put()    //key,value together. This method returns returns previous value associated with the key if present, else return -1.
+HashMap.put(key,)    //key,value together. This method returns returns previous value associated with the key if present, else return -1.
 HashMap.get()    //get value, primitive type double
+        V value = map.getOrDefault(key, defaultValue);  
+HashMap.getValue()   // get value, a Double object, like Integer wrapper type
 HashMap.containsKey() ////return boolean
 HashMap.keySet()  //  create a set out of the key elements
 HashMap.values()  // return collections of values, like new ArrayList<E>(map.values())
-HashMap.getValue()   // get value, a Double object, like Integer wrapper type
+    List<List<Integer>> result = new ArrayList<List<Intege>>(map.values());
 HashMap.Entry() //return reference
 HashMap.entrySet()  // returns a set view of the map
 HashMap.Entry<String, Integer> entry : Hashmap.entrySet()
@@ -91,7 +93,13 @@ HashMap.Entry<String, Integer> entry : Hashmap.entrySet()
 for (var entry : map.entrySet()) {
     System.out.println(entry.getKey() + "/" + entry.getValue());
 }
+map.remove(key)//remove the element by using the key in map
+graph.computeIfAbsent(a, val -> new ArrayList<Integer>()).add(b);
+//For each vertex a, computeIfAbsent checks if a is already a key in graph.
+//If a is not present, it initializes a with a new ArrayList (this happens only the first time a is //encountered).
+//Then, it returns the list associated with a (whether newly created or already existing), and //the edge b is added to this list.
 
+    
 ```
 
 ## HashSet
@@ -129,8 +137,6 @@ double digit2 = Double.parseDouble(rateStr[0]);//parse a str to double
 
 ## String 
 
-"string"
-
 ```java
 String s = new String("word");
 String s = "hello";   //double quote is string, single is chart
@@ -145,6 +151,8 @@ start = str.lastIndexOf("(");//return the last index of "(", return -1 if not fo
 String str = String.valueOf(arr);//The method valueOf() will convert the entire char array into a string.//这里的String. 本身就是内置API
 
 char[] array = String.valueOf(n).toCharArray();//convert an int to char array
+String string = String.valueOf(charArray);
+//When you want to convert a character array to a String, you should always use String.valueOf(charArray) or the String constructor like new String(charArray). If you mistakenly use charArray.toString(), you will not get the content of the array as a string, but a string that represents the array object's reference in memory.
 s.substring(start,end)  // not include end index  
 s.substring(startIndex)  // from startindex to end  
 new String(sourceArray,0,slow) // new a string from source array, start form index 0 to slow-1
@@ -155,6 +163,9 @@ Integer.valueOf(s);//Convert a String to an Integer
 String(inputString.chars().map(x -> (x - 'a' + 1) % 26 + 'a').toArray(), 0, inputString.length());
 //1. str.chsrs():In Java 8, there is a new method String.chars() which returns a stream of ints (IntStream) that represent the character codes.
 //2. toArray() :toArray() method of Chars Class is used to convert the char values, passed as the parameter to this method, into a Char Array.
+String result = String.join("-", "2024", "06", "06");
+String result = String.join(", ", list/array);//You can also use the join() method with a List or any other Iterable of CharSequence 
+
 ```
 
 ## Char
@@ -176,9 +187,11 @@ StringBuilder sb = new StringBuilder();
 sb.toString();
 sb.length();
 sb.deleteCharAt();
+sb.setCharAt(index, value);
 sb.deleteCharAt(cur.length() - 1);
 sb.append(); 
 sb.reverse().toString();//reverse the sb, then turn it into a string
+sb.inser(int position, target)//position is the index in string where we need to insert.
 ```
 
 
