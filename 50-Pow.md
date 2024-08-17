@@ -39,43 +39,20 @@ class Solution {
 }
 ```
 
-## Solution 2
 
-利用二进制的思路，如果题目明确禁止使用分治思想来解决，则可以使用这个思路。
 
-把 `n` 想成二进制，比如 `5^10` == `5^b1010` == `5^b1000` * `5^b0010`。
-
-这样我们可以把 5^10 用两个5的2的整数幂次方相乘来表示。也就是任意的 x^n，我都可以用若干个x的2的整数幂次方相乘来表示。
-
-设置一个 accumulator 来记录5的2的整数幂次方，比如 5^1, 5^2, 5^4, 5^8, 5^16 等等。那么最后 5^n 一定可以通过这些5的2的整数幂次方相乘得到。
-
-那么`5^n`具体是哪些5的2的整数幂次方相乘得到的呢？accumulator初始化为 `5^1`，prodduct初始化为`1.0 == 5^0`。
-
-不断循环到n的二进制没有1为止，也就是n == 0。当前轮我们取n的最低位，看看是不是1。是1的话说明这里是一个5的2的整数幂次方，所以需要乘以accumulator。如果不是1的话，说明这里不是，则不需要累乘。做完这些操作之后，对accumulator进行累乘，也就是平方，这样 `5^1`才能变成`5^2`,`5^4`等等。同时对n进行右移操作，更新最低位直至n == 0。
-
-Time complexity: O(1), because integer has maximum 32 bits.
-
-Space complexity: O(1), because only a few extra local varialble are created.
-
-```java
-class Solution2 {
-    public double myPow(double x, int n) {
-        double product = 1.0;
-        double accumulator = x;
-        long N = n;
-        N = Math.abs(N);
-        while(N > 0){
-            if(N % 2 == 1){
-                product *= accumulator;
-            }
-            accumulator *= accumulator;
-            N = N >> 1;
-        }
-        if(n >=0){
-            return product;
-        }else{
-            return 1 / product;
-        }
-    }
-}
+```python
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        if(n == 0):
+            return 1.0
+        if n < 0:
+            x = 1 / x
+            n = -n
+        halfResult = self.myPow(x,  n // 2)
+        if n % 2 == 0:
+            return halfResult * halfResult
+        else:
+            return halfResult * halfResult * x
+        
 ```

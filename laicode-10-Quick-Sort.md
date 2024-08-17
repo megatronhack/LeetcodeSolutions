@@ -23,66 +23,99 @@ Time complexity: O(NlogN) in average, O(N^2) in worst case
 Space complexity: O(logN) in average, O(N) in worst case
 
 ```java
-public class Solution {
-    public int[] quickSort(int[] array) {
-        quickSort(array, 0, array.length - 1);
-        return array;
+class Solution {
+    public int[] sortArray(int[] nums) {
+        //quick sort
+        //choose a povot and sort the remainings, then put the pivot back to its position
+        //keep on partioning on left to pivot -1, pivot + 1 and right until left >= right
+
+        //tc:O(nlogn) sc: O(logn)
+        if (nums == null || nums.length <= 1) return nums;
+        quickSort(nums, 0, nums.length - 1);
+        return nums;
     }
 
-    private void quickSort(int[] array, int left, int right){
-        if(left >= right){
+    public void quickSort(int[] nums, int left, int right){
+        //base case
+        if (left >= right){
             return;
         }
-        int pivotIndex = partition(array, left, right);
-        quickSort(array, left, pivotIndex - 1);
-        quickSort(array, pivotIndex + 1, right);
+        int pivotIndex = partition(nums, left, right);
+        quickSort(nums, left, pivotIndex - 1);
+        quickSort(nums, pivotIndex + 1, right);
     }
 
-    private int partition(int[] array, int left, int right){
-        int pivotIndex = getPivotIndex(left, right);
-        int pivot = array[pivotIndex];
-        swap(array, pivotIndex, right);
-        int l = left, r = right - 1;
-        while(l <= r){
-            while(l <= r && array[l] < pivot){
-                l++;
-            }
-            while(l <= r && array[r] >= pivot){
-                r--;
-            }
-            if(l >= r) break;
-            swap(array, l++, r--);
-        }
-        swap(array, l, right);
-        return l;
-    }
-
-    private int partition2(int[] array, int left, int right) {
-        int pivotIndex = getPivotIndex(left, right);
-        int pivot = array[pivotIndex];
-        swap(array, pivotIndex, right);
-        int l = left, r = right - 1;
-        while (l <= r) {
-            if (array[l] < pivot) {
-                l++;
-            }else if(array[r] >= pivot){
-                r--;
-            }else{
-                swap(array, l++, r--);
+    public int partition(int[] nums, int left, int right){
+        //sub problem: choose a pivot and sort
+        int pivot = randomIndex(left, right);
+        int target = nums[pivot];
+        swap(nums, pivot, right);
+        //-1, 2, 4, 3, 2(pivot)
+        int leftBound = left;
+        int rightBound = right - 1;
+        while (leftBound <= rightBound){
+            if (nums[leftBound] <= target){
+                leftBound++;
+            } else if (nums[rightBound] > target){
+                rightBound--;
+            } else {
+                swap(nums, leftBound, rightBound);
+                leftBound++;
+                rightBound--;
             }
         }
-        swap(array, l, right);
-        return l;
+        swap(nums, leftBound, right);
+        return leftBound;
     }
 
-    private int getPivotIndex(int left, int right){
-        return left + (int)(Math.random() * (right - left + 1)); // add 1 because random() returns [0, 1)
+    public void swap(int[] nums, int left, int right){
+        if (nums == null || nums.length <= 1) return;
+        int temp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = temp;
     }
 
-    private void swap(int[] array, int i, int j){
-        int temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+    public int randomIndex(int left, int right){
+    int pivot = left + (int)(Math.random()* (right - left + 1));
+    return pivot;
     }
 }
 ```
+
+```python
+import random
+class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        if nums is None or len(nums) <= 1:
+            return nums
+        self.quickSort(nums, 0, len(nums) - 1)
+        return nums
+    
+    def partition(self, nums, left, right):
+        pivot = random.randint(left, right)
+        target = nums[pivot]
+        nums[pivot], nums[right] = nums[right], nums[pivot]
+        leftBound = left
+        rightBound = right - 1
+
+        while leftBound <= rightBound:
+            if nums[leftBound] <= target:
+                leftBound += 1
+            elif nums[rightBound] > target:
+                rightBound -= 1
+            else:
+                nums[leftBound], nums[rightBound] = nums[rightBound], nums[leftBound]
+                leftBound += 1
+                rightBound -= 1
+
+        nums[leftBound], nums[right] = nums[right], nums[leftBound]
+        return leftBound
+
+    def quickSort(self, nums, left, right):
+        if left >= right:
+            return
+        pivotIndex = self.partition(nums, left, right)
+        self.quickSort(nums, left, pivotIndex - 1)
+        self.quickSort(nums, pivotIndex + 1, right)
+```
+

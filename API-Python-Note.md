@@ -50,9 +50,11 @@ del my_list[2:]  ## like java sublist. here delete from index to end
 len(my_list) ## length, size
 mylist.reverse() ## [5,4,3,2,1]
 my_list[i] ## same as java list.get(i)
-
-
+my_list.extent[element] #The extend() method adds all the items of the specified iterable, such as list. dictionary. 
 mylist[::-1] ## [5,4,3,2,1] slicing, sequence[start:stop:step], : means you want the whole list. The -1 is the step size, which means you want to step backwards through the list, effectively reversing it.
+
+list multiplication
+[3] * 4 = [3, 3, ,3, 3]
 ```
 
 
@@ -76,6 +78,8 @@ print(map.keys()) ## a view object here output :dict_keys(['key1', 'key2', 3]), 
 
 for k, v in map.items(): ## HashMap.Entry() iterating over items
 map.items() # HashMap.entrySet() returns a set view of the map. map.items() returns a view object that displays a list of (key, value) tuples.  output: print(my_dict.items()):  dict_items([('key1', 'value1'), ('key2', 2), (3, 'value3')])
+
+collections.Counter(N) #list N,  N = Counter(['a', 'a', 'b']) print(counter)  # Counter({'a': 2, 'b': 1})
 ```
 
 

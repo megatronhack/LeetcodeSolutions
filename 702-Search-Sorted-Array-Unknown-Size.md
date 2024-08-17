@@ -1,3 +1,7 @@
+```
+
+```
+
 # 702. Search in a Sorted Array of Unknown Size
 
 这题主要是array长度未知，所以我们要先确定二分搜索的左右边界。
@@ -19,34 +23,61 @@
 
 class Solution {
     public int search(ArrayReader reader, int target) {
-        if(reader == null){
-            return -1;
+        //use the ArrayReader and its function to get the search range
+        //then use binary search method to find the target
+        //tc:o(logn) sc:o(1)
+        int left = 0; 
+        int right = 2 * left + 1;
+        while(reader.get(right) < target){
+            left = right;
+            right = 2 * left + 1;
         }
-        if(reader.get(0) >= 10000){
-            return -1;
-        }
-        int l = 0, r = 1;
-        while(reader.get(r) < target){
-            l = r;
-            r *= 2;
-        }
-        return binarySearch(reader, l, r, target);
+        return getIndex(reader, left, right, target);
+
     }
 
-    private int binarySearch(ArrayReader reader, int lb, int rb, int target){
-        int l = lb, r = rb;
-        while(l <= r){
-            int mid = l + (r-l >>1);
-            int midV = reader.get(mid);
-            if(midV == target){
+    public int getIndex(ArrayReader reader, int left, int right, int target){
+        while (left <= right){
+            int mid = left + (right - left)/2;
+            if (reader.get(mid) == target){
                 return mid;
-            }else if(midV < target){
-                l = mid + 1;
-            }else{
-                r = mid - 1;
+            } else if(reader.get(mid) < target){
+                left = mid + 1;
+            } else {
+                right = mid - 1;
             }
         }
         return -1;
-    }
+        }
 }
 ```
+
+```python
+# """
+# This is ArrayReader's API interface.
+# You should not implement it, or speculate about its implementation
+# """
+#class ArrayReader:
+#    def get(self, index: int) -> int:
+
+class Solution:
+    def search(self, reader: 'ArrayReader', target: int) -> int:
+        left = 0
+        right = left * 2 + 1
+        while reader.get(right) < target:
+            left = right
+            right = left * 2 + 1
+        return self.BST(left, right, reader, target)
+
+    def BST(self, left: int, right: int, reader: 'ArrayReader', target: int) -> int:
+        while left <= right:
+            mid = left + (right - left) // 2
+            if reader.get(mid) == target:
+                return mid
+            elif reader.get(mid) < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return -1
+```
+

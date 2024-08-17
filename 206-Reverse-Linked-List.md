@@ -14,17 +14,26 @@ Output: [5,4,3,2,1]
 
 //Time On;  Space O1;
 
+```java
+class Solution {
     public ListNode reverseList(ListNode head) {
+        //Traverse the node by using three pointers
         ListNode prev = null;
         ListNode cur = head;
-        while(cur != null){
-            ListNode next = cur.next; // recording next element
-            cur.next = prev;  //change direction
-            prev = cur; // update prev to cur for next time direction change use
-            cur = next; //cur move to newst place
+        if (head == null || head.next == null) return head;
+        ListNode next = head.next;
+        while(cur != null) {
+            next = cur.next;
+            cur.next = prev;
+            prev = cur;
+
+            cur = next;
+
         }
-    return prev; // prev will be at the last element
+        return prev;
     }
+}
+```
 
 //Method 2: recusion
 
@@ -50,5 +59,20 @@ head.next = null; //delink
 
 return newHead;
 }
+```
+
+Python version:
+
+```python
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev = None
+        cur = head
+        while cur is not None:
+            next = cur.next
+            cur.next = prev
+            prev = cur
+            cur = next
+        return prev
 ```
 
